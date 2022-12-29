@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Messegify.Domain.Abstractions\Messegify.Domain.Abstractions.csproj" />
+      <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
+    </ItemGroup>
+
+</Project>
