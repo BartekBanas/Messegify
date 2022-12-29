@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain.Abstractio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain.Entities", "Messegify.Domain.Entities\Messegify.Domain.Entities.csproj", "{AD8CE9B4-7824-451A-A125-5AF746FC7D62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain.Repositories", "Messegify.Domain.Repositories\Messegify.Domain.Repositories.csproj", "{5BA8B9E2-AEC1-40E0-BFDE-1E09E38250AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Infrastructure.Repositories", "Messegify.Infrastructure.Repositories\Messegify.Infrastructure.Repositories.csproj", "{91881DC2-73AF-4824-9956-C0F31BA2BF74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{AD8CE9B4-7824-451A-A125-5AF746FC7D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD8CE9B4-7824-451A-A125-5AF746FC7D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD8CE9B4-7824-451A-A125-5AF746FC7D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BA8B9E2-AEC1-40E0-BFDE-1E09E38250AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA8B9E2-AEC1-40E0-BFDE-1E09E38250AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA8B9E2-AEC1-40E0-BFDE-1E09E38250AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA8B9E2-AEC1-40E0-BFDE-1E09E38250AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91881DC2-73AF-4824-9956-C0F31BA2BF74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91881DC2-73AF-4824-9956-C0F31BA2BF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91881DC2-73AF-4824-9956-C0F31BA2BF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91881DC2-73AF-4824-9956-C0F31BA2BF74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

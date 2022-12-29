@@ -19,6 +19,8 @@ public class MessegifyDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //  TODO: Use fluent API plz
+        
         // modelBuilder.Entity<AccountRoom>()
         //     .HasOne(e => e.Account)
         //     .WithMany(e => e.AccountRooms);
@@ -30,6 +32,4 @@ public class MessegifyDbContext : DbContext
         
         base.OnModelCreating(modelBuilder);
     }
-    
-    
 }

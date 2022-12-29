@@ -16,4 +16,8 @@
       <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Repositories" />
+    </ItemGroup>
+
 </Project>
