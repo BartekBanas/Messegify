@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Messegify.Domain.Abstractions;
 
 namespace Messegify.Domain.Entities;
 
 public class Friendship : IEntity
 {
+    [Key]
+    public Guid Id { get; set; }
+    
     [ForeignKey(nameof(FirstAccount))]
     public Guid FirstAccountId { get; set; }
     public virtual Account FirstAccount { get; set; }

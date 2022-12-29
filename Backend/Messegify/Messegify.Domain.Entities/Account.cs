@@ -18,5 +18,6 @@ public class Account : IEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated { get; set; }
 
-    public virtual ICollection<AccountRoom> AccesableRooms { get; set; }
+    [ForeignKey(nameof(AccountRoom.AccountId))]
+    public virtual ICollection<AccountRoom> AccountRooms { get; set; }
 }

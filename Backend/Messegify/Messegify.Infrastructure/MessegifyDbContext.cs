@@ -15,4 +15,21 @@ public class MessegifyDbContext : DbContext
     public DbSet<Message> Messages { get; set; }
     public DbSet<AccountRoom> AccountRooms { get; set; }
     public DbSet<Friendship> Friendships { get; set; }
+
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // modelBuilder.Entity<AccountRoom>()
+        //     .HasOne(e => e.Account)
+        //     .WithMany(e => e.AccountRooms);
+        //
+        // modelBuilder.Entity<Account>()
+        //     .HasMany(e => e.AccountRooms)
+        //     .WithOne(e => e.Account)
+        //     .HasForeignKey(e => e.AccountId);
+        
+        base.OnModelCreating(modelBuilder);
+    }
+    
+    
 }

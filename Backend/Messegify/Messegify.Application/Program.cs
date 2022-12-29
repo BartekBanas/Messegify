@@ -1,3 +1,4 @@
+using Messegify.Domain.Entities;
 using Messegify.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,4 +34,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+var dbcontext = app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>();
+dbcontext.Accounts.Add(new Account()
+{
+    Email = "ne@se.pl",
+    Name = "Noracism"
+});
+
+dbcontext.SaveChanges();
+
 app.Run();
+
