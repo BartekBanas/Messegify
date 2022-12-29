@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain", "Messegify.Domain\Messegify.Domain.csproj", "{23D07792-58CC-4B25-869E-BD7D85CAEECD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain.Abstractions", "Messegify.Domain.Abstractions\Messegify.Domain.Abstractions.csproj", "{0B39A5D9-F346-48B8-8EBF-B42A4F36802B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{23D07792-58CC-4B25-869E-BD7D85CAEECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23D07792-58CC-4B25-869E-BD7D85CAEECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23D07792-58CC-4B25-869E-BD7D85CAEECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B39A5D9-F346-48B8-8EBF-B42A4F36802B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B39A5D9-F346-48B8-8EBF-B42A4F36802B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B39A5D9-F346-48B8-8EBF-B42A4F36802B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B39A5D9-F346-48B8-8EBF-B42A4F36802B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
