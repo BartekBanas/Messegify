@@ -15,7 +15,7 @@ services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
-    contextOptionsBuilder.UseSqlServer(configuration.GetConnectionString("MessegifyDatabaseConnectionString")));
+    contextOptionsBuilder.UseMySQL(configuration.GetConnectionString("MessegifyDatabaseConnectionString")));
 
 
 
@@ -33,15 +33,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-var dbcontext = app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>();
-dbcontext.Accounts.Add(new Account()
-{
-    Email = "ne@se.pl",
-    Name = "Noracism"
-});
-
-dbcontext.SaveChanges();
 
 app.Run();
 
