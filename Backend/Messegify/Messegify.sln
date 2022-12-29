@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify", "Messegify\Messegify.csproj", "{1A6BEAC2-7716-4A67-A474-C59AFBC44342}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application", "Messegify.Application\Messegify.Application.csproj", "{1A6BEAC2-7716-4A67-A474-C59AFBC44342}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Infrastructure", "Messegify.Infrastructure\Messegify.Infrastructure.csproj", "{D634EBEF-A437-49EB-A0C2-99E325D9D09C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain", "Messegify.Domain\Messegify.Domain.csproj", "{23D07792-58CC-4B25-869E-BD7D85CAEECD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +16,13 @@ Global
 		{1A6BEAC2-7716-4A67-A474-C59AFBC44342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A6BEAC2-7716-4A67-A474-C59AFBC44342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A6BEAC2-7716-4A67-A474-C59AFBC44342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D634EBEF-A437-49EB-A0C2-99E325D9D09C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D634EBEF-A437-49EB-A0C2-99E325D9D09C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D634EBEF-A437-49EB-A0C2-99E325D9D09C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D634EBEF-A437-49EB-A0C2-99E325D9D09C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23D07792-58CC-4B25-869E-BD7D85CAEECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D07792-58CC-4B25-869E-BD7D85CAEECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D07792-58CC-4B25-869E-BD7D85CAEECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D07792-58CC-4B25-869E-BD7D85CAEECD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

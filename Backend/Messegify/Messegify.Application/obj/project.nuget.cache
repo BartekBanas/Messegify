@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bfGSK+fDecFuZm7SQIjNwXQsOnhL0SL8VYs2jikzc9cU50zImt7voUJYfNVGMS+C4pdCTDcBWzXR3ox1x6amtw==",
+  "dgSpecHash": "lkyHl9BL3SMfxbRMxkLx663znpcxV/YwnC/iooPpPQoL5ZACyDJ1PjAP7xOiYCPMoAOu8foZ9zD1oOsLXimN7w==",
   "success": true,
-  "projectFilePath": "H:\\Szkoła\\Semestr V\\Inżynieria Internetu\\projekt-zaliczeniowy-banas-blazowski\\Backend\\Messegify\\Messegify\\Messegify.csproj",
+  "projectFilePath": "H:\\Szkoła\\Semestr V\\Inżynieria Internetu\\projekt-zaliczeniowy-banas-blazowski\\Backend\\Messegify\\Messegify.Application\\Messegify.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",

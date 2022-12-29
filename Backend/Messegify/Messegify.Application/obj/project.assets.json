@@ -229,11 +229,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "H:\\Szkoła\\Semestr V\\Inżynieria Internetu\\projekt-zaliczeniowy-banas-blazowski\\Backend\\Messegify\\Messegify\\Messegify.csproj",
-      "projectName": "Messegify",
-      "projectPath": "H:\\Szkoła\\Semestr V\\Inżynieria Internetu\\projekt-zaliczeniowy-banas-blazowski\\Backend\\Messegify\\Messegify\\Messegify.csproj",
+      "projectUniqueName": "H:\\Szkoła\\Semestr V\\Inżynieria Internetu\\projekt-zaliczeniowy-banas-blazowski\\Backend\\Messegify\\Messegify.Application\\Messegify.Application.csproj",
+      "projectName": "Messegify.Application",
+      "projectPath": "H:\\Szkoła\\Semestr V\\Inżynieria Internetu\\projekt-zaliczeniowy-banas-blazowski\\Backend\\Messegify\\Messegify.Application\\Messegify.Application.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "H:\\Szkoła\\Semestr V\\Inżynieria Internetu\\projekt-zaliczeniowy-banas-blazowski\\Backend\\Messegify\\Messegify\\obj\\",
+      "outputPath": "H:\\Szkoła\\Semestr V\\Inżynieria Internetu\\projekt-zaliczeniowy-banas-blazowski\\Backend\\Messegify\\Messegify.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
