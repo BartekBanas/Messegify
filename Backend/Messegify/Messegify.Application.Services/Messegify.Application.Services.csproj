@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Messegify.Application.Dtos\Messegify.Application.Dtos.csproj" />
       <ProjectReference Include="..\Messegify.Domain.Abstractions\Messegify.Domain.Abstractions.csproj" />
       <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
     </ItemGroup>

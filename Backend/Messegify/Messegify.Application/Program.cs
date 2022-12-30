@@ -1,5 +1,7 @@
+using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Infrastructure;
+using Messegify.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,7 @@ services.AddSwaggerGen();
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
     contextOptionsBuilder.UseMySQL(configuration.GetConnectionString("MessegifyDatabaseConnectionString")));
 
+services.AddScoped<IRepository<Account>, Repository<Account, MessegifyDbContext>>();
 
 
 var app = builder.Build();
