@@ -15,7 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Messegify.Application.Services\Messegify.Application.Services.csproj" />
-      <ProjectReference Include="..\Messegify.Domain.Validator\Messegify.Domain.Validator.csproj" />
+      <ProjectReference Include="..\Messegify.Domain.Validators\Messegify.Domain.Validators.csproj" />
       <ProjectReference Include="..\Messegify.Infrastructure.Repositories\Messegify.Infrastructure.Repositories.csproj" />
       <ProjectReference Include="..\Messegify.Infrastructure\Messegify.Infrastructure.csproj" />
     </ItemGroup>

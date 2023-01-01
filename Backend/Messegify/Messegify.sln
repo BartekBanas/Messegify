@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Dtos"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Errors", "Messegify.Application.Errors\Messegify.Application.Errors.csproj", "{5840FDB1-D6D2-46D9-997B-E89B2535DCC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain.Validator", "Messegify.Domain.Validator\Messegify.Domain.Validator.csproj", "{3B0488B4-3D36-4E1E-8AE0-30CC61C4C130}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain.Validators", "Messegify.Domain.Validators\Messegify.Domain.Validators.csproj", "{3B0488B4-3D36-4E1E-8AE0-30CC61C4C130}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Service.Extensions", "Messegify.Application.Service.Extensions\Messegify.Application.Service.Extensions.csproj", "{44A7A664-16ED-43CE-99D1-C84A16F722B4}"
 EndProject
