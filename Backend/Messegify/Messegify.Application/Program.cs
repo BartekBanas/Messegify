@@ -18,12 +18,14 @@ services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
-services.AddScoped<IHashingService, HashingService>();
 
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
     contextOptionsBuilder.UseMySQL(configuration.GetConnectionString("MessegifyDatabaseConnectionString")));
 
 services.AddScoped<IRepository<Account>, Repository<Account, MessegifyDbContext>>();
+
+services.AddScoped<IHashingService, HashingService>();
+services.AddScoped<IAccountService, AccountService>();
 
 
 var app = builder.Build();

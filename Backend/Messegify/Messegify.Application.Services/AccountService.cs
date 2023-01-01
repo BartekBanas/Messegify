@@ -35,6 +35,8 @@ public class AccountService : IAccountService
             Name = registerDto.Username,
             PasswordHash = passwordHash,
         });
+
+        await _accountRepository.SaveChangesAsync();
     }
 
     public async Task<string> Authenticate(LoginDto loginDto)

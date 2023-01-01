@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Messegify.Infrastructure.Repositories;
 
-public abstract class Repository<TEntity, TDbContext> : IRepository<TEntity> 
+public class Repository<TEntity, TDbContext> : IRepository<TEntity> 
     where TEntity : class, IEntity
     where TDbContext : DbContext
 {
