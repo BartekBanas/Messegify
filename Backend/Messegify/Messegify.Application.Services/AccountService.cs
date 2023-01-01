@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
+using Messegify.Application.Service.Extensions;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -38,13 +39,9 @@ public class AccountService : IAccountService
             Name = registerDto.Username,
             PasswordHash = passwordHash,
         };
-
-        var validationResult = await _validator.ValidateAsync(newAccount);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationException(validationResult.Errors);
-        }
         
+        await _validator.ValidateRequiredAsync(newAccount);
+
         await _accountRepository.CreateAsync(newAccount);
 
         await _accountRepository.SaveChangesAsync();

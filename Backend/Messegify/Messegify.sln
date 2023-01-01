@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Error
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Domain.Validator", "Messegify.Domain.Validator\Messegify.Domain.Validator.csproj", "{3B0488B4-3D36-4E1E-8AE0-30CC61C4C130}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Service.Extensions", "Messegify.Application.Service.Extensions\Messegify.Application.Service.Extensions.csproj", "{44A7A664-16ED-43CE-99D1-C84A16F722B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{3B0488B4-3D36-4E1E-8AE0-30CC61C4C130}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B0488B4-3D36-4E1E-8AE0-30CC61C4C130}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B0488B4-3D36-4E1E-8AE0-30CC61C4C130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44A7A664-16ED-43CE-99D1-C84A16F722B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44A7A664-16ED-43CE-99D1-C84A16F722B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44A7A664-16ED-43CE-99D1-C84A16F722B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44A7A664-16ED-43CE-99D1-C84A16F722B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AD8CE9B4-7824-451A-A125-5AF746FC7D62} = {3AEE0B4D-0916-4440-BBBB-5AEC91B7432B}
@@ -84,5 +90,6 @@ Global
 		{B216B456-844A-4195-82C4-C505AE509B48} = {64C5C116-AA25-408D-BAF3-A7A4CB7096D0}
 		{5840FDB1-D6D2-46D9-997B-E89B2535DCC4} = {64C5C116-AA25-408D-BAF3-A7A4CB7096D0}
 		{3B0488B4-3D36-4E1E-8AE0-30CC61C4C130} = {3AEE0B4D-0916-4440-BBBB-5AEC91B7432B}
+		{44A7A664-16ED-43CE-99D1-C84A16F722B4} = {64C5C116-AA25-408D-BAF3-A7A4CB7096D0}
 	EndGlobalSection
 EndGlobal
