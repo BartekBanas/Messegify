@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Servi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Dtos", "Messegify.Application.Dtos\Messegify.Application.Dtos.csproj", "{B216B456-844A-4195-82C4-C505AE509B48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Errors", "Messegify.Application.Errors\Messegify.Application.Errors.csproj", "{5840FDB1-D6D2-46D9-997B-E89B2535DCC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{B216B456-844A-4195-82C4-C505AE509B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B216B456-844A-4195-82C4-C505AE509B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B216B456-844A-4195-82C4-C505AE509B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5840FDB1-D6D2-46D9-997B-E89B2535DCC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5840FDB1-D6D2-46D9-997B-E89B2535DCC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5840FDB1-D6D2-46D9-997B-E89B2535DCC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5840FDB1-D6D2-46D9-997B-E89B2535DCC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AD8CE9B4-7824-451A-A125-5AF746FC7D62} = {3AEE0B4D-0916-4440-BBBB-5AEC91B7432B}
@@ -70,5 +76,6 @@ Global
 		{91881DC2-73AF-4824-9956-C0F31BA2BF74} = {56BF87A7-6B69-4BCA-BC4C-819DD993D5B3}
 		{94CFE129-22A9-4ACF-A573-FE92C0483D1A} = {64C5C116-AA25-408D-BAF3-A7A4CB7096D0}
 		{B216B456-844A-4195-82C4-C505AE509B48} = {64C5C116-AA25-408D-BAF3-A7A4CB7096D0}
+		{5840FDB1-D6D2-46D9-997B-E89B2535DCC4} = {64C5C116-AA25-408D-BAF3-A7A4CB7096D0}
 	EndGlobalSection
 EndGlobal

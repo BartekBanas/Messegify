@@ -1,4 +1,5 @@
 ﻿using Messegify.Application.Dtos;
+using Messegify.Application.Errors;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -44,14 +45,12 @@ public class AccountService : IAccountService
 
         if (foundAccount == default)
         {
-            // todo make 403 exception
-            throw new NullReferenceException();
+            throw new ForbiddenErrorException();
         }
 
         if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
         {
-            // todo make 403 exception
-            throw new NullReferenceException();
+            throw new ForbiddenErrorException();
         }
         
         // TODO: THIS SHOULD BE A JWT TOKEN
