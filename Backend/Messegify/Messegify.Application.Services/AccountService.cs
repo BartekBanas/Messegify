@@ -7,7 +7,8 @@ namespace Messegify.Application.Services;
 
 public interface IAccountService
 {
-    public Task RegisterAccount(RegisterAccountDto registerDto);
+    Task RegisterAccount(RegisterAccountDto registerDto);
+    Task<string> Authenticate(LoginDto loginDto);
 }
 
 public class AccountService : IAccountService
@@ -15,7 +16,6 @@ public class AccountService : IAccountService
     private readonly IRepository<Account> _accountRepository;
     private readonly IHashingService _hashingService;
     
-
     public AccountService(
         IRepository<Account> accountRepository, 
         IHashingService hashingService)
@@ -36,8 +36,25 @@ public class AccountService : IAccountService
         });
     }
 
-    public async Task Authenticate()
+    public async Task<string> Authenticate(LoginDto loginDto)
     {
+        var foundAccount = await _accountRepository
+            .GetOneAsync(account =>
+                account.Name == loginDto.UsernameOrEmail || account.Email == loginDto.UsernameOrEmail);
+
+        if (foundAccount == default)
+        {
+            // todo make 403 exception
+            throw new NullReferenceException();
+        }
+
+        if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
+        {
+            // todo make 403 exception
+            throw new NullReferenceException();
+        }
         
+        // TODO: THIS SHOULD BE A JWT TOKEN
+        return "THIS SHOULD BE A JWT TOKEN";
     }
 }
