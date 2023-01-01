@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Security.Claims;
+using FluentValidation;
 using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
@@ -19,14 +20,18 @@ public class AccountService : IAccountService
     private readonly IRepository<Account> _accountRepository;
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
+    private readonly IJwtService _jwtService;
 
     public AccountService(
         IRepository<Account> accountRepository, 
-        IHashingService hashingService, IValidator<Account> validator)
+        IHashingService hashingService,
+        IValidator<Account> validator, 
+        IJwtService jwtService)
     {
         _accountRepository = accountRepository;
         _hashingService = hashingService;
         _validator = validator;
+        _jwtService = jwtService;
     }
 
     public async Task RegisterAccount(RegisterAccountDto registerDto)
@@ -59,7 +64,20 @@ public class AccountService : IAccountService
         if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
             throw new ForbiddenError();
 
-        // TODO: THIS SHOULD BE A JWT TOKEN
-        return "THIS SHOULD BE A JWT TOKEN";
+        var claims = GenerateClaimsIdentity(foundAccount);
+
+        var token = _jwtService.GenerateSymmetricJwtToken(claims);
+        return token;
+    }
+    
+    private ClaimsIdentity GenerateClaimsIdentity(Account account)
+    {
+        return new ClaimsIdentity(new Claim[]
+        {
+            new(ClaimTypes.Sid, account.Id.ToString()),
+            new(ClaimTypes.PrimarySid, account.Id.ToString()),
+            new(ClaimTypes.Name, account.Name),
+            new(ClaimTypes.Email, account.Email),
+        });
     }
 }

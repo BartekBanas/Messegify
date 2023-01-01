@@ -30,5 +30,4 @@ public class AccountController : Controller
 
         return Ok(token);
     }
-
 }
