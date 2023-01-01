@@ -1,4 +1,5 @@
-﻿using Messegify.Application.Errors;
+﻿using FluentValidation;
+using Messegify.Application.Errors;
 
 namespace Messegify.Application.Middleware;
 
@@ -20,6 +21,12 @@ public class ErrorHandlingMiddleware : IMiddleware
         catch (ForbiddenError error)
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            await context.Response.WriteAsync(error.Message);
+        }
+        catch (ValidationException error)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.ContentType = "text/plain";
             await context.Response.WriteAsync(error.Message);
         }
         catch (Exception ex)

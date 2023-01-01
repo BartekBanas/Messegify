@@ -1,4 +1,5 @@
-﻿using Messegify.Application.Dtos;
+﻿using FluentValidation;
+using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
@@ -16,25 +17,35 @@ public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
     private readonly IHashingService _hashingService;
-    
+    private readonly IValidator<Account> _validator;
+
     public AccountService(
         IRepository<Account> accountRepository, 
-        IHashingService hashingService)
+        IHashingService hashingService, IValidator<Account> validator)
     {
         _accountRepository = accountRepository;
         _hashingService = hashingService;
+        _validator = validator;
     }
 
     public async Task RegisterAccount(RegisterAccountDto registerDto)
     {
         var passwordHash = _hashingService.HashPassword(registerDto.Password);
 
-        await _accountRepository.CreateAsync(new Account()
+        var newAccount = new Account()
         {
             Email = registerDto.Email,
             Name = registerDto.Username,
             PasswordHash = passwordHash,
-        });
+        };
+
+        var validationResult = await _validator.ValidateAsync(newAccount);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+        
+        await _accountRepository.CreateAsync(newAccount);
 
         await _accountRepository.SaveChangesAsync();
     }

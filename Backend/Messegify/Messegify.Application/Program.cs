@@ -1,7 +1,10 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Messegify.Application.Middleware;
 using Messegify.Application.Services;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
+using Messegify.Domain.Validators;
 using Messegify.Infrastructure;
 using Messegify.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -19,9 +22,10 @@ services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
-
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
     contextOptionsBuilder.UseMySQL(configuration.GetConnectionString("MessegifyDatabaseConnectionString")));
+
+services.AddValidatorsFromAssembly(typeof(Messegify.Domain.Validators.AssemblyMarker).Assembly);
 
 services.AddScoped<IRepository<Account>, Repository<Account, MessegifyDbContext>>();
 
@@ -29,7 +33,6 @@ services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
 
 services.AddScoped<ErrorHandlingMiddleware>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
