@@ -12,4 +12,9 @@
       <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    </ItemGroup>
+
 </Project>

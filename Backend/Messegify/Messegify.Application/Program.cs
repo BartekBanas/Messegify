@@ -1,7 +1,9 @@
+using Messegify.Application.Services;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Infrastructure;
 using Messegify.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,8 @@ services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
+
+services.AddScoped<IHashingService, HashingService>();
 
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
     contextOptionsBuilder.UseMySQL(configuration.GetConnectionString("MessegifyDatabaseConnectionString")));
