@@ -54,15 +54,11 @@ public class AccountService : IAccountService
                 account.Name == loginDto.UsernameOrEmail || account.Email == loginDto.UsernameOrEmail);
 
         if (foundAccount == default)
-        {
             throw new ForbiddenError();
-        }
 
         if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
-        {
             throw new ForbiddenError();
-        }
-        
+
         // TODO: THIS SHOULD BE A JWT TOKEN
         return "THIS SHOULD BE A JWT TOKEN";
     }
