@@ -15,11 +15,19 @@ public class AccountController : Controller
         _accountService = accountService;
     }
 
-    public async Task<IActionResult> RegisterAccount([FromBody] RegisterAccountDto registerDto)
+    [HttpPost("register")]
+    public async Task<IActionResult> RegisterAccount([FromBody] RegisterAccountDto dto)
     {
-        await _accountService.RegisterAccount(registerDto);
+        await _accountService.RegisterAccount(dto);
 
         return Ok();    //  Could be entirely long, just don't want the error for now
     }
+    
+    [HttpPost("authenticate")]
+    public async Task<IActionResult> Authenticate([FromBody] LoginDto dto)
+    {
+        var token = await _accountService.Authenticate(dto);
 
+        return Ok(token);
+    }
 }
