@@ -47,12 +47,12 @@ public class AccountService : IAccountService
 
         if (foundAccount == default)
         {
-            throw new ForbiddenErrorException();
+            throw new ForbiddenError();
         }
 
         if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
         {
-            throw new ForbiddenErrorException();
+            throw new ForbiddenError();
         }
         
         // TODO: THIS SHOULD BE A JWT TOKEN

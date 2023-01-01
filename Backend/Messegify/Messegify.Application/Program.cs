@@ -1,3 +1,4 @@
+using Messegify.Application.Middleware;
 using Messegify.Application.Services;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
@@ -27,6 +28,7 @@ services.AddScoped<IRepository<Account>, Repository<Account, MessegifyDbContext>
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
 
+services.AddScoped<ErrorHandlingMiddleware>();
 
 var app = builder.Build();
 
@@ -36,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
