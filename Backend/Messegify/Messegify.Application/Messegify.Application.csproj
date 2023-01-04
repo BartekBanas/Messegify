@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.12" />
         <PackageReference Include="MySql.EntityFrameworkCore" Version="6.0.7" />
@@ -15,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Messegify.Application.DomainEventHandlers\Messegify.Application.DomainEventHandlers.csproj" />
       <ProjectReference Include="..\Messegify.Application.Services\Messegify.Application.Services.csproj" />
       <ProjectReference Include="..\Messegify.Domain.Validators\Messegify.Domain.Validators.csproj" />
       <ProjectReference Include="..\Messegify.Infrastructure.Repositories\Messegify.Infrastructure.Repositories.csproj" />

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Messegify.Domain.Entities;
 
-public class AccountRoom : IEntity
+public class AccountRoom : Entity
 {
     [Key]
     public Guid Id { get; set; }

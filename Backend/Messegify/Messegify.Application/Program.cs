@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
+using MediatR;
 using Messegify.Application.Middleware;
 using Messegify.Application.Services;
 using Messegify.Application.Services.Configuration;
@@ -64,9 +65,12 @@ services.AddValidatorsFromAssembly(typeof(Messegify.Domain.Validators.AssemblyMa
 services.AddScoped<IJwtService, JwtService>();
 
 services.AddScoped<IRepository<Account>, Repository<Account, MessegifyDbContext>>();
+services.AddScoped<IRepository<User>, Repository<User, MessegifyDbContext>>();
 
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
+
+services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));
 
 services.AddScoped<ErrorHandlingMiddleware>();
 var app = builder.Build();

@@ -1,37 +1,39 @@
 ﻿using System.Linq.Expressions;
+using MediatR;
 using Messegify.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Messegify.Infrastructure.Repositories;
 
-public class Repository<TEntity, TDbContext> : IRepository<TEntity> 
+public class Repository<TEntity, TDbContext> : IRepository<TEntity>
     where TEntity : class, IEntity
     where TDbContext : DbContext
 {
+    private readonly IMediator _mediator;
+    private readonly DbContext _dbContext;
     private readonly DbSet<TEntity> _dbSet;
     private readonly Func<Task> _saveChangesAsyncDelegate;
 
-
-    public Repository(TDbContext dbContext)
+    public Repository(TDbContext dbContext, IMediator mediator)
     {
-        _dbSet = dbContext.Set<TEntity>();
+        _mediator = mediator;
 
-        _saveChangesAsyncDelegate = async () =>
-        {
-            await dbContext.SaveChangesAsync();
-        };
+        _dbContext = dbContext;
+        _dbSet = _dbContext.Set<TEntity>();
+
+        _saveChangesAsyncDelegate = async () => { await dbContext.SaveChangesAsync(); };
     }
 
     public virtual async Task<TEntity?> GetOneAsync(params object[] guids)
     {
         if (guids.Length == 0)
             throw new ArgumentException("No key provided");
-        
+
         var entity = await _dbSet.FindAsync(guids);
-        
+
         return entity;
     }
-    
+
     public virtual async Task<IEnumerable<TEntity>> GetAsync(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
@@ -58,7 +60,9 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
             return await query.ToListAsync();
         }
     }
-    public async Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties)
+
+    public async Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>>? filter = null,
+        params string[] includeProperties)
     {
         IQueryable<TEntity> query = _dbSet;
 
@@ -88,7 +92,7 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
     public virtual async Task<ICollection<TEntity>> GetAllAsync()
     {
         var entities = await _dbSet.ToListAsync();
-        
+
         return entities;
     }
 
@@ -102,7 +106,7 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
     public virtual Task<TEntity> CreateAsync(TEntity entity)
     {
         _dbSet.Add(entity);
-        
+
         return Task.FromResult(entity);
     }
 
@@ -118,6 +122,8 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
 
     public virtual async Task SaveChangesAsync()
     {
+        await _mediator.DispatchDomainEventsAsync(_dbContext);
+
         await _saveChangesAsyncDelegate();
     }
 }

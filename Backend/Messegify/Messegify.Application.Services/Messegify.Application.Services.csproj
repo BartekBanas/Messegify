@@ -13,6 +13,7 @@
       <ProjectReference Include="..\Messegify.Application.Service.Extensions\Messegify.Application.Service.Extensions.csproj" />
       <ProjectReference Include="..\Messegify.Domain.Abstractions\Messegify.Domain.Abstractions.csproj" />
       <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
+      <ProjectReference Include="..\Messegify.Domain.Events\Messegify.Domain.Events.csproj" />
     </ItemGroup>
 
     <ItemGroup>

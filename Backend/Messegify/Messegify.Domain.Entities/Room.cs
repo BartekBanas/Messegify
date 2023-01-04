@@ -3,7 +3,7 @@ using Messegify.Domain.Abstractions;
 
 namespace Messegify.Domain.Entities;
 
-public class Room : IEntity
+public class Room : Entity
 {
     [Key]
     public Guid Id { get; set; }

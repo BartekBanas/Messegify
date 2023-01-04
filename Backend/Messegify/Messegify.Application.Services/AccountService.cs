@@ -5,6 +5,7 @@ using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
+using Messegify.Domain.Events;
 using Microsoft.AspNetCore.Identity;
 
 namespace Messegify.Application.Services;
@@ -49,6 +50,8 @@ public class AccountService : IAccountService
 
         await _accountRepository.CreateAsync(newAccount);
 
+        newAccount.AddDomainEvent(new AccountCreatedDomainEvent(newAccount));
+        
         await _accountRepository.SaveChangesAsync();
     }
 
