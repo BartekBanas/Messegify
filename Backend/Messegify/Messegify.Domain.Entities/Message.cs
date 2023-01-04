@@ -4,7 +4,7 @@ using Messegify.Domain.Abstractions;
 
 namespace Messegify.Domain.Entities;
 
-public class Message : IEntity
+public class Message : Entity
 {
     [Key]
     public Guid Id { get; set; }
@@ -16,4 +16,8 @@ public class Message : IEntity
     [ForeignKey(nameof(Account))]
     public Guid AccountId { get; set; }
     public virtual Account Account { get; set; }
+    
+    [ForeignKey(nameof(ChatRoom))]
+    public Guid ChatRoomId { get; set; }
+    public virtual ChatRoom ChatRoom { get; set; }
 }

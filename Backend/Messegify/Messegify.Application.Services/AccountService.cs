@@ -5,19 +5,24 @@ using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
+using Messegify.Domain.Events;
 using Microsoft.AspNetCore.Identity;
 
 namespace Messegify.Application.Services;
 
 public interface IAccountService
 {
-    Task RegisterAccount(RegisterAccountDto registerDto);
-    Task<string> Authenticate(LoginDto loginDto);
+    Task RegisterAccountAsync(RegisterAccountDto registerDto);
+    Task<string> AuthenticateAsync(LoginDto loginDto);
+    public Task ContactAsync(Guid accountAId, Guid accountBId);
+    public Task<IEnumerable<Contact>> GetContactsAsync(Guid accountId);
 }
 
 public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
+    private readonly IRepository<Contact> _contactRepository;
+    
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
     private readonly IJwtService _jwtService;
@@ -26,15 +31,17 @@ public class AccountService : IAccountService
         IRepository<Account> accountRepository, 
         IHashingService hashingService,
         IValidator<Account> validator, 
-        IJwtService jwtService)
+        IJwtService jwtService, 
+        IRepository<Contact> contactRepository)
     {
         _accountRepository = accountRepository;
         _hashingService = hashingService;
         _validator = validator;
         _jwtService = jwtService;
+        _contactRepository = contactRepository;
     }
 
-    public async Task RegisterAccount(RegisterAccountDto registerDto)
+    public async Task RegisterAccountAsync(RegisterAccountDto registerDto)
     {
         var passwordHash = _hashingService.HashPassword(registerDto.Password);
 
@@ -49,10 +56,12 @@ public class AccountService : IAccountService
 
         await _accountRepository.CreateAsync(newAccount);
 
+        newAccount.AddDomainEvent(new AccountCreatedDomainEvent(newAccount));
+        
         await _accountRepository.SaveChangesAsync();
     }
 
-    public async Task<string> Authenticate(LoginDto loginDto)
+    public async Task<string> AuthenticateAsync(LoginDto loginDto)
     {
         var foundAccount = await _accountRepository
             .GetOneAsync(account =>
@@ -69,7 +78,30 @@ public class AccountService : IAccountService
         var token = _jwtService.GenerateSymmetricJwtToken(claims);
         return token;
     }
-    
+
+    public async Task ContactAsync(Guid accountAId, Guid accountBId)
+    {
+        var newEntity = new Contact()
+        {
+            FirstAccountId = accountAId,
+            SecondAccountId = accountBId
+        };
+
+        await _contactRepository.CreateAsync(newEntity);
+        
+        newEntity.AddDomainEvent(new ContactCreatedDomainEvent(newEntity));
+        
+        await _contactRepository.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<Contact>> GetContactsAsync(Guid accountId)
+    {
+        var contacts = await _contactRepository
+            .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
+        
+        return contacts;
+    }
+
     private ClaimsIdentity GenerateClaimsIdentity(Account account)
     {
         return new ClaimsIdentity(new Claim[]

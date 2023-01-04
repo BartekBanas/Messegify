@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Messegify.Domain.Entities;
 
-public class AccountRoom : IEntity
+public class AccountChatRoom : Entity
 {
     [Key]
     public Guid Id { get; set; }
@@ -14,9 +14,10 @@ public class AccountRoom : IEntity
     public Guid AccountId { get; set; }
     public Account Account { get; set; }
     
-    [ForeignKey(nameof(Room))]
+    [ForeignKey(nameof(ChatRoom))]
     public Guid RoomId { get; set; }
-    public Room Room { get; set; }
+    public ChatRoom ChatRoom { get; set; }
 
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateJoined { get; set; }
 }

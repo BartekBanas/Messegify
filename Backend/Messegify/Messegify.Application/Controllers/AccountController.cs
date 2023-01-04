@@ -1,5 +1,7 @@
-﻿using Messegify.Application.Dtos;
+﻿using System.Security.Claims;
+using Messegify.Application.Dtos;
 using Messegify.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Messegify.Application.Controllers;
@@ -18,7 +20,7 @@ public class AccountController : Controller
     [HttpPost("register")]
     public async Task<IActionResult> RegisterAccount([FromBody] RegisterAccountDto dto)
     {
-        await _accountService.RegisterAccount(dto);
+        await _accountService.RegisterAccountAsync(dto);
 
         return Ok();    //  Could be entirely long, just don't want the error for now
     }
@@ -26,8 +28,39 @@ public class AccountController : Controller
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] LoginDto dto)
     {
-        var token = await _accountService.Authenticate(dto);
+        var token = await _accountService.AuthenticateAsync(dto);
 
         return Ok(token);
+    }
+    
+    [Authorize]
+    [HttpPost("me")]
+    public Task<IActionResult> Me()
+    {
+        var claims = User.Claims;
+
+        return Task.FromResult<IActionResult>(Ok(claims));
+    }
+    
+    [Authorize]
+    [HttpPost("contact/{targetAccountGuid:guid}")]
+    public async Task<IActionResult> Friend([FromRoute] Guid targetAccountGuid)
+    {
+        var senderGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
+
+        await _accountService.ContactAsync(senderGuid, targetAccountGuid);
+
+        return Ok();
+    }
+    
+    [Authorize]
+    [HttpPost("contacts")]
+    public async Task<IActionResult> GetFriends()
+    {
+        var accountGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
+
+        var friendships = await _accountService.GetContactsAsync(accountGuid);
+
+        return Ok(friendships);
     }
 }

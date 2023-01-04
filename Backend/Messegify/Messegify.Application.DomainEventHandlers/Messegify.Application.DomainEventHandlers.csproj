@@ -10,4 +10,8 @@
       <PackageReference Include="MediatR" Version="11.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Messegify.Domain.Events\Messegify.Domain.Events.csproj" />
+    </ItemGroup>
+
 </Project>

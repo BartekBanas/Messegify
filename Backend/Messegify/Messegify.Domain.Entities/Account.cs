@@ -4,7 +4,7 @@ using Messegify.Domain.Abstractions;
 
 namespace Messegify.Domain.Entities;
 
-public class Account : IEntity
+public class Account : Entity
 { 
     [Key] 
     public Guid Id { get; set; }
@@ -18,6 +18,6 @@ public class Account : IEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated { get; set; }
 
-    [ForeignKey(nameof(AccountRoom.AccountId))]
-    public virtual ICollection<AccountRoom> AccountRooms { get; set; }
+    [ForeignKey(nameof(AccountChatRoom.AccountId))]
+    public virtual ICollection<AccountChatRoom> AccountRooms { get; set; }
 }
