@@ -14,8 +14,8 @@ public interface IAccountService
 {
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
-    public Task FriendAsync(Guid accountAId, Guid accountBId);
-    public Task<IEnumerable<Contact>> GetFriendsAsync(Guid accountId);
+    public Task ContactAsync(Guid accountAId, Guid accountBId);
+    public Task<IEnumerable<Contact>> GetContactsAsync(Guid accountId);
 }
 
 public class AccountService : IAccountService
@@ -79,7 +79,7 @@ public class AccountService : IAccountService
         return token;
     }
 
-    public async Task FriendAsync(Guid accountAId, Guid accountBId)
+    public async Task ContactAsync(Guid accountAId, Guid accountBId)
     {
         var newEntity = new Contact()
         {
@@ -89,15 +89,17 @@ public class AccountService : IAccountService
 
         await _contactRepository.CreateAsync(newEntity);
         
+        newEntity.AddDomainEvent(new ContactCreatedDomainEvent(newEntity));
+        
         await _contactRepository.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Contact>> GetFriendsAsync(Guid accountId)
+    public async Task<IEnumerable<Contact>> GetContactsAsync(Guid accountId)
     {
-        var friendships = await _contactRepository
+        var contacts = await _contactRepository
             .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
         
-        return friendships;
+        return contacts;
     }
 
     private ClaimsIdentity GenerateClaimsIdentity(Account account)

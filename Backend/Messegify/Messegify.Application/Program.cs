@@ -67,6 +67,7 @@ services.AddScoped<IJwtService, JwtService>();
 services.AddScoped<IRepository<Account>, Repository<Account, MessegifyDbContext>>();
 services.AddScoped<IRepository<User>, Repository<User, MessegifyDbContext>>();
 services.AddScoped<IRepository<Contact>, Repository<Contact, MessegifyDbContext>>();
+services.AddScoped<IRepository<ChatRoom>, Repository<ChatRoom, MessegifyDbContext>>();
 
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();

@@ -48,7 +48,7 @@ public class AccountController : Controller
     {
         var senderGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
 
-        await _accountService.FriendAsync(senderGuid, targetAccountGuid);
+        await _accountService.ContactAsync(senderGuid, targetAccountGuid);
 
         return Ok();
     }
@@ -59,7 +59,7 @@ public class AccountController : Controller
     {
         var accountGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
 
-        var friendships = await _accountService.GetFriendsAsync(accountGuid);
+        var friendships = await _accountService.GetContactsAsync(accountGuid);
 
         return Ok(friendships);
     }

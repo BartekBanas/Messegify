@@ -13,15 +13,15 @@ public class MessegifyDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<ChatRoom> Rooms { get; set; }
     public DbSet<Message> Messages { get; set; }
-    public DbSet<AccountRoom> AccountRooms { get; set; }
-    public DbSet<Contact> Friendships { get; set; }
+    public DbSet<AccountChatRoom> AccountRooms { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
 
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //  TODO: Use fluent API plz
         
-        // modelBuilder.Entity<AccountRoom>()
+        // modelBuilder.Entity<AccountChatRoom>()
         //     .HasOne(e => e.Account)
         //     .WithMany(e => e.AccountRooms);
         //

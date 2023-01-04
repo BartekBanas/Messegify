@@ -10,6 +10,6 @@ public class ChatRoom : Entity
     
     public string Name { get; set; }
 
-    public virtual ICollection<AccountRoom> Members { get; set; }
+    public virtual ICollection<AccountChatRoom> Members { get; set; }
     public virtual ICollection<Message> Messages { get; set; }
 }
