@@ -21,7 +21,7 @@ public class AccountCreatedDomainEventHandler : INotificationHandler<AccountCrea
             AccountId = notification.Entity.Id,
             Username = notification.Entity.Name,
         };
-
+        
         await _userRepository.CreateAsync(newUser);
     }
 }

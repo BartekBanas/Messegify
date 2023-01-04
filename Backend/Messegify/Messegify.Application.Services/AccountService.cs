@@ -12,13 +12,17 @@ namespace Messegify.Application.Services;
 
 public interface IAccountService
 {
-    Task RegisterAccount(RegisterAccountDto registerDto);
-    Task<string> Authenticate(LoginDto loginDto);
+    Task RegisterAccountAsync(RegisterAccountDto registerDto);
+    Task<string> AuthenticateAsync(LoginDto loginDto);
+    public Task FriendAsync(Guid accountAId, Guid accountBId);
+    public Task<IEnumerable<Friendship>> GetFriendsAsync(Guid accountId);
 }
 
 public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
+    private readonly IRepository<Friendship> _friendshipRepository;
+    
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
     private readonly IJwtService _jwtService;
@@ -27,15 +31,17 @@ public class AccountService : IAccountService
         IRepository<Account> accountRepository, 
         IHashingService hashingService,
         IValidator<Account> validator, 
-        IJwtService jwtService)
+        IJwtService jwtService, 
+        IRepository<Friendship> friendshipRepository)
     {
         _accountRepository = accountRepository;
         _hashingService = hashingService;
         _validator = validator;
         _jwtService = jwtService;
+        _friendshipRepository = friendshipRepository;
     }
 
-    public async Task RegisterAccount(RegisterAccountDto registerDto)
+    public async Task RegisterAccountAsync(RegisterAccountDto registerDto)
     {
         var passwordHash = _hashingService.HashPassword(registerDto.Password);
 
@@ -55,7 +61,7 @@ public class AccountService : IAccountService
         await _accountRepository.SaveChangesAsync();
     }
 
-    public async Task<string> Authenticate(LoginDto loginDto)
+    public async Task<string> AuthenticateAsync(LoginDto loginDto)
     {
         var foundAccount = await _accountRepository
             .GetOneAsync(account =>
@@ -72,7 +78,28 @@ public class AccountService : IAccountService
         var token = _jwtService.GenerateSymmetricJwtToken(claims);
         return token;
     }
-    
+
+    public async Task FriendAsync(Guid accountAId, Guid accountBId)
+    {
+        var newEntity = new Friendship()
+        {
+            FirstAccountId = accountAId,
+            SecondAccountId = accountBId
+        };
+
+        await _friendshipRepository.CreateAsync(newEntity);
+        
+        await _friendshipRepository.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<Friendship>> GetFriendsAsync(Guid accountId)
+    {
+        var friendships = await _friendshipRepository
+            .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
+        
+        return friendships;
+    }
+
     private ClaimsIdentity GenerateClaimsIdentity(Account account)
     {
         return new ClaimsIdentity(new Claim[]
