@@ -19,7 +19,10 @@ public class MessegifyDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //  TODO: Use fluent API plz
+        modelBuilder
+            .Entity<ChatRoom>()
+            .Property(e => e.ChatRoomType)
+            .HasConversion<string>();
         
         // modelBuilder.Entity<AccountChatRoom>()
         //     .HasOne(e => e.Account)

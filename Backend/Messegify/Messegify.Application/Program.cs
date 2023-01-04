@@ -77,6 +77,9 @@ services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMar
 services.AddScoped<ErrorHandlingMiddleware>();
 var app = builder.Build();
 
+app.Services.CreateScope().ServiceProvider.GetService<MessegifyDbContext>()?.Database.EnsureDeleted();
+app.Services.CreateScope().ServiceProvider.GetService<MessegifyDbContext>()?.Database.EnsureCreated();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

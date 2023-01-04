@@ -21,10 +21,11 @@ public class CreateChatRoom : INotificationHandler<ContactCreatedDomainEvent>
         var newChatRoom = new ChatRoom()
         {
             Name = "DirectMessage",
+            ChatRoomType = ChatRoomType.Direct,
             Members = new List<AccountChatRoom>()
             {
-                new AccountChatRoom() { AccountId = contact.FirstAccountId },
-                new AccountChatRoom() { AccountId = contact.SecondAccountId }
+                new() { AccountId = contact.FirstAccountId },
+                new() { AccountId = contact.SecondAccountId }
             }
         };
 
