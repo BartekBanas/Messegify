@@ -14,7 +14,7 @@ public class MessegifyDbContext : DbContext
     public DbSet<Room> Rooms { get; set; }
     public DbSet<Message> Messages { get; set; }
     public DbSet<AccountRoom> AccountRooms { get; set; }
-    public DbSet<Friendship> Friendships { get; set; }
+    public DbSet<Contact> Friendships { get; set; }
 
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

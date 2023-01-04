@@ -15,13 +15,13 @@ public interface IAccountService
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     public Task FriendAsync(Guid accountAId, Guid accountBId);
-    public Task<IEnumerable<Friendship>> GetFriendsAsync(Guid accountId);
+    public Task<IEnumerable<Contact>> GetFriendsAsync(Guid accountId);
 }
 
 public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
-    private readonly IRepository<Friendship> _friendshipRepository;
+    private readonly IRepository<Contact> _contactRepository;
     
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
@@ -32,13 +32,13 @@ public class AccountService : IAccountService
         IHashingService hashingService,
         IValidator<Account> validator, 
         IJwtService jwtService, 
-        IRepository<Friendship> friendshipRepository)
+        IRepository<Contact> contactRepository)
     {
         _accountRepository = accountRepository;
         _hashingService = hashingService;
         _validator = validator;
         _jwtService = jwtService;
-        _friendshipRepository = friendshipRepository;
+        _contactRepository = contactRepository;
     }
 
     public async Task RegisterAccountAsync(RegisterAccountDto registerDto)
@@ -81,20 +81,20 @@ public class AccountService : IAccountService
 
     public async Task FriendAsync(Guid accountAId, Guid accountBId)
     {
-        var newEntity = new Friendship()
+        var newEntity = new Contact()
         {
             FirstAccountId = accountAId,
             SecondAccountId = accountBId
         };
 
-        await _friendshipRepository.CreateAsync(newEntity);
+        await _contactRepository.CreateAsync(newEntity);
         
-        await _friendshipRepository.SaveChangesAsync();
+        await _contactRepository.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Friendship>> GetFriendsAsync(Guid accountId)
+    public async Task<IEnumerable<Contact>> GetFriendsAsync(Guid accountId)
     {
-        var friendships = await _friendshipRepository
+        var friendships = await _contactRepository
             .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
         
         return friendships;

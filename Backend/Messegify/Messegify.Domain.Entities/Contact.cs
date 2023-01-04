@@ -4,7 +4,7 @@ using Messegify.Domain.Abstractions;
 
 namespace Messegify.Domain.Entities;
 
-public class Friendship : Entity
+public class Contact : Entity
 {
     [Key]
     public Guid Id { get; set; }

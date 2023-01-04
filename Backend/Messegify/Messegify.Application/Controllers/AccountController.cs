@@ -43,7 +43,7 @@ public class AccountController : Controller
     }
     
     [Authorize]
-    [HttpPost("friend/{targetAccountGuid:guid}")]
+    [HttpPost("contact/{targetAccountGuid:guid}")]
     public async Task<IActionResult> Friend([FromRoute] Guid targetAccountGuid)
     {
         var senderGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
@@ -54,7 +54,7 @@ public class AccountController : Controller
     }
     
     [Authorize]
-    [HttpPost("friends")]
+    [HttpPost("contacts")]
     public async Task<IActionResult> GetFriends()
     {
         var accountGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
