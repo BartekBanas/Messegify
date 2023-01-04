@@ -11,7 +11,7 @@ public class MessegifyDbContext : DbContext
 
     public DbSet<Account> Accounts { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<Room> Rooms { get; set; }
+    public DbSet<ChatRoom> Rooms { get; set; }
     public DbSet<Message> Messages { get; set; }
     public DbSet<AccountRoom> AccountRooms { get; set; }
     public DbSet<Contact> Friendships { get; set; }

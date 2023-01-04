@@ -14,9 +14,9 @@ public class AccountRoom : Entity
     public Guid AccountId { get; set; }
     public Account Account { get; set; }
     
-    [ForeignKey(nameof(Room))]
+    [ForeignKey(nameof(ChatRoom))]
     public Guid RoomId { get; set; }
-    public Room Room { get; set; }
+    public ChatRoom ChatRoom { get; set; }
 
     public DateTime DateJoined { get; set; }
 }
