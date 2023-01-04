@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using Messegify.Application.Middleware;
 using Messegify.Application.Services;
@@ -24,8 +25,9 @@ var services = builder.Services;
 
 services.Configure<JwtConfiguration>(configuration.GetSection(nameof(JwtConfiguration)));
 
-services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+services.AddControllers().AddJsonOptions(options =>
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
@@ -47,6 +49,11 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true // TODO: maybe will create problems later
     };
+});
+
+services.AddAuthorization(options =>
+{
+    // TODO
 });
 
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
