@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using MediatR;
+using Messegify.Application.Authorization;
 using Messegify.Application.Middleware;
 using Messegify.Application.Services;
 using Messegify.Application.Services.Configuration;
@@ -10,6 +11,7 @@ using Messegify.Domain.Entities;
 using Messegify.Infrastructure;
 using Messegify.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -55,6 +57,8 @@ builder.Services.AddAuthentication(options =>
 services.AddAuthorization(options =>
 {
     // TODO
+    options.AddPolicy("IsMemberOf", policy =>
+        policy.Requirements.Add(new IsMemberOfRequirement()));
 });
 
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
@@ -71,6 +75,8 @@ services.AddScoped<IRepository<ChatRoom>, Repository<ChatRoom, MessegifyDbContex
 
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddSingleton<IAuthorizationHandler, ChatRoomAuthorizationHandler>();
 
 services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));
 
