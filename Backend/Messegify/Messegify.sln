@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Domai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Authorization", "Messegify.Application.Authorization\Messegify.Application.Authorization.csproj", "{FA12F9F4-D96C-4AA6-BE6C-5AC1F4A3B951}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Infrastructure.Error", "Messegify.Infrastructure.Error\Messegify.Infrastructure.Error.csproj", "{34815F3B-F3A5-4AE1-BD5D-40D38131DF59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,10 @@ Global
 		{FA12F9F4-D96C-4AA6-BE6C-5AC1F4A3B951}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA12F9F4-D96C-4AA6-BE6C-5AC1F4A3B951}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA12F9F4-D96C-4AA6-BE6C-5AC1F4A3B951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34815F3B-F3A5-4AE1-BD5D-40D38131DF59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34815F3B-F3A5-4AE1-BD5D-40D38131DF59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34815F3B-F3A5-4AE1-BD5D-40D38131DF59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34815F3B-F3A5-4AE1-BD5D-40D38131DF59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AD8CE9B4-7824-451A-A125-5AF746FC7D62} = {3AEE0B4D-0916-4440-BBBB-5AEC91B7432B}
@@ -119,5 +125,6 @@ Global
 		{D7CB3DE7-AE16-4C6D-8060-9AE180EA07A6} = {3AEE0B4D-0916-4440-BBBB-5AEC91B7432B}
 		{94D35927-B08E-452C-8A1C-22EFE095D6DF} = {64C5C116-AA25-408D-BAF3-A7A4CB7096D0}
 		{FA12F9F4-D96C-4AA6-BE6C-5AC1F4A3B951} = {64C5C116-AA25-408D-BAF3-A7A4CB7096D0}
+		{34815F3B-F3A5-4AE1-BD5D-40D38131DF59} = {56BF87A7-6B69-4BCA-BC4C-819DD993D5B3}
 	EndGlobalSection
 EndGlobal

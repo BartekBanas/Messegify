@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Messegify.Application.Errors;
+using Messegify.Infrastructure.Error;
 
 namespace Messegify.Application.Middleware;
 
@@ -17,6 +18,19 @@ public class ErrorHandlingMiddleware : IMiddleware
         try
         {
             await next.Invoke(context);
+        }
+        // Infrastructure errors
+        catch (ItemNotFoundErrorException error)
+        {
+            throw new NotFoundError(error.Message, error);
+        }
+        // =========
+        
+        // Application errors
+        catch (NotFoundError error)
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsync(error.Message);
         }
         catch (ForbiddenError error)
         {

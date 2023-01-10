@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using MediatR;
 using Messegify.Domain.Abstractions;
+using Messegify.Infrastructure.Error;
 using Microsoft.EntityFrameworkCore;
 
 namespace Messegify.Infrastructure.Repositories;
@@ -83,8 +84,8 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
     {
         var entity = await GetOneAsync(guids);
 
-        // if (entity == null)
-        //     throw new ItemNotFoundException(); //TODO 
+        if (entity == null)
+             throw new ItemNotFoundErrorException(); 
 
         return entity;
     }

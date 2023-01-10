@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Messegify.Infrastructure.Error\Messegify.Infrastructure.Error.csproj" />
       <ProjectReference Include="..\Messegify.Infrastructure\Messegify.Infrastructure.csproj" />
     </ItemGroup>
 

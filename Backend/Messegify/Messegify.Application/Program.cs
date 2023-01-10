@@ -29,7 +29,7 @@ var jwtConfig = configuration.GetRequiredSection("JwtConfiguration").Get<JwtConf
 var services = builder.Services;
 
 
-// builder.Services.AddSingleton<IAuthorizationHandler, ChatRoomAuthorizationHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, ChatRoomAuthorizationHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, AccountAuthorizationHandler>();
 
 services.AddAuthorization(options =>
@@ -86,6 +86,7 @@ services.AddScoped<IRepository<ChatRoom>, Repository<ChatRoom, MessegifyDbContex
 
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
+services.AddScoped<IChatRoomRequestHandler, ChatRoomRequestHandler>();
 
 
 services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));
