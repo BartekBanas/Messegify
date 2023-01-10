@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 
 namespace Messegify.Domain.Events;
 
-public class AccountCreatedDomainEvent : INotification
+public class AccountCreatedDomainEvent : DomainEvent<Account>
 {
     public AccountCreatedDomainEvent(Account entity)
     {

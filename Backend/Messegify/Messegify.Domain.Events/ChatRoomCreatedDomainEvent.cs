@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 
 namespace Messegify.Domain.Events;
 
-public class ChatRoomCreatedDomainEvent : INotification
+public class ChatRoomCreatedDomainEvent : DomainEvent<ChatRoom>
 {
     public ChatRoomCreatedDomainEvent(ChatRoom createdEntity, Account creatorAccount)
     {
