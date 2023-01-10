@@ -3,9 +3,11 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using MediatR;
 using Messegify.Application.Authorization;
+using Messegify.Application.Authorization.Handlers;
+using Messegify.Application.Authorization.Requirements;
+using Messegify.Application.Configuration;
 using Messegify.Application.Middleware;
 using Messegify.Application.Services;
-using Messegify.Application.Services.Configuration;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Infrastructure;
@@ -26,6 +28,20 @@ var jwtConfig = configuration.GetRequiredSection("JwtConfiguration").Get<JwtConf
 // Add services to the container.
 var services = builder.Services;
 
+
+// builder.Services.AddSingleton<IAuthorizationHandler, ChatRoomAuthorizationHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, AccountAuthorizationHandler>();
+
+services.AddAuthorization(options =>
+{
+    options.AddPolicy(AuthorizationPolicies.IsMemberOf, policy =>
+        policy.Requirements.Add(new IsMemberOfRequirement()));
+    
+    options.AddPolicy(AuthorizationPolicies.IsOwnerOf, policy =>
+        policy.Requirements.Add(new IsOwnerRequirement()));
+});
+
+
 services.Configure<JwtConfiguration>(configuration.GetSection(nameof(JwtConfiguration)));
 
 services.AddControllers().AddJsonOptions(options =>
@@ -33,6 +49,7 @@ services.AddControllers().AddJsonOptions(options =>
 );
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
+services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -54,12 +71,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-services.AddAuthorization(options =>
-{
-    // TODO
-    options.AddPolicy("IsMemberOf", policy =>
-        policy.Requirements.Add(new IsMemberOfRequirement()));
-});
 
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
     contextOptionsBuilder.UseMySQL(configuration.GetConnectionString("MessegifyDatabaseConnectionString")));
@@ -76,12 +87,14 @@ services.AddScoped<IRepository<ChatRoom>, Repository<ChatRoom, MessegifyDbContex
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
 
-builder.Services.AddSingleton<IAuthorizationHandler, ChatRoomAuthorizationHandler>();
 
 services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));
 
 services.AddScoped<ErrorHandlingMiddleware>();
 var app = builder.Build();
+
+// app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureDeleted();
+// app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureCreated();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

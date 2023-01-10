@@ -10,4 +10,14 @@
       <PackageReference Include="FluentValidation" Version="11.4.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Authorization">
+        <HintPath>C:\Users\Admin\.nuget\packages\microsoft.aspnetcore.authorization\7.0.1\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Messegify.Application.Errors\Messegify.Application.Errors.csproj" />
+    </ItemGroup>
+
 </Project>

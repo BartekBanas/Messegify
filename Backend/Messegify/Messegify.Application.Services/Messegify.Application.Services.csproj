@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Messegify.Application.Authorization\Messegify.Application.Authorization.csproj" />
       <ProjectReference Include="..\Messegify.Application.Configuration\Messegify.Application.Configuration.csproj" />
       <ProjectReference Include="..\Messegify.Application.Dtos\Messegify.Application.Dtos.csproj" />
       <ProjectReference Include="..\Messegify.Application.Errors\Messegify.Application.Errors.csproj" />
@@ -21,6 +22,12 @@
       <PackageReference Include="FluentValidation" Version="11.4.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Authorization">
+        <HintPath>C:\Users\Admin\.nuget\packages\microsoft.aspnetcore.authorization\7.0.1\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

@@ -5,21 +5,22 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Messegify.Application.Authorization.Handlers;
 
-public class ChatRoomAuthorizationHandler : AuthorizationHandler<IsMemberOfRequirement, ChatRoom>
+public class AccountAuthorizationHandler : AuthorizationHandler<IsOwnerRequirement, Account>
 {
     protected override Task HandleRequirementAsync(
-        AuthorizationHandlerContext context, 
-        IsMemberOfRequirement requirement,
-        ChatRoom resource)
+        AuthorizationHandlerContext context,
+        IsOwnerRequirement requirement,
+        Account resource)
     {
         var user = context.User;
         var userId = user.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value;
 
-        if (resource.Members.Any(member => member.AccountId == new Guid(userId)))
+        if (new Guid(userId) == resource.Id)
         {
             context.Succeed(requirement);
         }
 
         return Task.CompletedTask;
+
     }
 }

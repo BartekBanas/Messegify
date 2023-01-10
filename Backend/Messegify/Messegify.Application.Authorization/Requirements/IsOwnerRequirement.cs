@@ -2,7 +2,7 @@
 
 namespace Messegify.Application.Authorization.Requirements;
 
-public class IsMemberOfRequirement : IAuthorizationRequirement
+public class IsOwnerRequirement : IAuthorizationRequirement
 {
     // Intentionally empty
 }

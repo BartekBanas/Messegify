@@ -34,7 +34,7 @@ public class AccountController : Controller
     }
     
     [Authorize]
-    [HttpPost("me")]
+    [HttpGet("me")]
     public Task<IActionResult> Me()
     {
         var claims = User.Claims;
