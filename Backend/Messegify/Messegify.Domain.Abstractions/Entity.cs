@@ -4,12 +4,12 @@ namespace Messegify.Domain.Abstractions;
 
 public abstract class Entity : IEntity
 {
-    private List<INotification> _domainEvents;
-    public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+    private List<IDomainEvent> _domainEvents;
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
     
-    public void AddDomainEvent(INotification notification)
+    public void AddDomainEvent(IDomainEvent notification)
     {
-        _domainEvents ??= new List<INotification>();
+        _domainEvents ??= new List<IDomainEvent>();
         _domainEvents.Add(notification);
     }
     
