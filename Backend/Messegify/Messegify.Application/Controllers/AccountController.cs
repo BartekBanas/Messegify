@@ -34,7 +34,7 @@ public class AccountController : Controller
     }
     
     [Authorize]
-    [HttpPost("me")]
+    [HttpGet("me")]
     public Task<IActionResult> Me()
     {
         var claims = User.Claims;
@@ -54,7 +54,7 @@ public class AccountController : Controller
     }
     
     [Authorize]
-    [HttpPost("contacts")]
+    [HttpGet("contacts")]
     public async Task<IActionResult> GetFriends()
     {
         var accountGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);

@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Messegify.Application.Authorization\Messegify.Application.Authorization.csproj" />
       <ProjectReference Include="..\Messegify.Application.DomainEventHandlers\Messegify.Application.DomainEventHandlers.csproj" />
       <ProjectReference Include="..\Messegify.Application.Services\Messegify.Application.Services.csproj" />
       <ProjectReference Include="..\Messegify.Domain.Validators\Messegify.Domain.Validators.csproj" />

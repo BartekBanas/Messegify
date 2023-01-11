@@ -1,11 +1,14 @@
 ﻿using System.Security.Claims;
 using FluentValidation;
+using Messegify.Application.Authorization;
 using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace Messegify.Application.Services;
@@ -26,19 +29,26 @@ public class AccountService : IAccountService
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
     private readonly IJwtService _jwtService;
+    private readonly IAuthorizationService _authorizationService;
+
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public AccountService(
         IRepository<Account> accountRepository, 
         IHashingService hashingService,
         IValidator<Account> validator, 
         IJwtService jwtService, 
-        IRepository<Contact> contactRepository)
+        IRepository<Contact> contactRepository, 
+        IAuthorizationService authorizationService, 
+        IHttpContextAccessor httpContextAccessor)
     {
         _accountRepository = accountRepository;
         _hashingService = hashingService;
         _validator = validator;
         _jwtService = jwtService;
         _contactRepository = contactRepository;
+        _authorizationService = authorizationService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task RegisterAccountAsync(RegisterAccountDto registerDto)
@@ -96,6 +106,9 @@ public class AccountService : IAccountService
 
     public async Task<IEnumerable<Contact>> GetContactsAsync(Guid accountId)
     {
+        var account = await _accountRepository.GetOneAsync(accountId);
+        var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
+        
         var contacts = await _contactRepository
             .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
         

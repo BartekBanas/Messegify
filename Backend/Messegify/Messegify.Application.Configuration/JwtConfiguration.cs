@@ -1,4 +1,4 @@
-﻿namespace Messegify.Application.Services.Configuration;
+﻿namespace Messegify.Application.Configuration;
 
 public class JwtConfiguration
 {

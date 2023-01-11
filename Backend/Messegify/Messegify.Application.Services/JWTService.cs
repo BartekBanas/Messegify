@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Messegify.Application.Services.Configuration;
+using Messegify.Application.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

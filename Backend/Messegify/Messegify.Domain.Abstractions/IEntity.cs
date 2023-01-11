@@ -4,8 +4,8 @@ namespace Messegify.Domain.Abstractions;
 
 public interface IEntity
 {
-    public IReadOnlyCollection<INotification> DomainEvents { get; }
+    public IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
     
-    public void AddDomainEvent(INotification notification);
+    public void AddDomainEvent(IDomainEvent notification);
     public void ClearDomainEvents();
 }

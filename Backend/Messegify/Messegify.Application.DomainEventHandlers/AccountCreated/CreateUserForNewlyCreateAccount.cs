@@ -3,7 +3,7 @@ using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
 
-namespace Messegify.Application.DomainEventHandlers;
+namespace Messegify.Application.DomainEventHandlers.AccountCreated;
 
 public class AccountCreatedDomainEventHandler : INotificationHandler<AccountCreatedDomainEvent>
 {
