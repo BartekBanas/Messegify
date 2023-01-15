@@ -1,7 +1,12 @@
-﻿namespace Messegify.Application.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Messegify.Application.Dtos;
 
 public class LoginDto
 {
-    public string? UsernameOrEmail { get; set; }
-    public string Password { get; set; }
+    [Required]
+    public string UsernameOrEmail { get; set; } = null!;
+
+    [Required]
+    public string Password { get; set; } = null!;
 }

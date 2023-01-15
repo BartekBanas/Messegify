@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Messegify.Application.Controllers;
 
 [ApiController]
-[Route("account")]
+[Route("api/account")]
 public class AccountController : Controller
 {
     private readonly IAccountService _accountService;
@@ -40,27 +40,5 @@ public class AccountController : Controller
         var claims = User.Claims;
 
         return Task.FromResult<IActionResult>(Ok(claims));
-    }
-    
-    [Authorize]
-    [HttpPost("contact/{targetAccountGuid:guid}")]
-    public async Task<IActionResult> Friend([FromRoute] Guid targetAccountGuid)
-    {
-        var senderGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
-
-        await _accountService.ContactAsync(senderGuid, targetAccountGuid);
-
-        return Ok();
-    }
-    
-    [Authorize]
-    [HttpGet("contacts")]
-    public async Task<IActionResult> GetFriends()
-    {
-        var accountGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
-
-        var friendships = await _accountService.GetContactsAsync(accountGuid);
-
-        return Ok(friendships);
     }
 }
