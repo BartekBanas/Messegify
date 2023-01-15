@@ -80,6 +80,23 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
         return await query.FirstOrDefaultAsync();
     }
 
+    public async Task<TEntity> GetOneRequiredAsync(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties)
+    {
+        IQueryable<TEntity> query = _dbSet;
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+
+        return await query.FirstOrDefaultAsync() ?? throw new ItemNotFoundErrorException();
+    }
+
     public virtual async Task<TEntity> GetOneRequiredAsync(params object[] guids)
     {
         var entity = await GetOneAsync(guids);

@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Messegify.Application.Services;
 
-public interface IChatRoomRequestHandler : IRequestHandler<CreateChatRoomRequest>
+public interface IChatRoomRequestHandler 
+    : IRequestHandler<CreateChatRoomRequest>
 {
 }
 

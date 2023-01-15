@@ -11,6 +11,7 @@ public class Message : Entity
 
     public string TextContent { get; set; }
     
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime SentDate { get; set; }
 
     [ForeignKey(nameof(Account))]

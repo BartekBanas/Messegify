@@ -2,10 +2,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using MediatR;
+using Messegify.Application;
 using Messegify.Application.Authorization;
 using Messegify.Application.Authorization.Handlers;
 using Messegify.Application.Authorization.Requirements;
 using Messegify.Application.Configuration;
+using Messegify.Application.Extensions;
 using Messegify.Application.Middleware;
 using Messegify.Application.Services;
 using Messegify.Domain.Abstractions;
@@ -48,7 +50,7 @@ services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
 services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+services.AddSwaggerGenWithAuthorization();
 services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
@@ -77,16 +79,20 @@ services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
 
 services.AddValidatorsFromAssembly(typeof(Messegify.Domain.Validators.AssemblyMarker).Assembly);
 
+services.AddAutoMapper(typeof(AutoMapperProfile));
+
 services.AddScoped<IJwtService, JwtService>();
 
 services.AddScoped<IRepository<Account>, Repository<Account, MessegifyDbContext>>();
 services.AddScoped<IRepository<User>, Repository<User, MessegifyDbContext>>();
 services.AddScoped<IRepository<Contact>, Repository<Contact, MessegifyDbContext>>();
 services.AddScoped<IRepository<ChatRoom>, Repository<ChatRoom, MessegifyDbContext>>();
+services.AddScoped<IRepository<Message>, Repository<Message, MessegifyDbContext>>();
 
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
 services.AddScoped<IChatRoomRequestHandler, ChatRoomRequestHandler>();
+services.AddScoped<IMessageRequestHandler, MessageRequestHandler>();
 
 
 services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));
@@ -94,8 +100,8 @@ services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMar
 services.AddScoped<ErrorHandlingMiddleware>();
 var app = builder.Build();
 
-// app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureDeleted();
-// app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureCreated();
+app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureDeleted();
+app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureCreated();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
