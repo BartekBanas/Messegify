@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Messegify.Application.Controllers;
 
 [ApiController]
-[Route("chatroom")]
+[Route("api/chatroom")]
 public class ChatRoomController : Controller
 {
     private IChatRoomRequestHandler _chatRoomRequestHandler;
