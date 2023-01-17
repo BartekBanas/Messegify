@@ -27,4 +27,15 @@ public class ChatRoomController : Controller
 
         return Ok();
     }
+    
+    [Authorize]
+    [HttpGet("list")]
+    public async Task<IActionResult> GetChatRoom(CancellationToken cancellationToken)
+    {
+        var request = new GetUserChatRooms();
+
+        var requestResult = await _chatRoomRequestHandler.Handle(request, cancellationToken);
+
+        return Ok(requestResult);
+    }
 }

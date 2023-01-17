@@ -2,7 +2,7 @@
 
 namespace Messegify.Application.Errors.Abstractions;
 
-public class ErrorException : Exception
+public abstract class ErrorException : Exception
 {
     public ErrorException()
     {

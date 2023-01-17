@@ -5,6 +5,7 @@ using Messegify.Domain.Events;
 
 namespace Messegify.Application.DomainEventHandlers.AccountCreated;
 
+// ReSharper disable once UnusedType.Global
 public class AccountCreatedDomainEventHandler : INotificationHandler<AccountCreatedDomainEvent>
 {
     private readonly IRepository<User> _userRepository;

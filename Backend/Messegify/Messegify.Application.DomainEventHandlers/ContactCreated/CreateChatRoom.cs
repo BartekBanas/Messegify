@@ -5,6 +5,7 @@ using Messegify.Domain.Events;
 
 namespace Messegify.Application.DomainEventHandlers.ContactCreated;
 
+// ReSharper disable once UnusedType.Global
 public class CreateChatRoom : INotificationHandler<ContactCreatedDomainEvent>
 {
     private readonly IRepository<ChatRoom> _chatRoomRepository;
