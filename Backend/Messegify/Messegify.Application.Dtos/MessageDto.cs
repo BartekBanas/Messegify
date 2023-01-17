@@ -11,5 +11,5 @@ public class MessageDto
     public Guid AccountId { get; set; }
     
     [Required]
-    public string TextContent { get; set; }
+    public string TextContent { get; set; } = null!;
 }

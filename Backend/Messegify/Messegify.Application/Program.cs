@@ -31,8 +31,8 @@ var jwtConfig = configuration.GetRequiredSection("JwtConfiguration").Get<JwtConf
 var services = builder.Services;
 
 
-builder.Services.AddScoped<IAuthorizationHandler, ChatRoomAuthorizationHandler>();
-builder.Services.AddScoped<IAuthorizationHandler, AccountAuthorizationHandler>();
+services.AddScoped<IAuthorizationHandler, ChatRoomAuthorizationHandler>();
+services.AddScoped<IAuthorizationHandler, AccountAuthorizationHandler>();
 
 services.AddAuthorization(options =>
 {
@@ -58,9 +58,9 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(o =>
+}).AddJwtBearer(bearerOptions =>
 {
-    o.TokenValidationParameters = new TokenValidationParameters
+    bearerOptions.TokenValidationParameters = new TokenValidationParameters
     {
         ValidIssuer = jwtConfig.Issuer,
         ValidAudience = jwtConfig.Audience,
@@ -69,7 +69,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
-        ValidateIssuerSigningKey = true // TODO: maybe will create problems later
+        ValidateIssuerSigningKey = true
     };
 });
 

@@ -1,4 +1,8 @@
-﻿using MediatR;
+﻿using System.ComponentModel;
+using System.Linq.Expressions;
+using AutoMapper;
+using MediatR;
+using Messegify.Application.Dtos;
 using Messegify.Application.Service.Extensions;
 using Messegify.Application.Services.ChatRoomRequests;
 using Messegify.Domain.Abstractions;
@@ -10,7 +14,8 @@ using Microsoft.AspNetCore.Http;
 namespace Messegify.Application.Services;
 
 public interface IChatRoomRequestHandler 
-    : IRequestHandler<CreateChatRoomRequest>
+    : IRequestHandler<CreateChatRoomRequest>,
+        IRequestHandler<GetUserChatRooms, IEnumerable<ChatRoomDto>>
 {
 }
 
@@ -23,16 +28,20 @@ public class ChatRoomRequestHandler : IChatRoomRequestHandler
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    private readonly IMapper _mapper;
+
     public ChatRoomRequestHandler(
         IRepository<ChatRoom> chatRoomRepository, 
         IRepository<Account> accountRepository, 
         IAuthorizationService authorizationService, 
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor, 
+        IMapper mapper)
     {
         _chatRoomRepository = chatRoomRepository;
         _accountRepository = accountRepository;
         _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
+        _mapper = mapper;
     }
 
     public async Task<Unit> Handle(
@@ -55,5 +64,19 @@ public class ChatRoomRequestHandler : IChatRoomRequestHandler
         await _chatRoomRepository.SaveChangesAsync();
         
         return Unit.Value;
+    }
+    
+    public async Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatRooms request, CancellationToken cancellationToken)
+    {
+        var userId = _httpContextAccessor.HttpContext.User.GetId();
+        Expression<Func<ChatRoom, bool>> filer = chatRoom 
+            => chatRoom.Members.Any(membership => membership.AccountId == userId);
+
+        var chatRooms = await _chatRoomRepository
+            .GetAsync(filer, null, nameof(ChatRoom.Members));
+
+        var dtos = _mapper.Map<IEnumerable<ChatRoomDto>>(chatRooms);
+
+        return dtos;
     }
 }

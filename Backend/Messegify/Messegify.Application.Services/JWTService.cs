@@ -24,7 +24,7 @@ public class JwtService : IJwtService
     public string GenerateAsymmetricJwtToken(ClaimsIdentity claimsIdentity)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        string stringToken = String.Empty;    
+        string stringToken;
         
         using (var rsa = RSA.Create())
         {

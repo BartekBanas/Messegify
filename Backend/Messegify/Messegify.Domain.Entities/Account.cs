@@ -10,14 +10,16 @@ public class Account : Entity
     public Guid Id { get; set; }
     
     [MinLength(3), MaxLength(32)]
-    public string Name { get; set; }
-    public string PasswordHash { get; set; }
+    public string Name { get; set; } = null!;
+
+    public string PasswordHash { get; set; } = null!;
+
     [EmailAddress]
-    public string Email { get; set; }
-    
+    public string Email { get; set; } = null!;
+
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated { get; set; }
 
     [ForeignKey(nameof(AccountChatRoom.AccountId))]
-    public virtual ICollection<AccountChatRoom> AccountRooms { get; set; }
+    public virtual ICollection<AccountChatRoom> AccountRooms { get; set; } = null!;
 }
