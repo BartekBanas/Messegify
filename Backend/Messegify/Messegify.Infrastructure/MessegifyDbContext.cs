@@ -24,6 +24,14 @@ public class MessegifyDbContext : DbContext
             .Property(e => e.ChatRoomType)
             .HasConversion<string>();
         
+        modelBuilder.Entity<Account>()
+            .HasAlternateKey(c => c.Email)
+            .HasName("AlternateKey_Email");
+        
+        modelBuilder.Entity<Account>()
+            .HasAlternateKey(c => c.Name)
+            .HasName("AlternateKey_AccountName");
+
         // modelBuilder.Entity<AccountChatRoom>()
         //     .HasOne(e => e.Account)
         //     .WithMany(e => e.AccountRooms);
