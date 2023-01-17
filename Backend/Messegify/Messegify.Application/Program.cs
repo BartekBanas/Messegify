@@ -69,7 +69,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
-        ValidateIssuerSigningKey = true // TODO: maybe will create problems later
+        ValidateIssuerSigningKey = true
     };
 });
 
