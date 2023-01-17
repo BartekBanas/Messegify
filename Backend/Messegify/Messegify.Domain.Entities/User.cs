@@ -9,11 +9,11 @@ public class User : Entity
     [Key]
     public Guid Id { get; set; }
     
-    public string Username { get; set; }
+    public string Username { get; set; } = null!;
 
     public DateTime DateCreated { get; set; }
     
     [ForeignKey(nameof(Account))]
     public Guid AccountId { get; set; }
-    public virtual Account Account { get; set; }
+    public virtual Account Account { get; set; } = null!;
 }

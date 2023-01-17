@@ -9,16 +9,16 @@ public class Message : Entity
     [Key]
     public Guid Id { get; set; }
 
-    public string TextContent { get; set; }
-    
+    public string TextContent { get; set; } = null!;
+
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime SentDate { get; set; }
 
     [ForeignKey(nameof(Account))]
     public Guid AccountId { get; set; }
-    public virtual Account Account { get; set; }
-    
+    public virtual Account Account { get; set; } = null!;
+
     [ForeignKey(nameof(ChatRoom))]
     public Guid ChatRoomId { get; set; }
-    public virtual ChatRoom ChatRoom { get; set; }
+    public virtual ChatRoom ChatRoom { get; set; } = null!;
 }

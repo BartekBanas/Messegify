@@ -11,11 +11,11 @@ public class Contact : Entity
     
     [ForeignKey(nameof(FirstAccount))]
     public Guid FirstAccountId { get; set; }
-    public virtual Account FirstAccount { get; set; }
-    
+    public virtual Account FirstAccount { get; set; } = null!;
+
     [ForeignKey(nameof(SecondAccount))]
     public Guid SecondAccountId { get; set; }
-    public virtual Account SecondAccount { get; set; }
+    public virtual Account SecondAccount { get; set; } = null!;
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated { get; set; }
