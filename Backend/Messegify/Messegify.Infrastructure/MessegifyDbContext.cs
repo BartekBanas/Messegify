@@ -21,15 +21,15 @@ public class MessegifyDbContext : DbContext
     {
         modelBuilder
             .Entity<ChatRoom>()
-            .Property(e => e.ChatRoomType)
+            .Property(chatRoom => chatRoom.ChatRoomType)
             .HasConversion<string>();
         
         modelBuilder.Entity<Account>()
-            .HasAlternateKey(c => c.Email)
+            .HasAlternateKey(account => account.Email)
             .HasName("AlternateKey_Email");
         
         modelBuilder.Entity<Account>()
-            .HasAlternateKey(c => c.Name)
+            .HasAlternateKey(account => account.Name)
             .HasName("AlternateKey_AccountName");
 
         // modelBuilder.Entity<AccountChatRoom>()
