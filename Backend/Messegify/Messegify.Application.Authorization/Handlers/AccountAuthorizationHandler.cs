@@ -21,6 +21,5 @@ public class AccountAuthorizationHandler : AuthorizationHandler<IsOwnerRequireme
         }
 
         return Task.CompletedTask;
-
     }
 }
