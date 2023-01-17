@@ -13,7 +13,7 @@ public class ChatRoomAuthorizationHandler : AuthorizationHandler<IsMemberOfRequi
         ChatRoom resource)
     {
         var user = context.User;
-        var userId = user.Claims.First(claim => claim.Type == ClaimTypes.PrimarySid).Value;
+        var userId = user.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value;
 
         if (resource.Members.Any(member => member.AccountId == new Guid(userId)))
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Messegify.Application.Service.Extensions;
 using Messegify.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -36,7 +37,7 @@ public class ContactController : Controller
     [HttpGet("list")]
     public async Task<IActionResult> GetFriends()
     {
-        var accountGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
+        var accountGuid = User.GetId();
 
         var friendships = await _accountService.GetContactsAsync(accountGuid);
 

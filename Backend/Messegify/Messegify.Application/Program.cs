@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Messegify.Application;
@@ -14,13 +15,13 @@ using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Infrastructure;
 using Messegify.Infrastructure.Repositories;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 var configuration = builder.Configuration;
 
@@ -79,28 +80,29 @@ services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
 
 services.AddValidatorsFromAssembly(typeof(Messegify.Domain.Validators.AssemblyMarker).Assembly);
 
-services.AddAutoMapper(typeof(AutoMapperProfile));
+services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 services.AddScoped<IJwtService, JwtService>();
 
-services.AddScoped<IRepository<Account>, Repository<Account, MessegifyDbContext>>();
-services.AddScoped<IRepository<User>, Repository<User, MessegifyDbContext>>();
-services.AddScoped<IRepository<Contact>, Repository<Contact, MessegifyDbContext>>();
-services.AddScoped<IRepository<ChatRoom>, Repository<ChatRoom, MessegifyDbContext>>();
-services.AddScoped<IRepository<Message>, Repository<Message, MessegifyDbContext>>();
+services.AddScoped<IRepository<Account>,     Repository<Account,  MessegifyDbContext>>();
+services.AddScoped<IRepository<User>,        Repository<User,     MessegifyDbContext>>();
+services.AddScoped<IRepository<Contact>,     Repository<Contact,  MessegifyDbContext>>();
+services.AddScoped<IRepository<ChatRoom>,    Repository<ChatRoom, MessegifyDbContext>>();
+services.AddScoped<IRepository<Message>,     Repository<Message,  MessegifyDbContext>>();    
 
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
 services.AddScoped<IChatRoomRequestHandler, ChatRoomRequestHandler>();
 services.AddScoped<IMessageRequestHandler, MessageRequestHandler>();
 
-
 services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));
 
 services.AddScoped<ErrorHandlingMiddleware>();
+services.AddScoped<InfrastructureErrorHandlingMiddleware>();
+
 var app = builder.Build();
 
-//app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureDeleted();
+// app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureDeleted();
 app.Services.CreateScope().ServiceProvider.GetRequiredService<MessegifyDbContext>().Database.EnsureCreated();
 
 // Configure the HTTP request pipeline.
@@ -112,6 +114,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
+app.UseMiddleware<InfrastructureErrorHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -121,4 +125,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-

@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using System.Linq.Expressions;
+using System.Security.Claims;
+using AutoMapper;
 using FluentValidation;
 using Messegify.Application.Authorization;
 using Messegify.Application.Dtos;
@@ -18,7 +20,7 @@ public interface IAccountService
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     public Task ContactAsync(Guid accountAId, Guid accountBId);
-    public Task<IEnumerable<Contact>> GetContactsAsync(Guid accountId);
+    public Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
 
 public class AccountService : IAccountService
@@ -33,6 +35,8 @@ public class AccountService : IAccountService
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    private readonly IMapper _mapper;
+
     public AccountService(
         IRepository<Account> accountRepository, 
         IHashingService hashingService,
@@ -40,7 +44,8 @@ public class AccountService : IAccountService
         IJwtService jwtService, 
         IRepository<Contact> contactRepository, 
         IAuthorizationService authorizationService, 
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor, 
+        IMapper mapper)
     {
         _accountRepository = accountRepository;
         _hashingService = hashingService;
@@ -49,6 +54,7 @@ public class AccountService : IAccountService
         _contactRepository = contactRepository;
         _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
+        _mapper = mapper;
     }
 
     public async Task RegisterAccountAsync(RegisterAccountDto registerDto)
@@ -104,15 +110,17 @@ public class AccountService : IAccountService
         await _contactRepository.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Contact>> GetContactsAsync(Guid accountId)
+    public async Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId)
     {
         var account = await _accountRepository.GetOneAsync(accountId);
         var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
         
         var contacts = await _contactRepository
             .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
+
+        var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
         
-        return contacts;
+        return dtos;
     }
 
     private ClaimsIdentity GenerateClaimsIdentity(Account account)
