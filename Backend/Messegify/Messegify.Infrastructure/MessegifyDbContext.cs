@@ -1,6 +1,5 @@
 ﻿using Messegify.Domain.Entities;
 using Messegify.Infrastructure.Error;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 
@@ -12,13 +11,12 @@ public class MessegifyDbContext : DbContext
     {
     }
 
-    public DbSet<Account> Accounts { get; set; }
-    public DbSet<User> Users { get; set; }
-    public DbSet<ChatRoom> Rooms { get; set; }
-    public DbSet<Message> Messages { get; set; }
-    public DbSet<AccountChatRoom> AccountRooms { get; set; }
-    public DbSet<Contact> Contacts { get; set; }
-
+    public DbSet<Account> Accounts { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<ChatRoom> Rooms { get; set; } = null!;
+    public DbSet<Message> Messages { get; set; } = null!;
+    public DbSet<AccountChatRoom> AccountRooms { get; set; } = null!;
+    public DbSet<Contact> Contacts { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,15 +32,6 @@ public class MessegifyDbContext : DbContext
         modelBuilder.Entity<Account>()
             .HasAlternateKey(account => account.Name)
             .HasName("AlternateKey_AccountName");
-
-        // modelBuilder.Entity<AccountChatRoom>()
-        //     .HasOne(e => e.Account)
-        //     .WithMany(e => e.AccountRooms);
-        //
-        // modelBuilder.Entity<Account>()
-        //     .HasMany(e => e.AccountRooms)
-        //     .WithOne(e => e.Account)
-        //     .HasForeignKey(e => e.AccountId);
 
         base.OnModelCreating(modelBuilder);
     }

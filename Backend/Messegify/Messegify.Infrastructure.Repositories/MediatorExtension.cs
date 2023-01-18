@@ -6,9 +6,9 @@ namespace Messegify.Infrastructure.Repositories;
 
 static class MediatorExtension
 {
-    public static async Task DispatchDomainEventsAsync(this IMediator mediator, DbContext ctx)
+    public static async Task DispatchDomainEventsAsync(this IMediator mediator, DbContext dbContext)
     {
-        var domainEntities = ctx.ChangeTracker
+        var domainEntities = dbContext.ChangeTracker
             .Entries<IEntity>()
             .Where(entry => entry.Entity.DomainEvents != null && entry.Entity.DomainEvents.Any())
             .ToArray();
