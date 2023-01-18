@@ -14,7 +14,8 @@ static class MediatorExtension
             .ToArray();
 
         var domainEvents = domainEntities
-            .SelectMany(entry => entry.Entity.DomainEvents!);
+            .SelectMany(entry => entry.Entity.DomainEvents!)
+            .ToArray();
 
         foreach (var entry in domainEntities)
             entry.Entity.ClearDomainEvents();

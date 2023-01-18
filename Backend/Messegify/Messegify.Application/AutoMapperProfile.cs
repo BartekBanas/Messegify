@@ -11,5 +11,7 @@ public class AutoMapperProfile : Profile
         CreateMap<Message, MessageDto>();
 
         CreateMap<Contact, ContactDto>();
+
+        CreateMap<ChatRoom, ChatRoomDto>();
     }
 }
