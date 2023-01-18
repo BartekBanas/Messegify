@@ -1,6 +1,6 @@
 ﻿namespace Messegify.Infrastructure.Error.Abstractions;
 
-public class InfrastructureErrorException : Exception
+public abstract class InfrastructureErrorException : Exception
 {
     public InfrastructureErrorException()
     {

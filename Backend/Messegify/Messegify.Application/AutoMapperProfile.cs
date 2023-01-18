@@ -9,5 +9,9 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<Message, MessageDto>();
+
+        CreateMap<Contact, ContactDto>();
+
+        CreateMap<ChatRoom, ChatRoomDto>();
     }
 }

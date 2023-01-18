@@ -39,6 +39,8 @@ public class AccountController : Controller
     {
         var claims = User.Claims;
 
-        return Task.FromResult<IActionResult>(Ok(claims));
+        var claimsInfo = claims.ToDictionary(claim => claim.Type, claim => claim.Value);
+        
+        return Task.FromResult<IActionResult>(Ok(claimsInfo));
     }
 }

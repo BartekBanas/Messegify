@@ -9,6 +9,6 @@ public class ChatRoomDto
     public string Name { get; set; }
     
     public ChatRoomType ChatRoomType { get; set; }
-
-    public virtual ICollection<AccountChatRoom> Members { get; set; }
+    
+    // public virtual ICollection<AccountChatRoom> Members { get; set; }
 }

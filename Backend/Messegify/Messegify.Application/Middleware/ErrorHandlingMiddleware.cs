@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Messegify.Application.Errors;
 using Messegify.Infrastructure.Error;
+using Microsoft.Data.SqlClient;
 
 namespace Messegify.Application.Middleware;
 
@@ -19,13 +20,7 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             await next.Invoke(context);
         }
-        // Infrastructure errors
-        catch (ItemNotFoundErrorException error)
-        {
-            throw new NotFoundError(error.Message, error);
-        }
-        // =========
-        
+
         // Application errors
         catch (NotFoundError error)
         {
@@ -43,10 +38,19 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.ContentType = "text/plain";
             await context.Response.WriteAsync(error.Message);
         }
-        catch (Exception ex)
+        catch (BadRequestError error)
         {
-            _logger.LogError(ex, ex.Message);
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync(error.Message);
+        }
+
+        // Internal Server Error
+        catch (Exception error)
+        {
+            _logger.LogError(error, error.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.ContentType = "text/plain";
             await context.Response.WriteAsync("Something went wrong");
         }
     }
