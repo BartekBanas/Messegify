@@ -52,7 +52,7 @@ public class ChatRoomRequestHandler : IChatRoomRequestHandler
 
         var account = await _accountRepository.GetOneRequiredAsync(userId);
 
-        var newChatRoom = new ChatRoom()
+        var newChatRoom = new ChatRoom
         {
             Name = $"{account.Name}'s room"
         };
