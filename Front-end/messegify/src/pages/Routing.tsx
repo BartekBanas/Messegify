@@ -1,9 +1,10 @@
 import {MenuPage} from "./MenuPage";
-import {ChatRoomPage} from "./ChatRoomPage";
 import {Center} from "./layout/Center";
 import {LoginPage} from "./LoginPage";
 import {Navigate} from "react-router-dom";
 import {Main} from "./layout/Main";
+import {ErrorPage} from "./ErrorPage";
+import {FC} from "react";
 
 const publicRoutes = [
     {
@@ -31,6 +32,18 @@ const privateRoutes = [
                 path: '/',
                 element: <MenuPage/>
             },
+            {
+                path: '*',
+                element: <ErrorPage/>
+            }
         ]
     }
 ]
+
+export const Routing: FC = () => {
+  return (
+    <div>
+
+    </div>
+  );
+};
