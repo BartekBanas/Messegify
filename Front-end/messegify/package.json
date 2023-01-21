@@ -5,6 +5,11 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.0.0",
     "@auth0/auth0-spa-js": "^2.0.2",
+    "@emotion/react": "^11.10.5",
+    "@mantine/core": "^5.10.1",
+    "@mantine/form": "^5.10.1",
+    "@mantine/hooks": "^5.10.1",
+    "@mantine/notifications": "^5.10.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
