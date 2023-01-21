@@ -1,7 +1,7 @@
 import {MenuPage} from "./MenuPage";
 import {Center} from "./layout/Center";
 import {LoginPage} from "./LoginPage";
-import {Navigate} from "react-router-dom";
+import {Navigate, useRoutes} from "react-router-dom";
 import {Main} from "./layout/Main";
 import {ErrorPage} from "./ErrorPage";
 import {FC} from "react";
@@ -41,9 +41,5 @@ const privateRoutes = [
 ]
 
 export const Routing: FC = () => {
-  return (
-    <div>
-
-    </div>
-  );
+  return useRoutes(publicRoutes);
 };
