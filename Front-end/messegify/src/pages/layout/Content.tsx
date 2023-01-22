@@ -1,11 +1,13 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 
-interface ContentProps {}
+interface ContentProps {
+    children: React.ReactNode;
+}
 
-export const Content: FC<ContentProps> = ({}) => {
-  return (
-    <div>
-        
-    </div>
-  );
+export const Content: FC<ContentProps> = ({children}) => {
+    return (
+        <div>
+            {children}
+        </div>
+    );
 };
