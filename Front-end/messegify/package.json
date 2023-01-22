@@ -17,6 +17,7 @@
     "@types/node": "^16.18.11",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "js-cookie": "^3.0.1",
     "nth-check": ">=2.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -49,5 +50,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^3.0.2",
+    "axios": "^1.2.3"
   }
 }

@@ -18,6 +18,8 @@ export const LoginForm: FC = () => {
     async function handleSubmit(data: LoginFormType) {
         try {
             await login(data.email, data.password);
+
+
             navigate('/menu');
         } catch (error) {
             loginErrorNotification();

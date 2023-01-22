@@ -1,7 +1,7 @@
 import {API_URL} from "../../config";
 
 export const login = async (username: string, password: string) => {
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetch(`${API_URL}/account/authenticate`, {
         method: 'POST',
         headers: {
             ContentType: 'application/json',

@@ -44,14 +44,15 @@ const privateRoutes = [
 export const Routing: FC = () => {
     const isLogged = useIsLogged();
 
-    try {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        isLogged;
-        const routes = publicRoutes;
-    }   catch (error) {
-        const routes = privateRoutes;
-    }
+    // try {
+    //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    //     isLogged;
+    //     const routes = publicRoutes;
+    // }   catch (error) {
+    //     const routes = privateRoutes;
+    // }
 
+    const routes = isLogged ? privateRoutes : publicRoutes
 
-  return useRoutes(publicRoutes);
+    return useRoutes(publicRoutes);
 };
