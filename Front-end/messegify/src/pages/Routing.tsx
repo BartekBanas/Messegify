@@ -5,6 +5,7 @@ import {Navigate, useRoutes} from "react-router-dom";
 import {Main} from "./layout/Main";
 import {ErrorPage} from "./ErrorPage";
 import {FC} from "react";
+import useIsLogged from "../hooks/useIsLogged";
 
 const publicRoutes = [
     {
@@ -41,5 +42,7 @@ const privateRoutes = [
 ]
 
 export const Routing: FC = () => {
+    const isLogged = useIsLogged();
+
   return useRoutes(publicRoutes);
 };

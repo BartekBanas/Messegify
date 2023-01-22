@@ -10,6 +10,6 @@ export const login = async (username: string, password: string) => {
         credentials: 'include'
     });
 
-    if(response.status !== 200) throw new Error('Login failed');
+    if (response.status !== 200) throw new Error('Login failed');
     return await response.text();
 }

@@ -1,15 +1,32 @@
 import {Account} from "../features/Messegify/types/account";
-import { useAuth0 } from '@auth0/auth0-react';
+import {useAuth0} from '@auth0/auth0-react';
+import {API_URL} from "../config";
+import {oauthToken} from "@auth0/auth0-spa-js/dist/typings/api";
 
-const useAccountAuthorization = (account: Account) => {
-    const { user } = useAuth0();
-    const userId = user?.sub;
+// const useAccountAuthorization = (account: Account) => {
+//     const { user } = useAuth0();
+//     const userId = user?.sub;
+//
+//     function isAuthorized() {
+//         return userId === account.id;
+//     }
+//
+//     return { isAuthorized };
+// }
 
-    function isAuthorized() {
-        return userId === account.id;
-    }
+async function useAccountAuthorization () {
 
-    return { isAuthorized };
+    const response = await fetch(`${API_URL}/authenticate`, {
+        method: 'POST',
+        headers: {
+            ContentType: 'application/json',
+            //Authorization: 'Basic' + window.btoa(oauthToken()),
+        },
+        credentials: 'include'
+    });
+
+    if (response.status !== 200) throw new Error('Unable to authorize');
+    return await response.text();
 }
 
 export default useAccountAuthorization;
