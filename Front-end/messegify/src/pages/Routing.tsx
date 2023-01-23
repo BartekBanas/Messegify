@@ -6,6 +6,7 @@ import {Main} from "./layout/Main";
 import {ErrorPage} from "./ErrorPage";
 import {FC} from "react";
 import useIsLogged from "../hooks/useIsLogged";
+import {RegisterPage} from "./RegisterPage";
 
 const publicRoutes = [
     {
@@ -15,6 +16,10 @@ const publicRoutes = [
             {
                 path: '/login',
                 element: <LoginPage/>
+            },
+            {
+                path: '/register',
+                element: <RegisterPage/>
             },
             {
                 path: "*",

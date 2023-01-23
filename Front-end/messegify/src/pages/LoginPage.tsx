@@ -1,13 +1,11 @@
-import React, { FC } from 'react';
-import {Paper} from "@mantine/core";
+import React, {FC} from 'react';
 import {LoginForm} from "../features/login/LoginForm";
 
-interface LoginPageProps {}
+interface LoginPageProps {
+}
 
 export const LoginPage: FC<LoginPageProps> = () => {
-  return (
-    <Paper shadow="sm" radius="md" p="lg" withBorder>
+    return (
         <LoginForm/>
-    </Paper>
-  );
+    );
 };

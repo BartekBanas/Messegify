@@ -5,6 +5,8 @@ import {Stack, TextInput, Button} from "@mantine/core";
 import {login} from "./api";
 import {loginErrorNotification} from "./notifications";
 import {useNavigate} from "react-router-dom";
+import {Paper} from "@mantine/core";
+//import '../../pages/layout/DarkBackground.css'
 
 export const LoginForm: FC = () => {
     const navigate = useNavigate();
@@ -19,7 +21,6 @@ export const LoginForm: FC = () => {
         try {
             await login(data.email, data.password);
 
-
             navigate('/menu');
         } catch (error) {
             loginErrorNotification();
@@ -27,12 +28,32 @@ export const LoginForm: FC = () => {
     }
 
     return (
-        <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
+        <body className="dark-gray-bg">
+        <Paper shadow="sm" radius="md" p="lg" withBorder>
+            <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
+                <Stack spacing="md">
+                    <TextInput required type="email" label="Email" {...form.getInputProps('email')}/>
+                    <TextInput required type="password" label="Password" {...form.getInputProps('password')}/>
+                    <Button type="submit">Login</Button>
+
+                </Stack>
+            </form>
+        </Paper>
+
+        <Paper shadow="sm" radius="md" p="lg" withBorder>
             <Stack spacing="md">
-                <TextInput required type="email" label="Email" {...form.getInputProps('email')}/>
-                <TextInput required type="password" label="Password" {...form.getInputProps('password')}/>
-                <Button type="submit">Login</Button>
+                <RegisterButton/>
             </Stack>
-        </form>
+        </Paper>
+        </body>
     );
+
+    function RegisterButton() {
+        return (
+            <Button variant="gradient" gradient={{from: 'teal', to: 'lime', deg: 105}} size="lg"
+                    onClick={() => navigate('/register')}>
+                Sign up
+            </Button>
+        );
+    }
 };

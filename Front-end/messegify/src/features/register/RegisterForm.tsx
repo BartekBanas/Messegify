@@ -1,0 +1,45 @@
+import {useForm} from "@mantine/form";
+import {FC} from "react";
+import {Stack, TextInput, Button} from "@mantine/core";
+import {useNavigate} from "react-router-dom";
+import {register} from "./api";
+import {RegisterFormType} from "./register-form.type";
+import {RegisterErrorNotification} from "./notification";
+import {Paper} from "@mantine/core";
+//import '../../pages/layout/DarkBackground.css'
+
+export const RegisterForm: FC = () => {
+    const navigate = useNavigate();
+    const form = useForm<RegisterFormType>({
+        initialValues: {
+            username: '',
+            password: '',
+            email: ''
+        },
+    })
+
+    async function handleSubmit(data: RegisterFormType) {
+        try {
+            await register(data.email, data.password, data.email);
+
+            navigate('/login');
+        } catch (error) {
+            RegisterErrorNotification();
+        }
+    }
+
+    return (
+        <body className="dark-gray-bg">
+        <Paper shadow="sm" radius="md" p="lg" withBorder>
+            <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
+                <Stack spacing="md">
+                    <TextInput required type="username" label="Username" {...form.getInputProps('')}/>
+                    <TextInput required type="password" label="Password" {...form.getInputProps('password')}/>
+                    <TextInput required type="email" label="Email" {...form.getInputProps('email')}/>
+                    <Button type="submit">Register</Button>
+                </Stack>
+            </form>
+        </Paper>
+        </body>
+    );
+};
