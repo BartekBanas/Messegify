@@ -1,14 +1,6 @@
 import {API_URL} from "../../config";
-import {RegisterFormType} from "./register-form.type";
 
-export const register = async (Username: string, Password: string, Email: string) => {
-
-    var registerAccountDto: RegisterFormType;
-    registerAccountDto = {
-        email: Email,
-        password: Password,
-        username: Username
-    }
+export const register = async (username: string, password: string, email: string) => {
 
     const response = await fetch(`${API_URL}/account`, {
         method: 'POST',
@@ -18,7 +10,11 @@ export const register = async (Username: string, Password: string, Email: string
             'Access-Control-Allow-Origin': '*'
         },
         credentials: 'include',
-        body: JSON.stringify(registerAccountDto)
+        body: JSON.stringify({
+            email: email,
+            password: password,
+            username: username
+        })
     });
 
     if (response.status !== 200) throw new Error('Registration failed');

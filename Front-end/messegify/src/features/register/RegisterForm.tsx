@@ -12,15 +12,15 @@ export const RegisterForm: FC = () => {
     const navigate = useNavigate();
     const form = useForm<RegisterFormType>({
         initialValues: {
-            username: '',
-            password: '',
-            email: ''
+            Username: '',
+            Password: '',
+            Email: ''
         },
     })
 
     async function handleSubmit(data: RegisterFormType) {
         try {
-            await register(data.email, data.password, data.email);
+            await register(data.Email, data.Password, data.Email);
 
             navigate('/login');
         } catch (error) {
@@ -34,8 +34,8 @@ export const RegisterForm: FC = () => {
             <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
                 <Stack spacing="md">
                     <TextInput required type="username" label="Username" {...form.getInputProps('')}/>
-                    <TextInput required type="password" label="Password" {...form.getInputProps('password')}/>
-                    <TextInput required type="email" label="Email" {...form.getInputProps('email')}/>
+                    <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
+                    <TextInput required type="email" label="Email" {...form.getInputProps('Email')}/>
                     <Button type="submit">Register</Button>
                 </Stack>
             </form>
