@@ -2,7 +2,7 @@ import {Account} from "../features/Messegify/types/account";
 import {useAuth0} from '@auth0/auth0-react';
 import {API_URL} from "../config";
 import {oauthToken} from "@auth0/auth0-spa-js/dist/typings/api";
-import * as Cookies from 'js-cookie';
+import Cookies, {get} from 'js-cookie';
 import axios from 'axios';
 import {useEffect, useState} from "react";
 
