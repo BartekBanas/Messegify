@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Messegify.Application.Dtos;
+﻿using Messegify.Application.Dtos;
 using Messegify.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,7 @@ public class AccountController : Controller
         _accountService = accountService;
     }
 
-    [HttpPost("register")]
+    [HttpPost]
     public async Task<IActionResult> RegisterAccount([FromBody] RegisterAccountDto dto)
     {
         await _accountService.RegisterAccountAsync(dto);
@@ -34,7 +33,7 @@ public class AccountController : Controller
     }
     
     [Authorize]
-    [HttpGet("me")]
+    [HttpGet()]
     public Task<IActionResult> Me()
     {
         var claims = User.Claims;
