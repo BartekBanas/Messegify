@@ -1,7 +1,7 @@
 import {API_URL} from "../../config";
 import {RegisterFormType} from "./register-form.type";
 
-export const register = async (Username: string, Password: string, Email: string) => {\
+export const register = async (Username: string, Password: string, Email: string) => {
 
     var registerAccountDto: RegisterFormType;
     registerAccountDto = {
@@ -18,7 +18,7 @@ export const register = async (Username: string, Password: string, Email: string
             'Access-Control-Allow-Origin': '*'
         },
         credentials: 'include',
-        body: registerAccountDto // TODO  serialzie this
+        body: JSON.stringify(registerAccountDto)
     });
 
     if (response.status !== 200) throw new Error('Registration failed');
