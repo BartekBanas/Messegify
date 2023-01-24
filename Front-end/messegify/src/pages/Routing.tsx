@@ -7,6 +7,7 @@ import {ErrorPage} from "./ErrorPage";
 import {FC} from "react";
 import useIsLogged from "../hooks/useIsLogged";
 import {RegisterPage} from "./RegisterPage";
+import {AuthenticationErrorNotification} from "./RoutingNotifications";
 
 const publicRoutes = [
     {
@@ -63,7 +64,7 @@ export const Routing: FC = () => {
 
     const routes = isLogged ? privateRoutes : publicRoutes
     if (!isLogged) {
-
+        AuthenticationErrorNotification();
     }
 
     return useRoutes(routes);

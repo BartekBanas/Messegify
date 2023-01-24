@@ -21,6 +21,7 @@ export const RegisterForm: FC = () => {
         try {
             await register(data.Username, data.Password, data.Email);
 
+            
             navigate('/login');
         } catch (error) {
             RegisterErrorNotification();
