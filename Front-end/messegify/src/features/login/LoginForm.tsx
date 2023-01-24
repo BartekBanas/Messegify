@@ -32,9 +32,16 @@ export const LoginForm: FC = () => {
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <div>
                 <div style={{marginBottom: "30px"}}>
-                    <Text sx={{fontSize: 32, lineHeight: 1.4}}>
-                        Login Page
-                    </Text>
+                    <Paper radius="md" p="lg">
+                        <Text color={'#D5D7E0'} sx={{
+                            fontSize: 32,
+                            lineHeight: 1.4,
+                            fontWeight: 'bold',
+                            fontFamily: '"Open Sans", sans-serif'
+                        }}>
+                            Login Page
+                        </Text>
+                    </Paper>
                 </div>
 
                 <Paper shadow="sm" radius="md" p="lg" withBorder>

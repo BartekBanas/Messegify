@@ -1,6 +1,6 @@
 import {useForm} from "@mantine/form";
 import {FC} from "react";
-import {Stack, TextInput, Button} from "@mantine/core";
+import {Stack, TextInput, Button, MantineProvider} from "@mantine/core";
 import {useNavigate} from "react-router-dom";
 import {register} from "./api";
 import {RegisterFormType} from "./register-form.type";
@@ -29,17 +29,19 @@ export const RegisterForm: FC = () => {
     }
 
     return (
-        <div>
-            <Paper shadow="sm" radius="md" p="lg" withBorder>
-                <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
-                    <Stack spacing="md">
-                        <TextInput required type="username" label="Username" {...form.getInputProps('')}/>
-                        <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
-                        <TextInput required type="email" label="Email" {...form.getInputProps('Email')}/>
-                        <Button type="submit">Register</Button>
-                    </Stack>
-                </form>
-            </Paper>
-        </div>
+        <MantineProvider theme={{colorScheme: 'dark'}}>
+            <div>
+                <Paper shadow="sm" radius="md" p="lg" withBorder>
+                    <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
+                        <Stack spacing="md">
+                            <TextInput required type="username" label="Username" {...form.getInputProps('')}/>
+                            <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
+                            <TextInput required type="email" label="Email" {...form.getInputProps('Email')}/>
+                            <Button type="submit">Register</Button>
+                        </Stack>
+                    </form>
+                </Paper>
+            </div>
+        </MantineProvider>
     );
 };

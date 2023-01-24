@@ -13,6 +13,9 @@
     }
 }
 
+#root {
+    background-color: rgb(28, 28, 28);
+}
 
 .App-header {
     background-color: #282c34;
