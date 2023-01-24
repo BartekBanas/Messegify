@@ -18,7 +18,7 @@ public class ChatRoomController : Controller
     }
 
     [Authorize]
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> CreateChatRoom(CancellationToken cancellationToken)
     {
         var request = new CreateChatRoomRequest();
