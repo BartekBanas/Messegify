@@ -1,11 +1,10 @@
 import {useForm} from "@mantine/form";
 import {FC} from "react";
-import {Stack, TextInput, Button, MantineProvider, Text} from "@mantine/core";
+import {Stack, TextInput, Button, MantineProvider, Text, Paper} from "@mantine/core";
 import {useNavigate} from "react-router-dom";
 import {register} from "./api";
 import {RegisterFormType} from "./register-form.type";
 import {RegisterErrorNotification} from "./notification";
-import {Paper} from "@mantine/core";
 import '../../pages/layout/DarkBackground.css'
 
 export const RegisterForm: FC = () => {
@@ -20,7 +19,7 @@ export const RegisterForm: FC = () => {
 
     async function handleSubmit(data: RegisterFormType) {
         try {
-            await register(data.Email, data.Password, data.Email);
+            await register(data.Username, data.Password, data.Email);
 
             navigate('/login');
         } catch (error) {

@@ -24,6 +24,10 @@ const publicRoutes = [
             {
                 path: "*",
                 element: <Navigate to="/login" replace/>
+            },
+            {
+                path: "",
+                element: <Navigate to="/login" replace/>
             }
         ]
     }
@@ -58,6 +62,9 @@ export const Routing: FC = () => {
     // }
 
     const routes = isLogged ? privateRoutes : publicRoutes
+    if (!isLogged) {
 
-    return useRoutes(publicRoutes);
+    }
+
+    return useRoutes(routes);
 };
