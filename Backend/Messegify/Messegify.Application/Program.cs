@@ -31,6 +31,8 @@ var jwtConfig = configuration.GetRequiredSection("JwtConfiguration").Get<JwtConf
 // Add services to the container.
 var services = builder.Services;
 
+services.AddCors();
+
 services.AddScoped<IAuthorizationHandler, ChatRoomAuthorizationHandler>();
 services.AddScoped<IAuthorizationHandler, AccountAuthorizationHandler>();
 
@@ -111,7 +113,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+app.UseCors(options => options
+    .AllowAnyHeader()
+    .WithOrigins("http://localhost:3000")
+    .AllowAnyMethod()
+    .AllowCredentials());
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
