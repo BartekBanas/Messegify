@@ -4,10 +4,13 @@ export const login = async (username: string, password: string) => {
     const response = await fetch(`${API_URL}/account/authenticate`, {
         method: 'POST',
         headers: {
-            ContentType: 'application/json',
-            Authorization: 'Basic' + window.btoa(username + ':' + password),
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         },
-        credentials: 'include'
+        body: JSON.stringify({
+            UsernameOrEmail: username,
+            Password: password,
+        })
     });
 
     if (response.status !== 200) throw new Error('Login failed');

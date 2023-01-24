@@ -13,14 +13,14 @@ export const LoginForm: FC = () => {
     const navigate = useNavigate();
     const form = useForm<LoginFormType>({
         initialValues: {
-            email: '',
-            password: ''
+            UsernameOrEmail: '',
+            Password: ''
         },
     })
 
     async function handleSubmit(data: LoginFormType) {
         try {
-            await login(data.email, data.password);
+            await login(data.UsernameOrEmail, data.Password);
 
             navigate('/menu');
         } catch (error) {
@@ -47,8 +47,8 @@ export const LoginForm: FC = () => {
                 <Paper shadow="sm" radius="md" p="lg" withBorder>
                     <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
                         <Stack spacing="md">
-                            <TextInput required type="email" label="Email" {...form.getInputProps('email')}/>
-                            <TextInput required type="password" label="Password" {...form.getInputProps('password')}/>
+                            <TextInput required type="email" label="Email" {...form.getInputProps('UsernameOrEmail')}/>
+                            <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
                             <Button type="submit">Login</Button>
 
                         </Stack>

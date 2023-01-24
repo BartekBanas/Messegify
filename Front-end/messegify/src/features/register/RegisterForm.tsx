@@ -46,7 +46,7 @@ export const RegisterForm: FC = () => {
                 <Paper shadow="sm" radius="md" p="lg" withBorder>
                     <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
                         <Stack spacing="md">
-                            <TextInput required type="username" label="Username" {...form.getInputProps('')}/>
+                            <TextInput required type="username" label="Username" {...form.getInputProps('Username')}/>
                             <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
                             <TextInput required type="email" label="Email" {...form.getInputProps('Email')}/>
                             <Button type="submit">Register</Button>
