@@ -30,7 +30,7 @@ export const RegisterForm: FC = () => {
 
     return (
         <div>
-            <Paper shadow="sm" radius="md" p="lg" withBorder className="dark-gray-bg">
+            <Paper shadow="sm" radius="md" p="lg" withBorder>
                 <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
                     <Stack spacing="md">
                         <TextInput required type="username" label="Username" {...form.getInputProps('')}/>
