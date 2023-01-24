@@ -1,6 +1,6 @@
 import {useForm} from "@mantine/form";
 import {FC} from "react";
-import {Stack, TextInput, Button, MantineProvider} from "@mantine/core";
+import {Stack, TextInput, Button, MantineProvider, Text} from "@mantine/core";
 import {useNavigate} from "react-router-dom";
 import {register} from "./api";
 import {RegisterFormType} from "./register-form.type";
@@ -31,6 +31,18 @@ export const RegisterForm: FC = () => {
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <div>
+                <div style={{marginBottom: "30px"}}>
+                    <Paper shadow="sm" radius="md" p="lg">
+                        <Text color={'#D5D7E0'} sx={{
+                            fontSize: 32,
+                            lineHeight: 1.4,
+                            fontWeight: 'bold',
+                            fontFamily: '"Open Sans", sans-serif'
+                        }}>
+                            Registration Page
+                        </Text>
+                    </Paper>
+                </div>
                 <Paper shadow="sm" radius="md" p="lg" withBorder>
                     <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
                         <Stack spacing="md">
