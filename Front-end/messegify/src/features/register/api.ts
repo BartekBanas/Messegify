@@ -2,14 +2,15 @@ import {API_URL} from "../../config";
 
 export const register = async (username: string, password: string, email: string) => {
 
+    const uri = `${API_URL}/account`;
+    console.log(uri)
+
     const response = await fetch(`${API_URL}/account`, {
         method: 'POST',
         headers: {
-            ContentType: 'application/json',
-            // Authorization: 'Basic' + window.btoa(Username + ':' + Password + ':' + Email),
+            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         },
-        credentials: 'include',
         body: JSON.stringify({
             email: email,
             password: password,
