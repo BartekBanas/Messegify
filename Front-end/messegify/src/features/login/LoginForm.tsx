@@ -1,8 +1,8 @@
 import {useForm} from "@mantine/form";
 import {FC} from "react";
-import {LoginFormType} from "./login-form.types";
+import {LoginFormDto} from "./login-form.types";
 import {Stack, TextInput, Button, MantineProvider} from "@mantine/core";
-import {login} from "./api";
+import {useLoginApi} from "./api";
 import {loginErrorNotification} from "./notifications";
 import {useNavigate} from "react-router-dom";
 import {Paper} from "@mantine/core";
@@ -11,16 +11,17 @@ import {Text} from "@mantine/core";
 
 export const LoginForm: FC = () => {
     const navigate = useNavigate();
-    const form = useForm<LoginFormType>({
+    const form = useForm<LoginFormDto>({
         initialValues: {
             UsernameOrEmail: '',
             Password: ''
         },
     })
+    const login = useLoginApi();
 
-    async function handleSubmit(data: LoginFormType) {
+    async function handleSubmit(data: LoginFormDto) {
         try {
-            await login(data.UsernameOrEmail, data.Password);
+            await login(data.UsernameOrEmail, data.Password)
 
             navigate('/menu');
         } catch (error) {
