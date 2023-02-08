@@ -38,13 +38,15 @@ const useAccountAuthorization = (): boolean => {
     useEffect(() => {
         const checkAuthorization = async () => {
             try {
-                const token = Cookies.get('jwt');
+                const token = Cookies.get('auth_token');
                 if (!token) {
                     throw new Error('Token not found in cookies');
                 }
-                const headers = {Authorization: `Bearer ${token}`};
-                const response = await axios.get('/verify', {headers});
-                setIsLogged(response.data.valid);
+
+                // const headers = {Authorization: `Bearer ${token}`};
+                // const response = await axios.post(`${API_URL}/account/authenticate`, {headers});
+                setIsLogged(true);
+
             } catch (error) {
                 setIsLogged(false);
             }
