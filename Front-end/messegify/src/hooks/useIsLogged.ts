@@ -36,22 +36,21 @@ const useAccountAuthorization = (): boolean => {
     const [isLogged, setIsLogged] = useState(false);
 
     useEffect(() => {
-        const checkAuthorization = async () => {
-            try {
-                const token = Cookies.get('auth_token');
-                if (!token) {
-                    throw new Error('Token not found in cookies');
-                }
-
-                // const headers = {Authorization: `Bearer ${token}`};
-                // const response = await axios.post(`${API_URL}/account/authenticate`, {headers});
-                setIsLogged(true);
-
-            } catch (error) {
-                setIsLogged(false);
+        try {
+            const token = Cookies.get('auth_token');
+            if (!token) {
+                throw new Error('Token not found in cookies');
             }
-        };
-        checkAuthorization();
+
+            // const headers = {Authorization: `Bearer ${token}`};
+            // const response = await axios.post(`${API_URL}/account/authenticate`, {headers});
+            setIsLogged(true);
+            console.log('logged YES')
+
+        } catch (error) {
+            setIsLogged(false);
+            console.log('logged NO')
+        }
     }, []);
     return isLogged;
 };
