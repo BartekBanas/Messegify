@@ -45,7 +45,8 @@ const privateRoutes = [
             },
             {
                 path: '*',
-                element: <ErrorPage/>
+                element: <Navigate to="/" replace/>
+                //element: <ErrorPage/>
             }
         ]
     }

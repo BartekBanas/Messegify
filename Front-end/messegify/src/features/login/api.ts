@@ -27,7 +27,7 @@ export const useLoginApi = () => {
         const JWT = response.body;
 
         setCookie(authCookieName, JWT, {
-            expires: new Date(Date.now() + 1000 * 60 * 15),
+            expires: new Date(Date.now() + 1000 * 60 * 15),     // expires in 15 minutes
         });
 
         if (response.status !== 200) throw new Error('Login failed');
