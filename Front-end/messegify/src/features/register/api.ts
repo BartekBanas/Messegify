@@ -12,9 +12,9 @@ export const register = async (username: string, password: string, email: string
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-            email: email,
+            username: username,
             password: password,
-            username: username
+            email: email
         })
     });
 

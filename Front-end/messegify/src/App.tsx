@@ -7,13 +7,15 @@ import {NotificationsProvider} from "@mantine/notifications";
 
 function App() {
     return (
-        <BrowserRouter>
-            <MantineProvider withGlobalStyles withNormalizeCSS>
-                <NotificationsProvider>
-                    <Routing/>
-                </NotificationsProvider>
-            </MantineProvider>
-        </BrowserRouter>
+        <MantineProvider theme={{colorScheme: 'dark'}}>
+            <BrowserRouter>
+                <MantineProvider withGlobalStyles withNormalizeCSS>
+                    <NotificationsProvider>
+                        <Routing/>
+                    </NotificationsProvider>
+                </MantineProvider>
+            </BrowserRouter>
+        </MantineProvider>
     );
 }
 

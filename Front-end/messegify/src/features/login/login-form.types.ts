@@ -1,4 +1,4 @@
-export interface LoginFormType {
-    email: string;
-    password: string;
+export interface LoginFormDto {
+    UsernameOrEmail: string;
+    Password: string;
 }

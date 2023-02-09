@@ -7,6 +7,7 @@ import {ErrorPage} from "./ErrorPage";
 import {FC} from "react";
 import useIsLogged from "../hooks/useIsLogged";
 import {RegisterPage} from "./RegisterPage";
+import {AuthenticationErrorNotification} from "./RoutingNotifications";
 
 const publicRoutes = [
     {
@@ -21,8 +22,17 @@ const publicRoutes = [
                 path: '/register',
                 element: <RegisterPage/>
             },
+            // {
+            //     path: '/menu',
+            //     element: <MenuPage/>
+            // },
             {
                 path: "*",
+                AuthenticationErrorNotification,
+                element: <Navigate to="/login" replace/>
+            },
+            {
+                path: "",
                 element: <Navigate to="/login" replace/>
             }
         ]
@@ -32,15 +42,20 @@ const publicRoutes = [
 const privateRoutes = [
     {
         path: '/',
-        element: <Main/>,
+        element: <Center/>,
         children: [
             {
-                path: '/',
+                path: '/menu',
                 element: <MenuPage/>
             },
+            // {
+            //     path: '/login',
+            //     element: <LoginPage/>
+            // },
             {
                 path: '*',
-                element: <ErrorPage/>
+                element: <Navigate to="/Menu" replace/>
+                //element: <ErrorPage/>
             }
         ]
     }
@@ -49,15 +64,17 @@ const privateRoutes = [
 export const Routing: FC = () => {
     const isLogged = useIsLogged();
 
-    // try {
-    //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    //     isLogged;
-    //     const routes = publicRoutes;
-    // }   catch (error) {
-    //     const routes = privateRoutes;
-    // }
-
     const routes = isLogged ? privateRoutes : publicRoutes
+    //const routes = privateRoutes
 
-    return useRoutes(publicRoutes);
+    console.log('routes')
+    console.log(routes)
+    console.log(publicRoutes)
+    console.log(privateRoutes)
+
+    if (!isLogged) {
+        AuthenticationErrorNotification();
+    }
+
+    return useRoutes(routes);
 };
