@@ -42,7 +42,7 @@ const publicRoutes = [
 const privateRoutes = [
     {
         path: '/',
-        element: <Center/>,
+        element: <Main/>,
         children: [
             {
                 path: '/menu',
