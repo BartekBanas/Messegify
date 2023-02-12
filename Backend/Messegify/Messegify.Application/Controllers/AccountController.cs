@@ -42,4 +42,17 @@ public class AccountController : Controller
         
         return Task.FromResult<IActionResult>(Ok(claimsInfo));
     }
+
+    [Authorize]
+    [HttpGet("{targetAccountGuid:guid}")]
+    public async Task<IActionResult> GetAccount([FromRoute] Guid targetAccountGuid)
+    {
+        var user = await _accountService.GetUserAsync(targetAccountGuid);
+
+        return Ok(new { 
+            Id = user.Id, 
+            Name = user.Name, 
+            Email = user.Email 
+        });
+    }
 }

@@ -112,11 +112,8 @@ public class AccountService : IAccountService
 
     public async Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId)
     {
-        var account = await _accountRepository.GetOneAsync(accountId);
-        var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
-        
         var contacts = await _contactRepository
-            .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
+            .GetAsync(contact => contact.FirstAccountId == accountId || contact.SecondAccountId == accountId);
 
         var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
         
