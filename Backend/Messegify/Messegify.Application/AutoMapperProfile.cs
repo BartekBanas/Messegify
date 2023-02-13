@@ -13,5 +13,7 @@ public class AutoMapperProfile : Profile
         CreateMap<Contact, ContactDto>();
 
         CreateMap<ChatRoom, ChatRoomDto>();
+
+        CreateMap<Account, AccountDto>();
     }
 }
