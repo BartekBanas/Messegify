@@ -1,5 +1,6 @@
 import {API_URL} from "../../config";
 import {useCookies} from "react-cookie";
+import {log} from "util";
 
 
 export const useLoginApi = () => {
@@ -24,7 +25,7 @@ export const useLoginApi = () => {
             })
         });
 
-        const JWT = response.body;
+        const JWT = await response.text();
 
         setCookie(authCookieName, JWT, {
             expires: new Date(Date.now() + 1000 * 60 * 15),     // expires in 15 minutes

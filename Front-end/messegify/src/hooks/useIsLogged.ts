@@ -1,4 +1,4 @@
-import {Account} from "../features/Messegify/types/account";
+import {Account} from "../types/account";
 import {useAuth0} from '@auth0/auth0-react';
 import {API_URL} from "../config";
 import {oauthToken} from "@auth0/auth0-spa-js/dist/typings/api";
