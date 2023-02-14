@@ -60,7 +60,7 @@ public class AccountService : IAccountService
 
     public async Task<AccountDto> GetAccountAsync(Guid accountId)
     {
-        var account = await _accountRepository.GetOneAsync(accountId);
+        var account = await _accountRepository.GetOneRequiredAsync(accountId);
         
         var dtos = _mapper.Map<AccountDto>(account);
         
