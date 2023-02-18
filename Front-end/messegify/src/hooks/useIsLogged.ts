@@ -1,4 +1,4 @@
-import Cookies, {get} from 'js-cookie';
+import Cookies from 'js-cookie';
 import {useEffect, useState} from "react";
 
 const useAccountAuthorization = () => {

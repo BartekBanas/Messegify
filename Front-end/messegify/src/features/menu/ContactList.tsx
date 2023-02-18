@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import {Contact} from "../../types/contact";
 import {listContacts} from "./api";
 import {Link} from "react-router-dom";
@@ -21,7 +21,7 @@ interface AccountData {
 
 export const ContactList: FC = () => {
     const [contacts, setContacts] = React.useState<Contact[]>([]);
-    const [friendsName, setFriendsName] = useState<string | undefined>(undefined);
+
 
     useEffect(() => {
         listContacts().then((data) => setContacts(data));
@@ -40,7 +40,7 @@ export const ContactList: FC = () => {
         const response = await authorizedKy.get(`${API_URL}/account`).json<AccountData>();
         const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
         console.log("Retrieved user's id", userId)
-        
+
         return parseInt(userId, 10);
     }
 
@@ -56,9 +56,13 @@ export const ContactList: FC = () => {
         if (userId === parseInt(contact.firstAccountId, 10)) {
             const response = await authorizedKy.get(`${API_URL}/account/${contact.secondAccountId}`).json<Account>();
 
+            console.log(response)
+
             return response.name;
         } else {
             const response = await authorizedKy.get(`${API_URL}/account/${contact.firstAccountId}`).json<Account>();
+
+            console.log(response)
 
             return response.name;
         }
@@ -70,7 +74,8 @@ export const ContactList: FC = () => {
                 let friendsName;
 
                 getFriendsName(contact).then((name) => {
-                    friendsName = name;
+                    friendsName = "name";
+                    console.log(friendsName);
                 });
 
                 return (

@@ -3,12 +3,10 @@ import {Center} from "./layout/Center";
 import {LoginPage} from "./LoginPage";
 import {Navigate, useRoutes} from "react-router-dom";
 import {Main} from "./layout/Main";
-import {ErrorPage} from "./ErrorPage";
 import {FC} from "react";
 import useIsLogged from "../hooks/useIsLogged";
 import {RegisterPage} from "./RegisterPage";
 import {AuthenticationErrorNotification} from "./RoutingNotifications";
-import Cookies from "js-cookie";
 
 const publicRoutes = [
     {
