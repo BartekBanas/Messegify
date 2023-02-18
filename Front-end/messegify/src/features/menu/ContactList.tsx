@@ -40,7 +40,7 @@ export const ContactList: FC = () => {
         const response = await authorizedKy.get(`${API_URL}/account`).json<AccountData>();
         const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
         console.log("Retrieved user's id", userId)
-        1
+        
         return parseInt(userId, 10);
     }
 
