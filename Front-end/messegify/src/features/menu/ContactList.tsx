@@ -21,13 +21,11 @@ interface AccountData {
 
 export const ContactList: FC = () => {
     const [contacts, setContacts] = React.useState<Contact[]>([]);
-
+    const [friendsNames, setFriendsNames] = React.useState<{ [id: string]: string }>({});
 
     useEffect(() => {
         listContacts().then((data) => setContacts(data));
-
-
-    }, [])
+    }, []);
 
     async function getUserId() {
         const token = Cookies.get('auth_token');
@@ -44,7 +42,7 @@ export const ContactList: FC = () => {
         return parseInt(userId, 10);
     }
 
-    async function getFriendsName(contact: Contact) {
+    async function getFriendsName(contact: Contact): Promise<string> {
         const userId = await getUserId();
 
         const token = Cookies.get('auth_token');
@@ -53,37 +51,50 @@ export const ContactList: FC = () => {
                 authorization: `Bearer ${token}`
             }
         });
+
+        let accountId;
         if (userId === parseInt(contact.firstAccountId, 10)) {
-            const response = await authorizedKy.get(`${API_URL}/account/${contact.secondAccountId}`).json<Account>();
-
-            console.log(response)
-
-            return response.name;
+            accountId = contact.secondAccountId;
         } else {
-            const response = await authorizedKy.get(`${API_URL}/account/${contact.firstAccountId}`).json<Account>();
-
-            console.log(response)
-
-            return response.name;
+            accountId = contact.firstAccountId;
         }
+
+        if (friendsNames[accountId]) {
+            // jeśli imię znajduje się już w pamięci, zwróć je
+            return friendsNames[accountId];
+        }
+
+        const response = await authorizedKy.get(`${API_URL}/account/${accountId}`).json<Account>();
+        const name = response.name;
+        console.log(response);
+
+        // dodaj imię do pamięci i zwróć je
+        setFriendsNames({...friendsNames, [accountId]: name});
+        return name;
     }
+
+    const ContactItem = ({contact}: { contact: Contact }) => {
+        const [name, setName] = React.useState<string | null>(null);
+
+        useEffect(() => {
+            getFriendsName(contact).then(setName);
+        }, [contact]);
+
+        return (
+            <li key={contact.id}>
+                <Link to={`/chatroom/`}>Chatroom with {name || 'loading...'}</Link>
+            </li>
+        );
+    };
 
     return (
         <ul>
-            {contacts.map((contact) => {
-                let friendsName;
-
-                getFriendsName(contact).then((name) => {
-                    friendsName = "name";
-                    console.log(friendsName);
-                });
-
-                return (
-                    <li key={contact.id}>
-                        <Link to={`/chatroom/`}>Chatroom with {friendsName}</Link>
-                    </li>
-                );
-            })}
+            <React.Suspense fallback={<div>Loading...</div>}>
+                {contacts.map((contact) => (
+                    <ContactItem key={contact.id} contact={contact}/>
+                ))}
+            </React.Suspense>
         </ul>
     );
 };
+
