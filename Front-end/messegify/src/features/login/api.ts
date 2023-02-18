@@ -1,7 +1,5 @@
 import {API_URL} from "../../config";
 import {useCookies} from "react-cookie";
-import {log} from "util";
-
 
 export const useLoginApi = () => {
     const authCookieName = 'auth_token'
@@ -9,8 +7,6 @@ export const useLoginApi = () => {
 
 
     return async (username: string, password: string) => {
-        //const jwt = null; // get jwt somehow
-
 
         const response = await fetch(`${API_URL}/account/authenticate`, {
             method: 'POST',
@@ -34,7 +30,5 @@ export const useLoginApi = () => {
         });
 
         console.log("login not failed")
-
-        //return await response.text();
     }
 }

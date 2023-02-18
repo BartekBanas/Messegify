@@ -65,8 +65,8 @@ const privateRoutes = [
 
 export const Routing: FC = () => {
 
-    const token = Cookies.get('auth_token');
-    console.log("outside: ", token)
+    // const token = Cookies.get('auth_token');
+    // console.log("outside: ", token)
 
     const isLogged = useIsLogged();
 

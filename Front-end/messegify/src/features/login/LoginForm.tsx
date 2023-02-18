@@ -21,11 +21,7 @@ export const LoginForm: FC = () => {
 
     async function handleSubmit(data: LoginFormDto) {
         try {
-            await console.log("hellow")
-
             await login(data.UsernameOrEmail, data.Password)
-
-            await console.log("hellow 2")
             
             await navigate('/menu');
         } catch (error) {

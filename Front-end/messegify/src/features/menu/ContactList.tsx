@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {API_URL} from "../../config";
 import ky from "ky";
 import {Account} from "../../types/account";
+import Cookies from "js-cookie";
 
 interface AccountData {
     "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid": string,
@@ -29,21 +30,35 @@ export const ContactList: FC = () => {
     }, [])
 
     async function getUserId() {
-        const response = await ky.get(`${API_URL}/account`).json<AccountData>();
+        const token = Cookies.get('auth_token');
+        const authorizedKy = ky.extend({
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        const response = await authorizedKy.get(`${API_URL}/account`).json<AccountData>();
         const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
-        console.log("Retrieved user's id")
-        console.log(userId)
+        console.log("Retrieved user's id", userId)
+        1
         return parseInt(userId, 10);
     }
 
     async function getFriendsName(contact: Contact) {
         const userId = await getUserId();
+
+        const token = Cookies.get('auth_token');
+        const authorizedKy = ky.extend({
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
         if (userId === parseInt(contact.firstAccountId, 10)) {
-            const response = await ky.get(`${API_URL}/account/{secondAccountId}`).json<Account>();
+            const response = await authorizedKy.get(`${API_URL}/account/${contact.secondAccountId}`).json<Account>();
 
             return response.name;
         } else {
-            const response = await ky.get(`${API_URL}/account/{firstAccountId}`).json<Account>();
+            const response = await authorizedKy.get(`${API_URL}/account/${contact.firstAccountId}`).json<Account>();
 
             return response.name;
         }
