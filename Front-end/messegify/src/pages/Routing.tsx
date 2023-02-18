@@ -8,6 +8,7 @@ import {FC} from "react";
 import useIsLogged from "../hooks/useIsLogged";
 import {RegisterPage} from "./RegisterPage";
 import {AuthenticationErrorNotification} from "./RoutingNotifications";
+import Cookies from "js-cookie";
 
 const publicRoutes = [
     {
@@ -33,6 +34,7 @@ const publicRoutes = [
             },
             {
                 path: "",
+                AuthenticationErrorNotification,
                 element: <Navigate to="/login" replace/>
             }
         ]
@@ -62,17 +64,22 @@ const privateRoutes = [
 ]
 
 export const Routing: FC = () => {
+
+    const token = Cookies.get('auth_token');
+    console.log("outside: ", token)
+
     const isLogged = useIsLogged();
 
-    const routes = isLogged ? privateRoutes : publicRoutes
+    const routes = isLogged() ? privateRoutes : publicRoutes
     //const routes = privateRoutes
 
-    console.log('routes')
-    console.log(routes)
-    console.log(publicRoutes)
-    console.log(privateRoutes)
+    // console.log('routes')
+    // console.log(routes)
+    // console.log(publicRoutes)
+    // console.log(privateRoutes)
 
     if (!isLogged) {
+        console.log("Ooops an error")
         AuthenticationErrorNotification();
     }
 

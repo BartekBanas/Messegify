@@ -17,13 +17,14 @@ export const useLoginApi = () => {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                // 'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 UsernameOrEmail: username,
                 Password: password,
             })
         });
+
+        if (response.status !== 200) throw new Error('Login failed');
 
         const JWT = await response.text();
 
@@ -32,7 +33,8 @@ export const useLoginApi = () => {
             sameSite: true
         });
 
-        if (response.status !== 200) throw new Error('Login failed');
-        return await response.text();
+        console.log("login not failed")
+
+        //return await response.text();
     }
 }
