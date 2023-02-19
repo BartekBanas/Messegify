@@ -2,6 +2,6 @@ export interface Contact {
     id: string;
     firstAccountId: string;
     secondAccountId: string;
-    chatRoomId: string;
+    contactChatRoomId: string;
     dateCreated: string;
 }

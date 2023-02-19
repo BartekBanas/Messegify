@@ -79,8 +79,9 @@ export const ContactList: FC = () => {
         }, [contact]);
 
         return (
+
             <li key={contact.id}>
-                <Link to={`/chatroom/${contact.chatRoomId}`}>Chatroom with {name || 'loading...'}</Link>
+                <Link to={`/chatroom/${contact.contactChatRoomId}`}>Chatroom with {name || 'loading...'}</Link>
             </li>
         );
     };

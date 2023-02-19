@@ -48,10 +48,10 @@ const privateRoutes = [
                 path: '/menu',
                 element: <MenuPage/>
             },
-            // {
-            //     path: '/login',
-            //     element: <LoginPage/>
-            // },
+            {
+                path: '/chatroom*',
+                element: <MenuPage/>
+            },
             {
                 path: '*',
                 element: <Navigate to="/Menu" replace/>
