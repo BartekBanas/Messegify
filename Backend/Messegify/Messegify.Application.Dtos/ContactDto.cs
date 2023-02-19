@@ -7,6 +7,8 @@ public class ContactDto
     public Guid FirstAccountId { get; set; }
     
     public Guid SecondAccountId { get; set; }
+
+    public Guid ContactChatRoomId { get; set; }
     
     public DateTime DateCreated { get; set; }
 }
