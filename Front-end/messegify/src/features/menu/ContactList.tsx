@@ -37,7 +37,6 @@ export const ContactList: FC = () => {
 
         const response = await authorizedKy.get(`${API_URL}/account`).json<AccountData>();
         const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
-        console.log("Retrieved user's id", userId)
 
         return parseInt(userId, 10);
     }
@@ -66,7 +65,6 @@ export const ContactList: FC = () => {
 
         const response = await authorizedKy.get(`${API_URL}/account/${accountId}`).json<Account>();
         const name = response.name;
-        console.log(response);
 
         // dodaj imię do pamięci i zwróć je
         setFriendsNames({...friendsNames, [accountId]: name});
@@ -82,7 +80,7 @@ export const ContactList: FC = () => {
 
         return (
             <li key={contact.id}>
-                <Link to={`/chatroom/`}>Chatroom with {name || 'loading...'}</Link>
+                <Link to={`/chatroom/${contact.chatRoomId}`}>Chatroom with {name || 'loading...'}</Link>
             </li>
         );
     };
