@@ -7,6 +7,7 @@ import {FC} from "react";
 import useIsLogged from "../hooks/useIsLogged";
 import {RegisterPage} from "./RegisterPage";
 import {AuthenticationErrorNotification} from "./RoutingNotifications";
+import {ChatRoomPage} from "./ChatRoomPage";
 
 const publicRoutes = [
     {
@@ -49,8 +50,8 @@ const privateRoutes = [
                 element: <MenuPage/>
             },
             {
-                path: '/chatroom*',
-                element: <MenuPage/>
+                path: '/chatroom/*',
+                element: <ChatRoomPage/>
             },
             {
                 path: '*',

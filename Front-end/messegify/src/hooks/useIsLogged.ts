@@ -12,9 +12,14 @@ const useAccountAuthorization = () => {
                 throw new Error('Token not found in cookies');
             }
 
+            console.log('logged');
+
             setIsLogged(true);
 
         } catch (error) {
+
+            console.log('not logged');
+
             setIsLogged(false);
         }
     }, [token]);

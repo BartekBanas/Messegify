@@ -6,18 +6,7 @@ import {API_URL} from "../../config";
 import ky from "ky";
 import {Account} from "../../types/account";
 import Cookies from "js-cookie";
-
-interface AccountData {
-    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid": string,
-    "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid": string,
-    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": string,
-    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": string,
-    nbf: string,
-    exp: string,
-    iat: string,
-    iss: string,
-    aud: string
-}
+import {AccountClaims} from "../../types/accountClaims";
 
 export const ContactList: FC = () => {
     const [contacts, setContacts] = React.useState<Contact[]>([]);
@@ -35,7 +24,7 @@ export const ContactList: FC = () => {
             }
         });
 
-        const response = await authorizedKy.get(`${API_URL}/account`).json<AccountData>();
+        const response = await authorizedKy.get(`${API_URL}/account`).json<AccountClaims>();
         const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
 
         return parseInt(userId, 10);
@@ -96,4 +85,3 @@ export const ContactList: FC = () => {
         </ul>
     );
 };
-

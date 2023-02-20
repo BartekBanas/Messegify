@@ -14,7 +14,7 @@ export const Header: FC = () => {
                         fontWeight: 'bold',
                         fontFamily: '"Open Sans", sans-serif'
                     }}>
-                        Menu Page
+                        Messegify
                     </Text>
                 </Paper>
             </MantineProvider>
