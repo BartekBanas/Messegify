@@ -1,30 +1,29 @@
-import React, {FC, useState} from 'react';
-import {_Text} from "@mantine/core/lib/Text/Text";
-import {useGetMessages} from "./api";
-import {Message} from "../../types/message";
-import {Contact} from "../../types/contact";
-import {Group, MantineProvider} from "@mantine/core";
-import {ContactList} from "../menu/ContactList";
-
+import React, {FC, useState, useEffect} from 'react';
+import {useGetMessages} from './api';
+import {Message} from '../../types/message';
+import {MantineProvider, Paper} from '@mantine/core';
 
 export const ChatroomForm: FC = () => {
-
     const [messages, setMessages] = useState<Message[]>([]);
     const getMessages = useGetMessages();
 
-    async function recieveMessages() {
-        const recievedMessages = await getMessages;
+    useEffect(() => {
+        async function fetchData() {
+            const receivedMessages = await getMessages;
+            setMessages(receivedMessages);
+        }
 
-        setMessages(recievedMessages);
-
-        console.log(messages);
-    }
-
+        fetchData();
+    }, [getMessages]);
 
     return (
-        <Group>
-            <ContactList/>
-            
-        </Group>
+        <MantineProvider theme={{colorScheme: 'dark'}}>
+            {messages.map((message) => (
+                <Paper key={message.id} shadow="sm" radius="md" p="lg" withBorder>
+                    <div>{message.SentDate}</div>
+                    <div>{message.textContent}</div>
+                </Paper>
+            ))}
+        </MantineProvider>
     );
 };
