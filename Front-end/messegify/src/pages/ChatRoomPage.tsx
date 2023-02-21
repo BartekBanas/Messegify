@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
+import {ChatroomForm} from "../features/chatroom/ChatroomForm";
 
-interface ChatRoomPageProps {}
+interface ChatRoomPageProps {
+}
 
 export const ChatRoomPage: FC<ChatRoomPageProps> = ({}) => {
-  return (
-    <div>
-        
-    </div>
-  );
+    return (
+        <ChatroomForm/>
+    );
 };
