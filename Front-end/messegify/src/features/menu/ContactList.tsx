@@ -7,6 +7,7 @@ import ky from "ky";
 import {Account} from "../../types/account";
 import Cookies from "js-cookie";
 import {AccountClaims} from "../../types/accountClaims";
+import {MantineProvider, Paper, Text} from "@mantine/core";
 
 export const ContactList: FC = () => {
     const [contacts, setContacts] = React.useState<Contact[]>([]);
@@ -68,10 +69,23 @@ export const ContactList: FC = () => {
         }, [contact]);
 
         return (
-
-            <li key={contact.id}>
-                <Link to={`/chatroom/${contact.contactChatRoomId}`}>Chatroom with {name || 'loading...'}</Link>
-            </li>
+            <MantineProvider theme={{colorScheme: 'dark'}}>
+                <Paper shadow="sm" radius="md" p="lg" withBorder>
+                    <div style={{marginBottom: "10px"}}>
+                        <Text color={'#D5D7E0'} sx={{
+                            fontSize: 20,
+                            lineHeight: 1.4,
+                            fontWeight: 'bold',
+                            fontFamily: '"Open Sans", sans-serif'
+                        }}>
+                            <li key={contact.id}>
+                                <Link to={`/chatroom/${contact.contactChatRoomId}`}>Chatroom
+                                    with {name || 'loading...'}</Link>
+                            </li>
+                        </Text>
+                    </div>
+                </Paper>
+            </MantineProvider>
         );
     };
 
