@@ -7,9 +7,7 @@ import {ContactList} from "../menu/ContactList";
 import Cookies from "js-cookie";
 import ky from "ky";
 import {AccountClaims} from "../../types/accountClaims";
-
 import './ChatroomForm.css'
-
 
 export const ChatroomForm: FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -29,15 +27,7 @@ export const ChatroomForm: FC = () => {
         const response = await authorizedKy.get(`${API_URL}/account`).json<AccountClaims>();
 
         setUserId(response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
-        console.log("response: " + response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
-
     }
-
-    useEffect(() => {
-
-
-        console.log("User id: " + userId);
-    }, [userId])
 
     async function fetchData() {
         const receivedMessages = await getMessages;
@@ -49,7 +39,6 @@ export const ChatroomForm: FC = () => {
     useEffect(() => {
         getUserId();
         fetchData();
-
     }, [])
 
     // useEffect(() => {
