@@ -28,7 +28,7 @@ export const ContactList: FC = () => {
         const response = await authorizedKy.get(`${API_URL}/account`).json<AccountClaims>();
         const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
 
-        return parseInt(userId, 10);
+        return userId;
     }
 
     async function getFriendsName(contact: Contact): Promise<string> {
@@ -42,7 +42,7 @@ export const ContactList: FC = () => {
         });
 
         let accountId;
-        if (userId === parseInt(contact.firstAccountId, 10)) {
+        if (userId === contact.firstAccountId) {
             accountId = contact.secondAccountId;
         } else {
             accountId = contact.firstAccountId;
