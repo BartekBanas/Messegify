@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import ky from "ky";
 import {AccountClaims} from "../../types/accountClaims";
 import './ChatroomForm.css'
+import {io} from "socket.io-client";
 
 export const ChatroomForm: FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -44,7 +45,7 @@ export const ChatroomForm: FC = () => {
     // useEffect(() => {
     //     fetchData().then()
     // }, [lastMessage])
-
+    //
     // useEffect(() => {
     //     const currentUrl = window.location.href;
     //     const roomId = currentUrl.split('/').pop();
