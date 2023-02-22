@@ -1,16 +1,43 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useGetMessages, useMessageWebSocket} from './api';
 import {Message} from '../../types/message';
 import {Group, MantineProvider, Paper} from '@mantine/core';
-import io from 'socket.io-client';
 import {API_URL} from "../../config";
 import {ContactList} from "../menu/ContactList";
+import Cookies from "js-cookie";
+import ky from "ky";
+import {AccountClaims} from "../../types/accountClaims";
+
+import './ChatroomForm.css'
+
 
 export const ChatroomForm: FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
+    const [userId, setUserId] = useState("");
     const getMessages = useGetMessages();
 
     const lastMessage = useMessageWebSocket();
+
+    async function getUserId() {
+        const token = Cookies.get('auth_token');
+        const authorizedKy = ky.extend({
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        const response = await authorizedKy.get(`${API_URL}/account`).json<AccountClaims>();
+
+        setUserId(response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
+        console.log("response: " + response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
+
+    }
+
+    useEffect(() => {
+
+
+        console.log("User id: " + userId);
+    }, [userId])
 
     async function fetchData() {
         const receivedMessages = await getMessages;
@@ -20,7 +47,9 @@ export const ChatroomForm: FC = () => {
     }
 
     useEffect(() => {
+        getUserId();
         fetchData();
+
     }, [])
 
     // useEffect(() => {
@@ -44,28 +73,29 @@ export const ChatroomForm: FC = () => {
 
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
+            <Group style={{width: '100%', display: 'flex', height: '100%'}}>
+                <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 1, height: '100%'}}>
+                    <ContactList/>
+                </Paper>
 
-            <Group style={{width: '100%'}}>
-                <ContactList/>
+                <Paper shadow="sm" radius="md" p="lg" withBorder
+                       style={{flex: 4, height: '100%'}}>
+                    {messages.map((message) => {
 
-                <div>
-                    {messages.map((message) => (
-                        <Paper
-                            key={message.id}
-                            shadow="sm"
-                            radius="md"
-                            p="lg"
-                            withBorder
-                            style={{
-                                maxWidth: "500px", marginBottom: '15px', float: 'right', clear: 'both'
-                            }}
-                        >
-                            <div>{message.SentDate}</div>
-                            <div>{message.textContent}</div>
-                        </Paper>
-                    ))}
-                </div>
+                        const messageClass = message.accountId === userId ? "my-message" : "not-my-message";
+                        const classes = `${messageClass} message-entry`;
+
+                        return (
+                            <Paper
+                                key={message.id} shadow="sm" radius="md" p="lg" withBorder className={classes}>
+                                <div>{message.SentDate}</div>
+                                <div>{message.textContent}</div>
+                            </Paper>
+                        )
+                    })}
+                </Paper>
             </Group>
+
         </MantineProvider>
     );
 };

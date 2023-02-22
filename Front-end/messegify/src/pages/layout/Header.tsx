@@ -7,7 +7,7 @@ export const Header: FC = () => {
         <header style={{display: 'flex', justifyContent: 'center'}}>
             <MantineProvider theme={{colorScheme: 'dark'}}>
                 <Paper shadow="sm" radius="md" p="lg" withBorder
-                       style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                       style={{width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '15px'}}>
                     <Text color={'#D5D7E0'} sx={{
                         fontSize: 32,
                         lineHeight: 1.4,
