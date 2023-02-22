@@ -9,7 +9,6 @@ interface MenuFormProps {
 export const MenuForm: FC<MenuFormProps> = () => {
     const navigate = useNavigate();
 
-
     return (
         <Group>
             <ContactList/>

@@ -24,7 +24,7 @@ export function useMessageWebSocket() {
     const currentUrl = window.location.href;
     const roomId = currentUrl.split('/').pop();
     const apiUri = process.env.REACT_APP_API_URL;
-    const hostname = new URL('/chatRoom/' + {roomId} + '/message', apiUri).host;
+    const hostname = new URL(`${API_URL}/chatRoom/${roomId}/message`, apiUri).host;
     const endpoint = `wss://${hostname}/ws`;
     const [socketUrl,] = useState(endpoint);
 

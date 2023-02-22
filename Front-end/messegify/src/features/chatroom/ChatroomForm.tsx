@@ -1,44 +1,71 @@
 import React, {FC, useState, useEffect} from 'react';
-import {useGetMessages} from './api';
+import {useGetMessages, useMessageWebSocket} from './api';
 import {Message} from '../../types/message';
-import {MantineProvider, Paper} from '@mantine/core';
+import {Group, MantineProvider, Paper} from '@mantine/core';
 import io from 'socket.io-client';
+import {API_URL} from "../../config";
+import {ContactList} from "../menu/ContactList";
 
 export const ChatroomForm: FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const getMessages = useGetMessages();
 
+    const lastMessage = useMessageWebSocket();
+
+    async function fetchData() {
+        const receivedMessages = await getMessages;
+        setMessages(receivedMessages);
+
+        console.log(receivedMessages);
+    }
+
     useEffect(() => {
-        async function fetchData() {
-            const receivedMessages = await getMessages;
-            setMessages(receivedMessages);
-
-            console.log(receivedMessages);
-        }
-
         fetchData();
-    }, []);
+    }, [])
 
-    useEffect(() => {
-        const socket = io("https://localhost:5000/api"); // adres hosta socket.io
+    // useEffect(() => {
+    //     fetchData().then()
+    // }, [lastMessage])
 
-        socket.on('newMessage', (message: Message) => {
-            setMessages([...messages, message]);
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, [messages]);
+    // useEffect(() => {
+    //     const currentUrl = window.location.href;
+    //     const roomId = currentUrl.split('/').pop();
+    //     const socket = io(API_URL + '/chatRoom/' + {roomId} + '/message'); // adres hosta socket.io
+    //
+    //     socket.on('newMessage', (message: Message) => {
+    //         setMessages([...messages, message]);
+    //         console.log(message);
+    //     });
+    //
+    //     return () => {
+    //         socket.disconnect();
+    //     };
+    // }, [messages]);
 
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
-            {messages.map((message) => (
-                <Paper key={message.id} shadow="sm" radius="md" p="lg" withBorder>
-                    <div>{message.SentDate}</div>
-                    <div>{message.textContent}</div>
-                </Paper>
-            ))}
+
+            <Group style={{width: '100%'}}>
+                <ContactList/>
+
+                <div>
+                    {messages.map((message) => (
+                        <Paper
+                            key={message.id}
+                            shadow="sm"
+                            radius="md"
+                            p="lg"
+                            withBorder
+                            style={{
+                                maxWidth: "500px", marginBottom: '15px', float: 'right', clear: 'both'
+                            }}
+                        >
+                            <div>{message.SentDate}</div>
+                            <div>{message.textContent}</div>
+                        </Paper>
+                    ))}
+                </div>
+            </Group>
         </MantineProvider>
     );
 };
