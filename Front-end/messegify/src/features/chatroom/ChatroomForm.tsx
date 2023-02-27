@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useGetMessages, useMessageWebSocket} from './api';
 import {Message} from '../../types/message';
-import {Group, MantineProvider, Paper, Text} from '@mantine/core';
+import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
 import {API_URL} from "../../config";
 import {ContactList} from "../menu/ContactList";
 import Cookies from "js-cookie";
@@ -94,9 +94,10 @@ export const ChatroomForm: FC = () => {
                                 fontWeight: 'bold',
                                 fontFamily: '"Open Sans", sans-serif'
                             }}>
-                                <div>
-                                    kot
-                                </div>
+                                <Group>
+                                    <TextInput required type="message"/>
+                                    <Button type="submit">Send</Button>
+                                </Group>
                             </Text>
                         </div>
                     </Paper>
