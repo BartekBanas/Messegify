@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 
-interface FooterProps {}
+interface FooterProps {
+}
 
 export const Footer: FC<FooterProps> = ({}) => {
-  return (
-    <div>
+    return (
+        <footer>
         
-    </div>
-  );
+        </footer>
+    );
 };

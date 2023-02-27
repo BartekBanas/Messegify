@@ -7,7 +7,6 @@ import {loginErrorNotification} from "./notifications";
 import {useNavigate} from "react-router-dom";
 import {Paper} from "@mantine/core";
 import {Text} from "@mantine/core";
-//import '../../pages/layout/DarkBackground.css'
 
 export const LoginForm: FC = () => {
     const navigate = useNavigate();
@@ -17,13 +16,14 @@ export const LoginForm: FC = () => {
             Password: ''
         },
     })
+
     const login = useLoginApi();
 
     async function handleSubmit(data: LoginFormDto) {
         try {
             await login(data.UsernameOrEmail, data.Password)
 
-            navigate('/menu');
+            await navigate('/menu');
         } catch (error) {
             loginErrorNotification();
         }

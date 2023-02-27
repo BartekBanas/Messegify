@@ -17,6 +17,7 @@ namespace Messegify.Application.Services;
 
 public interface IAccountService
 {
+    public Task<AccountDto> GetAccountAsync(Guid accountId);
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     public Task ContactAsync(Guid accountAId, Guid accountBId);
@@ -57,6 +58,15 @@ public class AccountService : IAccountService
         _mapper = mapper;
     }
 
+    public async Task<AccountDto> GetAccountAsync(Guid accountId)
+    {
+        var account = await _accountRepository.GetOneRequiredAsync(accountId);
+        
+        var dtos = _mapper.Map<AccountDto>(account);
+        
+        return dtos;
+    }
+    
     public async Task RegisterAccountAsync(RegisterAccountDto registerDto)
     {
         var passwordHash = _hashingService.HashPassword(registerDto.Password);

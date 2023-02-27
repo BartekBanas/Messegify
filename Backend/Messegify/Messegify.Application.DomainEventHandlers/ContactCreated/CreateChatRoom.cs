@@ -30,6 +30,8 @@ public class CreateChatRoom : INotificationHandler<ContactCreatedDomainEvent>
             }
         };
 
+        contact.ContactChatRoom = newChatRoom;
+
         await _chatRoomRepository.CreateAsync(newChatRoom);
     }
 }

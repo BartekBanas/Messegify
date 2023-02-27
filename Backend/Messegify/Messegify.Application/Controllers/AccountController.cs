@@ -1,5 +1,8 @@
 ﻿using Messegify.Application.Dtos;
 using Messegify.Application.Services;
+using Messegify.Domain.Abstractions;
+using Messegify.Domain.Entities;
+using Messegify.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,5 +44,14 @@ public class AccountController : Controller
         var claimsInfo = claims.ToDictionary(claim => claim.Type, claim => claim.Value);
         
         return Task.FromResult<IActionResult>(Ok(claimsInfo));
+    }
+
+    [Authorize]
+    [HttpGet("{targetAccountGuid:guid}")]
+    public async Task<IActionResult> GetAccount([FromRoute] Guid targetAccountGuid)
+    {
+        var user = await _accountService.GetAccountAsync(targetAccountGuid);
+        
+        return Ok(user);
     }
 }

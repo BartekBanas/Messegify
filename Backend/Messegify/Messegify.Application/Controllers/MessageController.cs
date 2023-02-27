@@ -10,8 +10,7 @@ namespace Messegify.Application.Controllers;
 public class MessageController : Controller
 {
     private readonly IMessageRequestHandler _messageRequestHandler;
-
-
+    
     public MessageController(IMessageRequestHandler messageRequestHandler)
     {
         _messageRequestHandler = messageRequestHandler;

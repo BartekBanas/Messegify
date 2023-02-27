@@ -1,0 +1,14 @@
+.message-entry {
+    max-width: 500px;
+    margin-bottom: 15px;
+    clear: both;
+    background-color: #343434;
+}
+
+.my-message {
+    float: right;
+}
+
+.not-my-message {
+    float: left;
+}
