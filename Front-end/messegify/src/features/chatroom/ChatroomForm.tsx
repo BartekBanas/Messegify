@@ -9,12 +9,23 @@ import ky from "ky";
 import {AccountClaims} from "../../types/accountClaims";
 import './ChatroomForm.css'
 import {io} from "socket.io-client";
-import {Link} from "react-router-dom";
+import {useForm} from "@mantine/form";
 
 export const ChatroomForm: FC = () => {
+    const currentUrl = window.location.href;
+    const roomId = currentUrl.split('/').pop();
     const [messages, setMessages] = useState<Message[]>([]);
     const [userId, setUserId] = useState("");
     const getMessages = useGetMessages();
+
+    const form = useForm<Message>({
+        initialValues: {
+            id: '',
+            textContent: '',
+            accountId: '',
+            SentDate: ''
+        },
+    })
 
     const lastMessage = useMessageWebSocket();
 
@@ -48,8 +59,8 @@ export const ChatroomForm: FC = () => {
     // }, [lastMessage])
 
     useEffect(() => {
-        const currentUrl = window.location.href;
-        const roomId = currentUrl.split('/').pop();
+        // const currentUrl = window.location.href;
+        // const roomId = currentUrl.split('/').pop();
         const socket = io("ws://localhost:5000"); // adres hosta socket.io
 
         socket.on('newMessage', (message: Message) => {
@@ -61,6 +72,26 @@ export const ChatroomForm: FC = () => {
             socket.disconnect();
         };
     }, [messages]);
+
+    async function handleSubmit(data: Message) {
+        try {
+            console.log("data = " + data.textContent);
+
+            const token = Cookies.get('auth_token');
+            const authorizedKy = ky.extend({
+                headers: {
+                    authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    textContent: data.textContent
+                })
+            });
+
+            return authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
+        } catch (error) {
+
+        }
+    }
 
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
@@ -94,10 +125,14 @@ export const ChatroomForm: FC = () => {
                                 fontWeight: 'bold',
                                 fontFamily: '"Open Sans", sans-serif'
                             }}>
-                                <Group>
-                                    <TextInput required type="message"/>
-                                    <Button type="submit">Send</Button>
-                                </Group>
+                                <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
+                                    <Group>
+
+                                        <TextInput required type="message" {...form.getInputProps('textContent')}/>
+                                        <Button type="submit">Send</Button>
+
+                                    </Group>
+                                </form>
                             </Text>
                         </div>
                     </Paper>
