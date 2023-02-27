@@ -59,8 +59,6 @@ export const ChatroomForm: FC = () => {
     // }, [lastMessage])
 
     useEffect(() => {
-        // const currentUrl = window.location.href;
-        // const roomId = currentUrl.split('/').pop();
         const socket = io("ws://localhost:5000"); // adres hosta socket.io
 
         socket.on('newMessage', (message: Message) => {
@@ -80,9 +78,8 @@ export const ChatroomForm: FC = () => {
                     <ContactList/>
                 </Paper>
 
-                <div style={{flex: 4, height: '100%'}}>
-                    <Paper shadow="sm" radius="md" p="lg" withBorder
-                           style={{flex: 4, height: '90%'}}>
+                <div style={{flex: 4, height: '100%', maxHeight: "87vh",}}>
+                    <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 4, height: '90%', overflow: 'auto'}}>
                         {messages.map((message) => {
 
                             const messageClass = message.accountId === userId ? "my-message" : "not-my-message";
