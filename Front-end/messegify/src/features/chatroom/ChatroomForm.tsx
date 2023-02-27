@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {useGetMessages, useMessageWebSocket} from './api';
+import {handleSubmit, useGetMessages, useMessageWebSocket} from './api';
 import {Message} from '../../types/message';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
 import {API_URL} from "../../config";
@@ -13,7 +13,7 @@ import {useForm} from "@mantine/form";
 
 export const ChatroomForm: FC = () => {
     const currentUrl = window.location.href;
-    const roomId = currentUrl.split('/').pop();
+    const roomId = currentUrl.split('/').pop() ?? '';
     const [messages, setMessages] = useState<Message[]>([]);
     const [userId, setUserId] = useState("");
     const getMessages = useGetMessages();
@@ -73,28 +73,6 @@ export const ChatroomForm: FC = () => {
         };
     }, [messages]);
 
-    async function handleSubmit(data: Message) {
-        try {
-            console.log("data = " + data.textContent);
-
-            const token = Cookies.get('auth_token');
-            const authorizedKy = ky.extend({
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    textContent: data.textContent
-                })
-            });
-
-            return authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
-        } catch (error) {
-
-        }
-    }
-
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Group style={{width: '100%', display: 'flex', height: '100%'}}>
@@ -127,7 +105,7 @@ export const ChatroomForm: FC = () => {
                                 fontWeight: 'bold',
                                 fontFamily: '"Open Sans", sans-serif'
                             }}>
-                                <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
+                                <form onSubmit={form.onSubmit(values => handleSubmit(values, roomId))}>
                                     <Group>
 
                                         <TextInput required type="message" {...form.getInputProps('textContent')}/>

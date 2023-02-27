@@ -47,3 +47,25 @@ export function useMessageWebSocket() {
         sendJsonMessage
     }
 }
+
+export async function handleSubmit(data: Message, roomId: string) {
+    try {
+        console.log("data = " + data.textContent);
+
+        const token = Cookies.get('auth_token');
+        const authorizedKy = ky.extend({
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                textContent: data.textContent
+            })
+        });
+
+        return authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
+    } catch (error) {
+
+    }
+}
