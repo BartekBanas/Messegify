@@ -80,6 +80,8 @@ export const ChatroomForm: FC = () => {
             const token = Cookies.get('auth_token');
             const authorizedKy = ky.extend({
                 headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
                     authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
