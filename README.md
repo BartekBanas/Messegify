@@ -5,15 +5,15 @@ Complete chatting application allowing for adding contacts, creating chatrooms a
 
 Backend:
 - Rest API
-- .Net Core Framework
+- Entity Framework Core
 - Connection with MySQL database using ORM
 - Authentication and Authorization for users
--  Domain Driven Development
+- Domain Driven Development
+- Data validation
 
 Frontend:
 - Single Page Application
 - Node.js
 - TypeScript
 - React with Mantine library
-- Data validation
 - Message sockets
