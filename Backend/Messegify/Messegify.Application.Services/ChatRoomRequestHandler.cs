@@ -69,11 +69,12 @@ public class ChatRoomRequestHandler : IChatRoomRequestHandler
     public async Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatRooms request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.HttpContext.User.GetId();
-        Expression<Func<ChatRoom, bool>> filer = chatRoom 
+        
+        Expression<Func<ChatRoom, bool>> filter = chatRoom 
             => chatRoom.Members.Any(membership => membership.AccountId == userId);
 
         var chatRooms = await _chatRoomRepository
-            .GetAsync(filer, null, nameof(ChatRoom.Members));
+            .GetAsync(filter, null, nameof(ChatRoom.Members));
 
         var dtos = _mapper.Map<IEnumerable<ChatRoomDto>>(chatRooms);
 

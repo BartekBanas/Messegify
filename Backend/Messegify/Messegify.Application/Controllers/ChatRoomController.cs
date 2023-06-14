@@ -1,5 +1,4 @@
-﻿using Messegify.Application.DomainEventHandlers.ContactCreated;
-using Messegify.Application.Services;
+﻿using Messegify.Application.Services;
 using Messegify.Application.Services.ChatRoomRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
