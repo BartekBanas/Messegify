@@ -1,8 +1,6 @@
-﻿using System.Linq.Expressions;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using AutoMapper;
 using FluentValidation;
-using Messegify.Application.Authorization;
 using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
@@ -11,7 +9,6 @@ using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 
 namespace Messegify.Application.Services;
 
