@@ -79,8 +79,11 @@ public class MessageRequestHandler : IMessageRequestHandler
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
-        var messages = await _messageRepository
-            .GetAsync(message => message.ChatRoomId == request.ChatRoomId);
+    var messages = await _messageRepository
+        .GetAsync(
+            message => message.ChatRoomId == request.ChatRoomId,
+            query => query.OrderBy(message => message.SentDate) // Sent Date ascending
+        );
 
         var dtos = _mapper.Map<IEnumerable<MessageDto>>(messages);
         
