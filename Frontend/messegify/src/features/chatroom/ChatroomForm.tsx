@@ -87,6 +87,17 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
         };
     }, [messages]);
 
+    useEffect(() => {
+        const fetchDataWithDelay = () => {
+            setTimeout(() => {
+                fetchData();
+            }, 1000); // Opóźnienie 5000ms (5 sekund)
+        };
+
+        fetchDataWithDelay();
+    }, [lastMessage]);
+
+
     const handleLogout = () => {
         Cookies.remove('auth_token');
     };
