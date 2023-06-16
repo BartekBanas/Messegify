@@ -2,7 +2,6 @@ import React, {FC, useEffect, useRef, useState} from 'react';
 import {useForm} from '@mantine/form';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
 import {Link} from 'react-router-dom';
-import {io} from 'socket.io-client';
 import {API_URL} from '../../config';
 import {ContactList} from '../menu/ContactList';
 import Cookies from 'js-cookie';
@@ -10,7 +9,7 @@ import ky from 'ky';
 import {AccountClaims} from '../../types/accountClaims';
 import './ChatroomForm.css';
 import {Message} from '../../types/message';
-import {handleSubmit, useGetMessages, useMessageWebSocket} from './api';
+import {handleSubmit, useGetMessages} from './api';
 
 type ChatMessageProps = {
     message: Message;
@@ -38,6 +37,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     const [userId, setUserId] = useState('');
     const getMessages = useGetMessages();
     const messageContainerRef = useRef<HTMLDivElement>(null);
+    const [lastMessage, setLastMessage] = useState<Message | null>(null);
 
     const form = useForm<Message>({
         initialValues: {
@@ -47,8 +47,6 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
             SentDate: '',
         },
     });
-
-    const lastMessage = useMessageWebSocket();
 
     async function getUserId() {
         const token = Cookies.get('auth_token');
@@ -76,24 +74,46 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     }, []);
 
     useEffect(() => {
-        const socket = io('ws://localhost:5000'); // adres hosta socket.io
+        const fetchLastMessage = async () => {
+            try {
+                const token = Cookies.get('auth_token');
+                const authorizedKy = ky.extend({
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        authorization: `Bearer ${token}`
+                    }
+                });
 
-        socket.on('newMessage', (message: Message) => {
-            setMessages([...messages, message]);
-            console.log(message);
-        });
+                const response = await authorizedKy.get(`${API_URL}/chatRoom/${roomId}/message/list`).json<Message[]>();
+                if (response.length > 0) {
+                    const latestMessage = response[response.length - 1];
+                    if (latestMessage.id !== lastMessage?.id) {
+                        setLastMessage(latestMessage);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching last message:', error);
+            }
+        };
+
+        const interval = setInterval(fetchLastMessage, 1000);
 
         return () => {
-            socket.disconnect();
+            clearInterval(interval);
         };
-    }, [messages]);
+    }, [roomId, lastMessage]);
 
     useEffect(() => {
-        const fetchDataWithDelay = () => {
-            setTimeout(() => {
-                fetchData();
-                scrollToBottom();
-            }, 1000);
+        const fetchDataWithDelay = async () => {
+            try {
+                await fetchData();
+                setTimeout(() => {
+                    scrollToBottom();
+                }, 100);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         };
 
         fetchDataWithDelay();
