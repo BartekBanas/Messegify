@@ -10,6 +10,7 @@ import {AccountClaims} from "../../types/accountClaims";
 import './ChatroomForm.css'
 import {io} from "socket.io-client";
 import {useForm} from "@mantine/form";
+import {Link} from "react-router-dom";
 
 export const ChatroomForm: FC = () => {
     const currentUrl = window.location.href;
@@ -71,6 +72,10 @@ export const ChatroomForm: FC = () => {
         };
     }, [messages]);
 
+    const handleLogout = () => {
+        Cookies.remove('auth_token');
+    };
+
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Group style={{width: '100%', display: 'flex', height: '100%'}}>
@@ -104,10 +109,20 @@ export const ChatroomForm: FC = () => {
                             }}>
                                 <form onSubmit={form.onSubmit(values => handleSubmit(values, roomId))}>
                                     <Group>
+                                        <TextInput required type="message"
+                                                   {...form.getInputProps('textContent')}
+                                                   style={{width: '300px'}}/>
 
-                                        <TextInput required type="message" {...form.getInputProps('textContent')}/>
-                                        <Button type="submit">Send</Button>
+                                        <Button type="submit"> Send </Button>
 
+                                        <div style={{marginLeft: 'auto'}}>
+                                            <Link to="/menu">
+                                                <Button variant="gradient"
+                                                        gradient={{from: 'teal', to: 'lime', deg: 105}}>
+                                                    Menu
+                                                </Button>
+                                            </Link>
+                                        </div>
                                     </Group>
                                 </form>
                             </Text>
