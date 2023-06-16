@@ -20,7 +20,7 @@ Chatting application allowing for adding contacts, creating chatrooms as well as
 
 ## Overview of the application
 - Login page
-[Imgur](https://i.imgur.com/2UD6lmp.png)
+![image](https://github.com/BartekBanas/Messegify/assets/56255827/ab91b6f6-a429-476f-8cdc-9a087fd586cb)
 
 - Chatroom page
-[Imgur](https://i.imgur.com/5f5eISY.png)
+![image](https://github.com/BartekBanas/Messegify/assets/56255827/5663d27f-bd11-42f4-b577-26849c065af9)
