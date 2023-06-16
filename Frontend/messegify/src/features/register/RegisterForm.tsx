@@ -21,7 +21,7 @@ export const RegisterForm: FC = () => {
         try {
             await register(data.Username, data.Password, data.Email);
 
-            
+
             navigate('/login');
         } catch (error) {
             RegisterErrorNotification();
@@ -32,14 +32,14 @@ export const RegisterForm: FC = () => {
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <div>
                 <div style={{marginBottom: "30px"}}>
-                    <Paper shadow="sm" radius="md" p="lg">
+                    <Paper shadow="sm" radius="md" p="lg" style={{textAlign: 'center', width: '300px'}}>
                         <Text color={'#D5D7E0'} sx={{
                             fontSize: 32,
                             lineHeight: 1.4,
                             fontWeight: 'bold',
                             fontFamily: '"Open Sans", sans-serif'
                         }}>
-                            Registration Page
+                            Messegify
                         </Text>
                     </Paper>
                 </div>
