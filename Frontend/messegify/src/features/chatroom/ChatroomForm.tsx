@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {useForm} from '@mantine/form';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
 import {Link} from 'react-router-dom';
@@ -37,6 +37,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [userId, setUserId] = useState('');
     const getMessages = useGetMessages();
+    const messageContainerRef = useRef<HTMLDivElement>(null);
 
     const form = useForm<Message>({
         initialValues: {
@@ -91,15 +92,20 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
         const fetchDataWithDelay = () => {
             setTimeout(() => {
                 fetchData();
-            }, 1000); // Opóźnienie 5000ms (5 sekund)
+                scrollToBottom();
+            }, 1000);
         };
 
         fetchDataWithDelay();
     }, [lastMessage]);
 
-
-    const handleLogout = () => {
-        Cookies.remove('auth_token');
+    const scrollToBottom = () => {
+        if (messageContainerRef.current) {
+            messageContainerRef.current.scrollTo({
+                top: messageContainerRef.current.scrollHeight,
+                behavior: 'smooth',
+            });
+        }
     };
 
     return (
@@ -110,7 +116,8 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                 </Paper>
 
                 <div style={{flex: 4, height: '100%', maxHeight: '87vh'}}>
-                    <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 4, height: '90%', overflow: 'auto'}}>
+                    <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 4, height: '90%', overflow: 'auto'}}
+                           ref={messageContainerRef}>
                         {messages.map((message) => (
                             <ChatMessage key={message.id} message={message} userId={userId}/>
                         ))}
