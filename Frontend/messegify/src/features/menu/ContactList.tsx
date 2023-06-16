@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import {AccountClaims} from "../../types/accountClaims";
 import {MantineProvider, Paper, Text} from "@mantine/core";
 
-export const ContactList: FC = () => {
+export const ContactList: FC = React.memo(() => {
     const [contacts, setContacts] = React.useState<Contact[]>([]);
     const [friendsNames, setFriendsNames] = React.useState<{ [id: string]: string }>({});
 
@@ -98,4 +98,4 @@ export const ContactList: FC = () => {
             </React.Suspense>
         </ul>
     );
-};
+});
