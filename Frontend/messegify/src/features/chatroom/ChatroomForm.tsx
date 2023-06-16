@@ -126,7 +126,10 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                                     fontFamily: '"Open Sans", sans-serif',
                                 }}
                             >
-                                <form onSubmit={form.onSubmit((values) => handleSubmit(values, roomId))}>
+                                <form onSubmit={form.onSubmit((values) => {
+                                    handleSubmit(values, roomId);
+                                    form.reset();
+                                })}>
                                     <Group>
                                         <TextInput required type="message" {...form.getInputProps('textContent')}
                                                    style={{width: '300px'}}/>
