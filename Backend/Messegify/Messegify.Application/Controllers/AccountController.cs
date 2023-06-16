@@ -1,8 +1,5 @@
 ﻿using Messegify.Application.Dtos;
 using Messegify.Application.Services;
-using Messegify.Domain.Abstractions;
-using Messegify.Domain.Entities;
-using Messegify.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

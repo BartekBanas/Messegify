@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Messegify.Application;
@@ -15,7 +14,6 @@ using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Infrastructure;
 using Messegify.Infrastructure.Repositories;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;

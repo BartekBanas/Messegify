@@ -30,7 +30,6 @@ public class MessageRequestHandler : IMessageRequestHandler
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-
     public MessageRequestHandler(IRepository<ChatRoom> chatRoomRepository,
         IRepository<Account> accountRepository,
         IRepository<Message> messageRepository,
@@ -50,7 +49,7 @@ public class MessageRequestHandler : IMessageRequestHandler
     {
         var user = _httpContextAccessor.HttpContext.User;
 
-        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(x => x.Id == request.ChatRoomId, 
+        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId, 
             nameof(ChatRoom.Members));
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
@@ -75,13 +74,16 @@ public class MessageRequestHandler : IMessageRequestHandler
     {
         var user = _httpContextAccessor.HttpContext.User;
 
-        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(x => x.Id == request.ChatRoomId, 
+        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId, 
             nameof(ChatRoom.Members));
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
-        var messages = await _messageRepository
-            .GetAsync(message => message.ChatRoomId == request.ChatRoomId);
+    var messages = await _messageRepository
+        .GetAsync(
+            message => message.ChatRoomId == request.ChatRoomId,
+            query => query.OrderBy(message => message.SentDate) // Sent Date ascending
+        );
 
         var dtos = _mapper.Map<IEnumerable<MessageDto>>(messages);
         

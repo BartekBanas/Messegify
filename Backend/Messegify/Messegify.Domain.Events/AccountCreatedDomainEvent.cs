@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Messegify.Domain.Abstractions;
+﻿using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 
 namespace Messegify.Domain.Events;
