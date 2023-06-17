@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useNavigate} from "react-router-dom";
-import {Button, Group, MantineProvider, Paper, Stack, Text, TextInput} from "@mantine/core";
+import {Group, MantineProvider, Paper, Text} from "@mantine/core";
 import {ContactList} from "./ContactList";
 
 interface MenuFormProps {

@@ -4,7 +4,6 @@ import {API_URL} from "../../config";
 import {Message} from "../../types/message";
 import {useState} from "react";
 import useWebSocket from "react-use-websocket";
-import {AccountClaims} from "../../types/accountClaims";
 
 export function useGetMessages() {
     const currentUrl = window.location.href;

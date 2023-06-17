@@ -51,7 +51,6 @@ export const LoginForm: FC = () => {
                             <TextInput required type="email" label="Email" {...form.getInputProps('UsernameOrEmail')}/>
                             <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
                             <Button type="submit">Login</Button>
-
                         </Stack>
                     </form>
                 </Paper>

@@ -49,14 +49,12 @@ export const ContactList: FC = React.memo(() => {
         }
 
         if (friendsNames[accountId]) {
-            // jeśli imię znajduje się już w pamięci, zwróć je
             return friendsNames[accountId];
         }
 
         const response = await authorizedKy.get(`${API_URL}/account/${accountId}`).json<Account>();
         const name = response.name;
 
-        // dodaj imię do pamięci i zwróć je
         setFriendsNames({...friendsNames, [accountId]: name});
         return name;
     }
