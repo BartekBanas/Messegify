@@ -7,7 +7,6 @@ using Messegify.Application.Service.Extensions;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 namespace Messegify.Application.Services;
@@ -29,7 +28,6 @@ public class AccountService : IAccountService
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
     private readonly IJwtService _jwtService;
-    private readonly IAuthorizationService _authorizationService;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -40,8 +38,7 @@ public class AccountService : IAccountService
         IHashingService hashingService,
         IValidator<Account> validator, 
         IJwtService jwtService, 
-        IRepository<Contact> contactRepository, 
-        IAuthorizationService authorizationService, 
+        IRepository<Contact> contactRepository,
         IHttpContextAccessor httpContextAccessor, 
         IMapper mapper)
     {
@@ -50,7 +47,6 @@ public class AccountService : IAccountService
         _validator = validator;
         _jwtService = jwtService;
         _contactRepository = contactRepository;
-        _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
     }
@@ -123,7 +119,7 @@ public class AccountService : IAccountService
         var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
         
         var contacts = await _contactRepository
-            .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
+            .GetAsync(contact => contact.FirstAccountId == accountId || contact.SecondAccountId == accountId);
 
         var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
         
