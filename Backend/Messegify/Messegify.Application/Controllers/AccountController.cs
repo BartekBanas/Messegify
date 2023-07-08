@@ -21,7 +21,7 @@ public class AccountController : Controller
     {
         await _accountService.RegisterAccountAsync(dto);
 
-        return Ok();    //  Could be entirely long, just don't want the error for now
+        return Ok();
     }
     
     [HttpPost("authenticate")]
