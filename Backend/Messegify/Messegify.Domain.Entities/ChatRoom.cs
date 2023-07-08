@@ -21,5 +21,5 @@ public class ChatRoom : Entity
 public enum ChatRoomType
 {
     Direct,
-    Normal
+    Regular
 }
