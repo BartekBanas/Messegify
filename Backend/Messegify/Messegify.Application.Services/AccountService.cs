@@ -13,11 +13,12 @@ namespace Messegify.Application.Services;
 
 public interface IAccountService
 {
-    public Task<AccountDto> GetAccountAsync(Guid accountId);
+    Task<AccountDto> GetAccountAsync(Guid accountId);
+    Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
-    public Task ContactAsync(Guid accountAId, Guid accountBId);
-    public Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
+    Task ContactAsync(Guid accountAId, Guid accountBId);
+    Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
 
 public class AccountService : IAccountService
@@ -57,6 +58,15 @@ public class AccountService : IAccountService
 
         var dtos = _mapper.Map<AccountDto>(account);
 
+        return dtos;
+    }
+
+    public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync()
+    {
+        var accounts = await _accountRepository.GetAllAsync();
+
+        var dtos = _mapper.Map<IEnumerable<AccountDto>>(accounts);
+    
         return dtos;
     }
 
