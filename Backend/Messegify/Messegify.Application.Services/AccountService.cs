@@ -24,7 +24,7 @@ public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
     private readonly IRepository<Contact> _contactRepository;
-    
+
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
     private readonly IJwtService _jwtService;
@@ -35,18 +35,18 @@ public class AccountService : IAccountService
 
     public AccountService(
         IRepository<Account> accountRepository, 
-        IHashingService hashingService,
-        IValidator<Account> validator, 
-        IJwtService jwtService, 
         IRepository<Contact> contactRepository,
+        IHashingService hashingService, 
+        IValidator<Account> validator, 
+        IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor, 
         IMapper mapper)
     {
         _accountRepository = accountRepository;
+        _contactRepository = contactRepository;
         _hashingService = hashingService;
         _validator = validator;
         _jwtService = jwtService;
-        _contactRepository = contactRepository;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
     }
@@ -54,12 +54,12 @@ public class AccountService : IAccountService
     public async Task<AccountDto> GetAccountAsync(Guid accountId)
     {
         var account = await _accountRepository.GetOneRequiredAsync(accountId);
-        
+
         var dtos = _mapper.Map<AccountDto>(account);
-        
+
         return dtos;
     }
-    
+
     public async Task RegisterAccountAsync(RegisterAccountDto registerDto)
     {
         var passwordHash = _hashingService.HashPassword(registerDto.Password);
