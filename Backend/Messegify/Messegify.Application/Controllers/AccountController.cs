@@ -44,10 +44,10 @@ public class AccountController : Controller
     }
 
     [Authorize]
-    [HttpGet("{targetAccountGuid:guid}")]
-    public async Task<IActionResult> GetAccount([FromRoute] Guid targetAccountGuid)
+    [HttpGet("{accountGuid:guid}")]
+    public async Task<IActionResult> GetAccount([FromRoute] Guid accountGuid)
     {
-        var user = await _accountService.GetAccountAsync(targetAccountGuid);
+        var user = await _accountService.GetAccountAsync(accountGuid);
         
         return Ok(user);
     }
