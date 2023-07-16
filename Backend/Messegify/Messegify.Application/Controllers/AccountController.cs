@@ -32,6 +32,14 @@ public class AccountController : Controller
         return Ok(token);
     }
     
+    [HttpGet]
+    public async Task<IActionResult> GetAllAccounts()
+    {
+        var accountDtos = await _accountService.GetAllAccountsAsync();
+        
+        return Ok(accountDtos);
+    }
+    
     [Authorize]
     [HttpGet("authorized")]
     public Task<IActionResult> Me()
