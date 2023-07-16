@@ -56,7 +56,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
             },
         });
 
-        const response = await authorizedKy.get(`${API_URL}/account/authorized`).json<AccountClaims>();
+        const response = await authorizedKy.get(`${API_URL}/account/me`).json<AccountClaims>();
 
         setUserId(response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
     }

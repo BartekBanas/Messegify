@@ -25,7 +25,7 @@ export const ContactList: FC = React.memo(() => {
             }
         });
 
-        const response = await authorizedKy.get(`${API_URL}/account/authorized`).json<AccountClaims>();
+        const response = await authorizedKy.get(`${API_URL}/account/me`).json<AccountClaims>();
         const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
 
         return userId;
