@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {useNavigate} from "react-router-dom";
 import {Group} from "@mantine/core";
 import {ContactList} from "./ContactList";
-import {ContactMaker} from "../contactMaker/AccountSelector";
+import {ContactMaker} from "../contactMaker/ContactMaker";
 
 interface MenuFormProps {
 }
