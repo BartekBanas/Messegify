@@ -1,14 +1,29 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Contact} from "../../types/contact";
 import {listContacts} from "./api";
 import {ContactItem} from "../chatroom/ContactItem";
 
 export const ContactList: FC = React.memo(() => {
-    const [contacts, setContacts] = React.useState<Contact[]>([]);
+    const [contacts, setContacts] = useState<Contact[]>([]);
 
     useEffect(() => {
-        listContacts().then((data) => setContacts(data));
+        fetchContacts();
+
+        const interval = setInterval(() => {
+            fetchContacts();
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, []);
+
+    async function fetchContacts() {
+        try {
+            const data = await listContacts();
+            setContacts(data);
+        } catch (error) {
+            console.error('Error fetching contacts:', error);
+        }
+    }
 
     return (
         <ul>
