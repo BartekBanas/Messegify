@@ -6,9 +6,10 @@ import {API_URL} from '../../config';
 import {ContactList} from '../menu/ContactList';
 import Cookies from 'js-cookie';
 import ky from 'ky';
+import {AccountClaims} from '../../types/accountClaims';
 import './ChatroomForm.css';
 import {Message} from '../../types/message';
-import {getUserId, handleSubmit, useGetMessages} from './api';
+import {handleSubmit, useGetMessages} from './api';
 import {MenuButton} from "./MenuButton";
 
 type ChatMessageProps = {
@@ -50,6 +51,19 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
         },
     });
 
+    async function updateUserId() {
+        const token = Cookies.get('auth_token');
+        const authorizedKy = ky.extend({
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        });
+
+        const response = await authorizedKy.get(`${API_URL}/account/me`).json<AccountClaims>();
+
+        setUserId(response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
+    }
+
     async function fetchData() {
         const receivedMessages = await getMessages;
         setMessages(receivedMessages);
@@ -58,7 +72,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     }
 
     useEffect(() => {
-        getUserId();
+        updateUserId();
         fetchData();
     }, [roomId]);
 
