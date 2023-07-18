@@ -4,30 +4,34 @@ import ky from 'ky';
 import {API_URL} from '../../config';
 import Cookies from 'js-cookie';
 import {Account} from "../../types/account";
+import {Contact} from "../../types/contact";
+import {listContacts} from "../menu/api";
 
 export const AccountSelector: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
+    const [contacts, setContacts] = useState<Contact[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>('');
 
     useEffect(() => {
-        const fetchAccounts = async () => {
-            try {
-                const response = await ky.get(`${API_URL}/account`).json<Account[]>();
-                setAccounts(response);
-            } catch (error) {
-                console.error('Error fetching accounts:', error);
-            }
-        };
-
         fetchAccounts();
+        fetchContacts();
     }, []);
+
+    const fetchAccounts = async () => {
+        try {
+            const response = await ky.get(`${API_URL}/account`).json<Account[]>();
+            setAccounts(response);
+        } catch (error) {
+            console.error('Error fetching accounts:', error);
+        }
+    };
 
     const handleAccountClick = async (accountId: string) => {
         const token = Cookies.get('auth_token');
         const authorizedKy = ky.extend({
             headers: {
-                authorization: `Bearer ${token}`
-            }
+                authorization: `Bearer ${token}`,
+            },
         });
 
         try {
@@ -37,8 +41,25 @@ export const AccountSelector: FC = () => {
         }
     };
 
-    const filteredAccounts = accounts.filter((account) =>
-        account.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const fetchContacts = async () => {
+        try {
+            const response = await listContacts();
+            setContacts(response);
+        } catch (error) {
+            console.error('Error fetching contacts:', error);
+        }
+    };
+
+    const contactIds = contacts.reduce((acc, contact) => {
+        acc.add(contact.firstAccountId);
+        acc.add(contact.secondAccountId);
+        return acc;
+    }, new Set<string>());
+
+    const filteredAccounts = accounts.filter(
+        (account) =>
+            account.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+            !contactIds.has(account.id)
     );
 
     return (
@@ -54,10 +75,7 @@ export const AccountSelector: FC = () => {
                     <ul>
                         {filteredAccounts.map((account) => (
                             <li key={account.id} style={{marginBottom: '0.5rem'}}>
-                                <Button
-                                    variant="light"
-                                    onClick={() => handleAccountClick(account.id)}
-                                >
+                                <Button variant="light" onClick={() => handleAccountClick(account.id)}>
                                     {account.name}
                                 </Button>
                             </li>
