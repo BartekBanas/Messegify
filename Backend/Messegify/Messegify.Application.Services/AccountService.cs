@@ -18,6 +18,7 @@ public interface IAccountService
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     Task ContactAsync(Guid accountAId, Guid accountBId);
+    Task DeleteAccountAsync(Guid accountId);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
 
@@ -25,6 +26,7 @@ public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
     private readonly IRepository<Contact> _contactRepository;
+    private readonly IRepository<ChatRoom> _chatroomRepository;
 
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
@@ -37,6 +39,7 @@ public class AccountService : IAccountService
     public AccountService(
         IRepository<Account> accountRepository, 
         IRepository<Contact> contactRepository,
+        IRepository<ChatRoom> chatroomRepository,
         IHashingService hashingService, 
         IValidator<Account> validator, 
         IJwtService jwtService,
@@ -50,6 +53,7 @@ public class AccountService : IAccountService
         _jwtService = jwtService;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
+        _chatroomRepository = chatroomRepository;
     }
 
     public async Task<AccountDto> GetAccountAsync(Guid accountId)
@@ -134,6 +138,21 @@ public class AccountService : IAccountService
         var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
         
         return dtos;
+    }
+
+    public async Task DeleteAccountAsync(Guid accountId)
+    {
+        var contacts = await GetContactsAsync(accountId);
+
+        foreach (var contact in contacts)
+        {
+            await _contactRepository.DeleteAsync(contact.Id);
+            await _chatroomRepository.DeleteAsync(contact.ContactChatRoomId);
+        }
+        
+        await _accountRepository.DeleteAsync(accountId);
+
+        await _contactRepository.SaveChangesAsync();
     }
 
     private ClaimsIdentity GenerateClaimsIdentity(Account account)
