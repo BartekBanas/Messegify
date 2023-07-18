@@ -48,10 +48,10 @@ export const LoginForm: FC = () => {
                 <Paper shadow="sm" radius="md" p="lg" withBorder>
                     <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
                         <Stack spacing="md">
-                            <TextInput required type="email" label="Email" {...form.getInputProps('UsernameOrEmail')}/>
+                            <TextInput required type="text"
+                                       label="Username or Email" {...form.getInputProps('UsernameOrEmail')}/>
                             <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
                             <Button type="submit">Login</Button>
-
                         </Stack>
                     </form>
                 </Paper>

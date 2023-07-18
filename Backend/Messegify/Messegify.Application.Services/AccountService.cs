@@ -7,29 +7,30 @@ using Messegify.Application.Service.Extensions;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 namespace Messegify.Application.Services;
 
 public interface IAccountService
 {
-    public Task<AccountDto> GetAccountAsync(Guid accountId);
+    Task<AccountDto> GetAccountAsync(Guid accountId);
+    Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
-    public Task ContactAsync(Guid accountAId, Guid accountBId);
-    public Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
+    Task ContactAsync(Guid accountAId, Guid accountBId);
+    Task DeleteAccountAsync(Guid accountId);
+    Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
 
 public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
     private readonly IRepository<Contact> _contactRepository;
-    
+    private readonly IRepository<ChatRoom> _chatroomRepository;
+
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
     private readonly IJwtService _jwtService;
-    private readonly IAuthorizationService _authorizationService;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -37,33 +38,42 @@ public class AccountService : IAccountService
 
     public AccountService(
         IRepository<Account> accountRepository, 
-        IHashingService hashingService,
+        IRepository<Contact> contactRepository,
+        IRepository<ChatRoom> chatroomRepository,
+        IHashingService hashingService, 
         IValidator<Account> validator, 
-        IJwtService jwtService, 
-        IRepository<Contact> contactRepository, 
-        IAuthorizationService authorizationService, 
+        IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor, 
         IMapper mapper)
     {
         _accountRepository = accountRepository;
+        _contactRepository = contactRepository;
         _hashingService = hashingService;
         _validator = validator;
         _jwtService = jwtService;
-        _contactRepository = contactRepository;
-        _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
+        _chatroomRepository = chatroomRepository;
     }
 
     public async Task<AccountDto> GetAccountAsync(Guid accountId)
     {
         var account = await _accountRepository.GetOneRequiredAsync(accountId);
-        
+
         var dtos = _mapper.Map<AccountDto>(account);
-        
+
         return dtos;
     }
+
+    public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync()
+    {
+        var accounts = await _accountRepository.GetAllAsync();
+
+        var dtos = _mapper.Map<IEnumerable<AccountDto>>(accounts);
     
+        return dtos;
+    }
+
     public async Task RegisterAccountAsync(RegisterAccountDto registerDto)
     {
         var passwordHash = _hashingService.HashPassword(registerDto.Password);
@@ -123,11 +133,26 @@ public class AccountService : IAccountService
         var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
         
         var contacts = await _contactRepository
-            .GetAsync(x => x.FirstAccountId == accountId || x.SecondAccountId == accountId);
+            .GetAsync(contact => contact.FirstAccountId == accountId || contact.SecondAccountId == accountId);
 
         var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
         
         return dtos;
+    }
+
+    public async Task DeleteAccountAsync(Guid accountId)
+    {
+        var contacts = await GetContactsAsync(accountId);
+
+        foreach (var contact in contacts)
+        {
+            await _contactRepository.DeleteAsync(contact.Id);
+            await _chatroomRepository.DeleteAsync(contact.ContactChatRoomId);
+        }
+        
+        await _accountRepository.DeleteAsync(accountId);
+
+        await _contactRepository.SaveChangesAsync();
     }
 
     private ClaimsIdentity GenerateClaimsIdentity(Account account)

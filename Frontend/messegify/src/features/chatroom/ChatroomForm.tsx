@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {useForm} from '@mantine/form';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
-import {Link} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {API_URL} from '../../config';
 import {ContactList} from '../menu/ContactList';
 import Cookies from 'js-cookie';
@@ -10,6 +10,7 @@ import {AccountClaims} from '../../types/accountClaims';
 import './ChatroomForm.css';
 import {Message} from '../../types/message';
 import {handleSubmit, useGetMessages} from './api';
+import {MenuButton} from "./MenuButton";
 
 type ChatMessageProps = {
     message: Message;
@@ -39,6 +40,8 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const [lastMessage, setLastMessage] = useState<Message | null>(null);
 
+    const location = useLocation();
+
     const form = useForm<Message>({
         initialValues: {
             id: '',
@@ -48,7 +51,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
         },
     });
 
-    async function getUserId() {
+    async function updateUserId() {
         const token = Cookies.get('auth_token');
         const authorizedKy = ky.extend({
             headers: {
@@ -56,7 +59,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
             },
         });
 
-        const response = await authorizedKy.get(`${API_URL}/account`).json<AccountClaims>();
+        const response = await authorizedKy.get(`${API_URL}/account/me`).json<AccountClaims>();
 
         setUserId(response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid']);
     }
@@ -69,9 +72,13 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     }
 
     useEffect(() => {
-        getUserId();
+        updateUserId();
         fetchData();
-    }, []);
+    }, [roomId]);
+
+    useEffect(() => {
+        fetchData();
+    }, [location]);
 
     useEffect(() => {
         const fetchLastMessage = async () => {
@@ -164,12 +171,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                                         <Button type="submit"> Send </Button>
 
                                         <div style={{marginLeft: 'auto'}}>
-                                            <Link to="/menu">
-                                                <Button variant="gradient"
-                                                        gradient={{from: 'teal', to: 'lime', deg: 105}}>
-                                                    Menu
-                                                </Button>
-                                            </Link>
+                                            <MenuButton/>
                                         </div>
                                     </Group>
                                 </form>

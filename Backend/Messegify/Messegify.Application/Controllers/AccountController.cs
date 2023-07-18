@@ -21,7 +21,7 @@ public class AccountController : Controller
     {
         await _accountService.RegisterAccountAsync(dto);
 
-        return Ok();    //  Could be entirely long, just don't want the error for now
+        return Ok();
     }
     
     [HttpPost("authenticate")]
@@ -32,8 +32,16 @@ public class AccountController : Controller
         return Ok(token);
     }
     
+    [HttpGet]
+    public async Task<IActionResult> GetAllAccounts()
+    {
+        var accountDtos = await _accountService.GetAllAccountsAsync();
+        
+        return Ok(accountDtos);
+    }
+    
     [Authorize]
-    [HttpGet()]
+    [HttpGet("me")]
     public Task<IActionResult> Me()
     {
         var claims = User.Claims;
@@ -44,10 +52,10 @@ public class AccountController : Controller
     }
 
     [Authorize]
-    [HttpGet("{targetAccountGuid:guid}")]
-    public async Task<IActionResult> GetAccount([FromRoute] Guid targetAccountGuid)
+    [HttpGet("{accountGuid:guid}")]
+    public async Task<IActionResult> GetAccount([FromRoute] Guid accountGuid)
     {
-        var user = await _accountService.GetAccountAsync(targetAccountGuid);
+        var user = await _accountService.GetAccountAsync(accountGuid);
         
         return Ok(user);
     }

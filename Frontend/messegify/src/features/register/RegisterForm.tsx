@@ -20,8 +20,6 @@ export const RegisterForm: FC = () => {
     async function handleSubmit(data: RegisterFormType) {
         try {
             await register(data.Username, data.Password, data.Email);
-
-
             navigate('/login');
         } catch (error) {
             RegisterErrorNotification();

@@ -21,7 +21,7 @@ public class ContactController : Controller
     [HttpPost("{targetAccountGuid:guid}")]
     public async Task<IActionResult> Friend([FromRoute] Guid targetAccountGuid)
     {
-        var senderGuid = Guid.Parse(User.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value);
+        var senderGuid = Guid.Parse(User.Claims.First(claim => claim.Type == ClaimTypes.PrimarySid).Value);
 
         await _accountService.ContactAsync(senderGuid, targetAccountGuid);
 
@@ -29,7 +29,7 @@ public class ContactController : Controller
     }
     
     [Authorize]
-    [HttpGet("list")]
+    [HttpGet]
     public async Task<IActionResult> GetFriends()
     {
         var accountGuid = User.GetId();
