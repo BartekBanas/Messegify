@@ -4,6 +4,7 @@ import {API_URL} from "../../config";
 import {Message} from "../../types/message";
 import {useState} from "react";
 import useWebSocket from "react-use-websocket";
+import {AccountClaims} from "../../types/accountClaims";
 
 export function useGetMessages() {
     const currentUrl = window.location.href;
@@ -67,4 +68,18 @@ export async function handleSubmit(data: Message, roomId: string) {
     } catch (error) {
 
     }
+}
+
+export async function getUserId() {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            authorization: `Bearer ${token}`,
+        },
+    });
+
+    const response = await authorizedKy.get(`${API_URL}/account/me`).json<AccountClaims>();
+    const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
+
+    return userId;
 }

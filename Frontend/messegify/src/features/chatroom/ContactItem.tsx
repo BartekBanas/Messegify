@@ -6,7 +6,7 @@ import {API_URL} from '../../config';
 import ky from 'ky';
 import Cookies from 'js-cookie';
 import {Account} from '../../types/account';
-import {AccountClaims} from '../../types/accountClaims';
+import {getUserId} from "./api";
 
 export const ContactItem: FC<{ contact: Contact }> = ({contact}) => {
     const [name, setName] = React.useState<string | null>(null);
@@ -15,20 +15,6 @@ export const ContactItem: FC<{ contact: Contact }> = ({contact}) => {
     useEffect(() => {
         getFriendsName(contact).then(setName);
     }, [contact]);
-
-    async function getUserId() {
-        const token = Cookies.get('auth_token');
-        const authorizedKy = ky.extend({
-            headers: {
-                authorization: `Bearer ${token}`,
-            },
-        });
-
-        const response = await authorizedKy.get(`${API_URL}/account/me`).json<AccountClaims>();
-        const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
-
-        return userId;
-    }
 
     async function getFriendsName(contact: Contact): Promise<string> {
         const userId = await getUserId();
