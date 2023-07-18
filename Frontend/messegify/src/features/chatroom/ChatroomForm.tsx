@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {useForm} from '@mantine/form';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
-import {Link} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {API_URL} from '../../config';
 import {ContactList} from '../menu/ContactList';
 import Cookies from 'js-cookie';
@@ -40,6 +40,8 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const [lastMessage, setLastMessage] = useState<Message | null>(null);
 
+    const location = useLocation();
+
     const form = useForm<Message>({
         initialValues: {
             id: '',
@@ -72,7 +74,11 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     useEffect(() => {
         getUserId();
         fetchData();
-    }, []);
+    }, [roomId]);
+
+    useEffect(() => {
+        fetchData();
+    }, [location]);
 
     useEffect(() => {
         const fetchLastMessage = async () => {
