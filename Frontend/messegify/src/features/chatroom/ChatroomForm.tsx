@@ -10,6 +10,7 @@ import {AccountClaims} from '../../types/accountClaims';
 import './ChatroomForm.css';
 import {Message} from '../../types/message';
 import {handleSubmit, useGetMessages} from './api';
+import {MenuButton} from "./MenuButton";
 
 type ChatMessageProps = {
     message: Message;
@@ -164,12 +165,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                                         <Button type="submit"> Send </Button>
 
                                         <div style={{marginLeft: 'auto'}}>
-                                            <Link to="/menu">
-                                                <Button variant="gradient"
-                                                        gradient={{from: 'teal', to: 'lime', deg: 105}}>
-                                                    Menu
-                                                </Button>
-                                            </Link>
+                                            <MenuButton/>
                                         </div>
                                     </Group>
                                 </form>
