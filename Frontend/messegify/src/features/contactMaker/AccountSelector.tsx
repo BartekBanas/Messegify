@@ -50,10 +50,10 @@ export const AccountSelector: FC = () => {
         }
     };
 
-    const contactIds = contacts.reduce((acc, contact) => {
-        acc.add(contact.firstAccountId);
-        acc.add(contact.secondAccountId);
-        return acc;
+    const contactIds = contacts.reduce((contactedAccounts, contact) => {
+        contactedAccounts.add(contact.firstAccountId);
+        contactedAccounts.add(contact.secondAccountId);
+        return contactedAccounts;
     }, new Set<string>());
 
     const filteredAccounts = accounts.filter(
@@ -71,7 +71,7 @@ export const AccountSelector: FC = () => {
                     onChange={(event) => setSearchQuery(event.currentTarget.value)}
                     style={{marginBottom: '1rem'}}
                 />
-                {searchQuery.length > 0 ? (
+                {searchQuery.length > 0 && (
                     <ul>
                         {filteredAccounts.map((account) => (
                             <li key={account.id} style={{marginBottom: '0.5rem'}}>
@@ -81,8 +81,6 @@ export const AccountSelector: FC = () => {
                             </li>
                         ))}
                     </ul>
-                ) : (
-                    <div></div>
                 )}
             </Paper>
         </MantineProvider>
