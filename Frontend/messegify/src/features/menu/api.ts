@@ -15,5 +15,5 @@ export const listContacts = () => {
         }
     });
 
-    return authorizedKy.get(`${API_URL}/contact/list`).json<Contact[]>();
+    return authorizedKy.get(`${API_URL}/contact`).json<Contact[]>();
 }

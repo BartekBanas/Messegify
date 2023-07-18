@@ -29,7 +29,7 @@ public class ContactController : Controller
     }
     
     [Authorize]
-    [HttpGet("list")]
+    [HttpGet]
     public async Task<IActionResult> GetFriends()
     {
         var accountGuid = User.GetId();
