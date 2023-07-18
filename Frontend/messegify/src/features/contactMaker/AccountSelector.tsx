@@ -7,7 +7,7 @@ import {Account} from "../../types/account";
 import {Contact} from "../../types/contact";
 import {listContacts} from "../menu/api";
 
-export const AccountSelector: FC = () => {
+export const ContactMaker: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -26,7 +26,7 @@ export const AccountSelector: FC = () => {
         }
     };
 
-    const handleAccountClick = async (accountId: string) => {
+    const handleContactCreate = async (accountId: string) => {
         const token = Cookies.get('auth_token');
         const authorizedKy = ky.extend({
             headers: {
@@ -75,7 +75,7 @@ export const AccountSelector: FC = () => {
                     <ul>
                         {filteredAccounts.map((account) => (
                             <li key={account.id} style={{marginBottom: '0.5rem'}}>
-                                <Button variant="light" onClick={() => handleAccountClick(account.id)}>
+                                <Button variant="light" onClick={() => handleContactCreate(account.id)}>
                                     {account.name}
                                 </Button>
                             </li>
