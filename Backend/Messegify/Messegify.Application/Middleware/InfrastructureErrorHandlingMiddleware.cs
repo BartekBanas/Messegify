@@ -3,7 +3,7 @@ using Messegify.Infrastructure.Error;
 
 namespace Messegify.Application.Middleware;
 
-public class InfrastructureErrorHandlingMiddleware: IMiddleware
+public class InfrastructureErrorHandlingMiddleware : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {

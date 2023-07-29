@@ -18,6 +18,4 @@ public static class ValidatorExtensions
 
         return validationResult;
     }
-
-    
 }

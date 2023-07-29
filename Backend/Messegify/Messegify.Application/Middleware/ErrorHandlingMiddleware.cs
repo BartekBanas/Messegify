@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using Messegify.Application.Errors;
-using Messegify.Infrastructure.Error;
-using Microsoft.Data.SqlClient;
 
 namespace Messegify.Application.Middleware;
 
