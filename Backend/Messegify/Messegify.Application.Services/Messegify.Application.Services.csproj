@@ -15,6 +15,7 @@
       <ProjectReference Include="..\Messegify.Domain.Abstractions\Messegify.Domain.Abstractions.csproj" />
       <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
       <ProjectReference Include="..\Messegify.Domain.Events\Messegify.Domain.Events.csproj" />
+      <ProjectReference Include="..\Messegify.Infrastructure.Error\Messegify.Infrastructure.Error.csproj" />
     </ItemGroup>
 
     <ItemGroup>
