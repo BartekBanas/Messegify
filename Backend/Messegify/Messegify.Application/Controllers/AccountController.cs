@@ -71,9 +71,7 @@ public class AccountController : Controller
         if (Guid.TryParse(claimsInfo.Values.FirstOrDefault(), out var userId))
         {
             await _accountService.DeleteAccountAsync(userId);
-            
-            await _accountService.DeleteAccountAsync(userId);
-        
+
             return Ok();
         }
         else
