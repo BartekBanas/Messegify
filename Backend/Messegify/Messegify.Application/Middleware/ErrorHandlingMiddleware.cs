@@ -42,6 +42,12 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.ContentType = "text/plain";
             await context.Response.WriteAsync(error.Message);
         }
+        catch (ConflictError error)
+        {
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync(error.Message);
+        }
 
         // Internal Server Error
         catch (Exception error)
