@@ -18,7 +18,7 @@ public class InfrastructureErrorHandlingMiddleware : IMiddleware
         }
         catch (ItemDuplicatedErrorException error)
         {
-            throw new BadRequestError(error.Message, error);
+            throw new ConflictError(error.Message, error);
         }
     }
 }
