@@ -23,7 +23,7 @@ public class ContactController : Controller
     {
         var senderGuid = Guid.Parse(User.Claims.First(claim => claim.Type == ClaimTypes.PrimarySid).Value);
 
-        await _accountService.ContactAsync(senderGuid, targetAccountGuid);
+        await _accountService.CreateContactAsync(senderGuid, targetAccountGuid);
 
         return Ok();
     }

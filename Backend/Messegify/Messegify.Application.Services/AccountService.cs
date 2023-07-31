@@ -17,7 +17,7 @@ public interface IAccountService
     Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
-    Task ContactAsync(Guid accountAId, Guid accountBId);
+    Task CreateContactAsync(Guid accountAId, Guid accountBId);
     Task DeleteAccountAsync(Guid accountId);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
@@ -112,7 +112,7 @@ public class AccountService : IAccountService
         return token;
     }
 
-    public async Task ContactAsync(Guid accountAId, Guid accountBId)
+    public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
     {
         var newEntity = new Contact()
         {
