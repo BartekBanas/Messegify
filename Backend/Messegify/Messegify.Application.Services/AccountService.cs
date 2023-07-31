@@ -121,7 +121,7 @@ public class AccountService : IAccountService
 
         if (!contacts.Any())
         {
-            throw new ItemDuplicatedErrorException();
+            throw new ItemDuplicatedErrorException("Contact already exists");
         }
         
         var newEntity = new Contact()
