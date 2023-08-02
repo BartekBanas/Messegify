@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {Contact} from "../../types/contact";
 import {listContacts} from "./api";
 import {ContactItem} from "../chatroom/ContactItem";
-import {Loader, MantineProvider, Paper} from "@mantine/core";
+import {Loader, MantineProvider, Paper, ScrollArea} from "@mantine/core";
 
 export const ContactList: FC = React.memo(() => {
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -28,15 +28,18 @@ export const ContactList: FC = React.memo(() => {
 
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
-            <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 1, height: '100%'}}>
-                <ul>
-                    <React.Suspense fallback={<Loader color="indigo" variant="dots"/>}>
-                        {contacts.map((contact) => (
-                            <ContactItem key={contact.id} contact={contact}/>
-                        ))}
-                    </React.Suspense>
-                </ul>
-            </Paper>
+            <ScrollArea h={700} type="scroll" scrollHideDelay={500}>
+                <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 1, height: '100%'}}>
+                    <ul>
+                        <React.Suspense fallback={<Loader color="indigo" variant="dots"/>}>
+                            {contacts.map((contact) => (
+                                <ContactItem key={contact.id} contact={contact}/>
+                            ))}
+                        </React.Suspense>
+                    </ul>
+                </Paper>
+            </ScrollArea>
+
         </MantineProvider>
     );
 });
