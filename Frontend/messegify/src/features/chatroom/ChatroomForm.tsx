@@ -74,11 +74,11 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     useEffect(() => {
         updateUserId();
         fetchData();
-    }, [fetchData, roomId]);
+    }, [roomId]);
 
     useEffect(() => {
         fetchData();
-    }, [fetchData, location]);
+    }, [location]);
 
     useEffect(() => {
         const fetchLastMessage = async () => {
@@ -124,7 +124,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
         };
 
         fetchDataWithDelay();
-    }, [fetchData, lastMessage]);
+    }, [lastMessage]);
 
     const scrollToBottom = () => {
         if (messageContainerRef.current) {
