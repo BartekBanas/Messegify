@@ -119,7 +119,7 @@ public class AccountService : IAccountService
             .GetAsync(contact => (contact.FirstAccountId == accountAId && contact.SecondAccountId == accountBId)
                                  || (contact.FirstAccountId == accountBId && contact.SecondAccountId == accountAId));
 
-        if (!contacts.Any())
+        if (contacts.Any())
         {
             throw new ItemDuplicatedErrorException("Contact already exists");
         }
