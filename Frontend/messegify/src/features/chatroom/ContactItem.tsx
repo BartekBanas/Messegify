@@ -1,6 +1,6 @@
 import React, {FC, useEffect} from 'react';
 import {Contact} from '../../types/contact';
-import {MantineProvider, Paper, Text, Box, Loader} from '@mantine/core';
+import {MantineProvider, Box, Loader} from '@mantine/core';
 import {Link} from 'react-router-dom';
 import {API_URL} from '../../config';
 import ky from 'ky';
@@ -15,7 +15,7 @@ export const ContactItem: FC<{ contact: Contact }> = ({contact}) => {
 
     useEffect(() => {
         getFriendsName(contact).then(setName);
-    }, [contact]);
+    }, [contact, getFriendsName]);
 
     async function getFriendsName(contact: Contact): Promise<string> {
         const userId = await getUserId();
