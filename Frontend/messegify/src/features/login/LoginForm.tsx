@@ -1,7 +1,7 @@
 import {useForm} from "@mantine/form";
 import {FC} from "react";
 import {LoginFormDto} from "./login-form.types";
-import {Stack, TextInput, Button, MantineProvider} from "@mantine/core";
+import {Stack, TextInput, Button, MantineProvider, PasswordInput} from "@mantine/core";
 import {useLoginApi} from "./api";
 import {loginErrorNotification} from "./notifications";
 import {useNavigate} from "react-router-dom";
@@ -50,7 +50,11 @@ export const LoginForm: FC = () => {
                         <Stack spacing="md">
                             <TextInput required type="text"
                                        label="Username or Email" {...form.getInputProps('UsernameOrEmail')}/>
-                            <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
+                            <PasswordInput
+                                label="Password"
+                                withAsterisk
+                                {...form.getInputProps('Password')}
+                            />
                             <Button type="submit">Login</Button>
                         </Stack>
                     </form>
