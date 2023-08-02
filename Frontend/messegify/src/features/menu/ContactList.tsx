@@ -2,6 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {Contact} from "../../types/contact";
 import {listContacts} from "./api";
 import {ContactItem} from "../chatroom/ContactItem";
+import {Loader} from "@mantine/core";
 
 export const ContactList: FC = React.memo(() => {
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -27,7 +28,7 @@ export const ContactList: FC = React.memo(() => {
 
     return (
         <ul>
-            <React.Suspense fallback={<div>Loading...</div>}>
+            <React.Suspense fallback={<Loader color="indigo" variant="dots"/>}>
                 {contacts.map((contact) => (
                     <ContactItem key={contact.id} contact={contact}/>
                 ))}
