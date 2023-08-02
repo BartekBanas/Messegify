@@ -12,7 +12,9 @@ export const MenuForm: FC<MenuFormProps> = () => {
 
     return (
         <Group>
-            <ContactList/>
+            <div>
+                <ContactList/>
+            </div>
             <ContactMaker/>
         </Group>
     );

@@ -138,9 +138,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Group style={{width: '100%', display: 'flex', height: '100%'}}>
-                <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 1, height: '100%'}}>
-                    <ContactList/>
-                </Paper>
+                <ContactList/>
 
                 <div style={{flex: 4, height: '100%', maxHeight: '87vh'}}>
                     <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 4, height: '90%', overflow: 'auto'}}
