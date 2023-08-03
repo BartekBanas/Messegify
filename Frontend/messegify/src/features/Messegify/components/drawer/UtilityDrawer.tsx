@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useDisclosure} from "@mantine/hooks";
-import {Drawer, Group, ActionIcon} from "@mantine/core";
+import {Drawer, Group, ActionIcon, Flex} from "@mantine/core";
 import {ContactMaker} from "../contactMaker/ContactMaker";
 import {IconAdjustments} from '@tabler/icons-react';
 import {DeleteAccountButton} from "./deleteAccountButton";
@@ -13,9 +13,18 @@ export const UtilityDrawer: FC<UtilityDrawerProps> = () => {
 
     return (
         <>
-            <Drawer opened={opened} onClose={close} title="Authentication">
-                <ContactMaker/>
-                <DeleteAccountButton/>
+            <Drawer opened={opened} onClose={close}>
+                <Flex
+                    mih={300}
+                    gap="xl"
+                    justify="center"
+                    align="center"
+                    direction="column"
+                    wrap="wrap"
+                >
+                    <ContactMaker/>
+                    <DeleteAccountButton/>
+                </Flex>
             </Drawer>
 
             <Group position="center">
