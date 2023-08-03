@@ -10,6 +10,8 @@
     "@mantine/form": "^5.10.1",
     "@mantine/hooks": "^5.10.1",
     "@mantine/notifications": "^5.10.1",
+    "@mantine/spotlight": "^6.0.17",
+    "@tabler/icons-react": "^2.30.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
