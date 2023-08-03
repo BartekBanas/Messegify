@@ -66,7 +66,7 @@ export const ContactMaker: FC = () => {
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Paper shadow="sm" radius="md" p="lg" withBorder>
                 <TextInput
-                    placeholder="Search accounts..."
+                    placeholder="Add a new contact..."
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.currentTarget.value)}
                     style={{marginBottom: '1rem'}}
