@@ -7,13 +7,13 @@ export const RegisterErrorNotification = () => {
         message: 'Registration failed',
         styles: (theme) => ({
             root: {
-                backgroundColor: theme.colors.gray[8],
-                borderColor: theme.colors.gray[7],
+                backgroundColor: theme.colors.dark[6],
+                borderColor: theme.colors.dark[7],
 
                 '&::before': {backgroundColor: theme.colorScheme},
             },
 
-            title: {color: theme.colors.gray[3]},
+            title: {color: theme.colors.gray[2]},
             description: {color: theme.colorScheme},
             closeButton: {
                 color: theme.colorScheme,
