@@ -66,11 +66,12 @@ export const ContactMaker: FC = () => {
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Select
+                searchable
+                clearable
                 maw={320}
                 mx="auto"
                 label="Add a new contact"
                 placeholder="Contact's name"
-                searchable
                 nothingFound="No available contacts"
                 data={filteredAccounts.map((account) => account.name)} // Wyświetlane są tylko nazwy kont
                 transition="pop-top-left"
