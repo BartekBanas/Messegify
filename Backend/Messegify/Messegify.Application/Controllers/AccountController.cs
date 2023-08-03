@@ -59,4 +59,24 @@ public class AccountController : Controller
         
         return Ok(user);
     }
+
+    [Authorize]
+    [HttpDelete("me")]
+    public async Task<IActionResult> DeleteMyAccount()
+    {
+        var claims = User.Claims;
+        
+        var claimsInfo = claims.ToDictionary(claim => claim.Type, claim => claim.Value);
+
+        if (Guid.TryParse(claimsInfo.Values.FirstOrDefault(), out var userId))
+        {
+            await _accountService.DeleteAccountAsync(userId);
+
+            return Ok();
+        }
+        else
+        {
+            throw new FormatException("Invalid user id retrieved");
+        }
+    }
 }

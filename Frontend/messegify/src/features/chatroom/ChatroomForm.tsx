@@ -3,7 +3,7 @@ import {useForm} from '@mantine/form';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
 import {useLocation} from 'react-router-dom';
 import {API_URL} from '../../config';
-import {ContactList} from '../menu/ContactList';
+import {ContactList} from '../Messegify/components/contactList/ContactList';
 import Cookies from 'js-cookie';
 import ky from 'ky';
 import {AccountClaims} from '../../types/accountClaims';
@@ -138,9 +138,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Group style={{width: '100%', display: 'flex', height: '100%'}}>
-                <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 1, height: '100%'}}>
-                    <ContactList/>
-                </Paper>
+                <ContactList/>
 
                 <div style={{flex: 4, height: '100%', maxHeight: '87vh'}}>
                     <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 4, height: '90%', overflow: 'auto'}}

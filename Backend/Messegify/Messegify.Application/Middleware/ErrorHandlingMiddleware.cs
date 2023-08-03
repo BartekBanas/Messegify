@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using Messegify.Application.Errors;
-using Messegify.Infrastructure.Error;
-using Microsoft.Data.SqlClient;
 
 namespace Messegify.Application.Middleware;
 
@@ -41,6 +39,12 @@ public class ErrorHandlingMiddleware : IMiddleware
         catch (BadRequestError error)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync(error.Message);
+        }
+        catch (ConflictError error)
+        {
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
             context.Response.ContentType = "text/plain";
             await context.Response.WriteAsync(error.Message);
         }

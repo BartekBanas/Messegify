@@ -1,6 +1,6 @@
 import {useForm} from "@mantine/form";
 import {FC} from "react";
-import {Stack, TextInput, Button, MantineProvider, Text, Paper} from "@mantine/core";
+import {Stack, TextInput, Button, MantineProvider, Text, Paper, PasswordInput} from "@mantine/core";
 import {useNavigate} from "react-router-dom";
 import {register} from "./api";
 import {RegisterFormType} from "./register-form.type";
@@ -45,7 +45,7 @@ export const RegisterForm: FC = () => {
                     <form onSubmit={form.onSubmit(values => handleSubmit(values))}>
                         <Stack spacing="md">
                             <TextInput required type="username" label="Username" {...form.getInputProps('Username')}/>
-                            <TextInput required type="password" label="Password" {...form.getInputProps('Password')}/>
+                            <PasswordInput label="Password" withAsterisk {...form.getInputProps('Password')}/>
                             <TextInput required type="email" label="Email" {...form.getInputProps('Email')}/>
                             <Button type="submit">Register</Button>
                         </Stack>

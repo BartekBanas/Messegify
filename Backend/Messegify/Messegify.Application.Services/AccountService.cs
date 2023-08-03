@@ -7,6 +7,7 @@ using Messegify.Application.Service.Extensions;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
+using Messegify.Infrastructure.Error;
 using Microsoft.AspNetCore.Http;
 
 namespace Messegify.Application.Services;
@@ -17,7 +18,7 @@ public interface IAccountService
     Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
-    Task ContactAsync(Guid accountAId, Guid accountBId);
+    Task CreateContactAsync(Guid accountAId, Guid accountBId);
     Task DeleteAccountAsync(Guid accountId);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
@@ -112,8 +113,17 @@ public class AccountService : IAccountService
         return token;
     }
 
-    public async Task ContactAsync(Guid accountAId, Guid accountBId)
+    public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
     {
+        var contacts = await _contactRepository
+            .GetAsync(contact => (contact.FirstAccountId == accountAId && contact.SecondAccountId == accountBId)
+                                 || (contact.FirstAccountId == accountBId && contact.SecondAccountId == accountAId));
+
+        if (contacts.Any())
+        {
+            throw new ItemDuplicatedErrorException("Contact already exists");
+        }
+        
         var newEntity = new Contact()
         {
             FirstAccountId = accountAId,

@@ -118,7 +118,6 @@ app.UseCors(options => options
     .AllowCredentials());
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
-
 app.UseMiddleware<InfrastructureErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
