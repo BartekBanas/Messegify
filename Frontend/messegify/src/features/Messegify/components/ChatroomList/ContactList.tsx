@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Contact} from "../../types/contact";
-import {listContacts} from "./api";
-import {ContactItem} from "../chatroom/ContactItem";
+import {Contact} from "../../../../types/contact";
+import {listContacts} from "../../../menu/api";
+import {ContactItem} from "./ContactItem";
 import {Loader, MantineProvider, Paper, ScrollArea} from "@mantine/core";
 
 export const ContactList: FC = React.memo(() => {

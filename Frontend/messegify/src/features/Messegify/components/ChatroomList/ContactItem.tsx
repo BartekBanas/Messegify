@@ -1,12 +1,12 @@
 import React, {FC, useEffect} from 'react';
-import {Contact} from '../../types/contact';
+import {Contact} from '../../../../types/contact';
 import {MantineProvider, Box, Loader} from '@mantine/core';
 import {Link} from 'react-router-dom';
-import {API_URL} from '../../config';
+import {API_URL} from '../../../../config';
 import ky from 'ky';
 import Cookies from 'js-cookie';
-import {Account} from '../../types/account';
-import {getUserId} from "./api";
+import {Account} from '../../../../types/account';
+import {getUserId} from "../../../chatroom/api";
 
 export const ContactItem: FC<{ contact: Contact }> = ({contact}) => {
     const [name, setName] = React.useState<string | null>(null);
