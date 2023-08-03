@@ -1,11 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {
-    TextInput,
-    MantineProvider,
-    Paper,
-    Button,
-    Autocomplete,
-} from '@mantine/core';
+import {MantineProvider, Select} from '@mantine/core';
 import ky from 'ky';
 import {API_URL} from '../../config';
 import Cookies from 'js-cookie';
@@ -42,7 +36,6 @@ export const ContactMaker: FC = () => {
 
         try {
             await authorizedKy.post(`${API_URL}/contact/${accountId}`);
-            // Po pomyślnym utworzeniu kontaktu możesz zaktualizować listę kontaktów
             fetchContacts();
         } catch (error) {
             console.error('Error creating contact:', error);
@@ -72,11 +65,13 @@ export const ContactMaker: FC = () => {
 
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
-            <Autocomplete
+            <Select
                 maw={320}
                 mx="auto"
                 label="Add a new contact"
-                placeholder="Pick one"
+                placeholder="Contact's name"
+                searchable
+                nothingFound="No available contacts"
                 data={filteredAccounts.map((account) => account.name)} // Wyświetlane są tylko nazwy kont
                 transition="pop-top-left"
                 onChange={(value) => {
