@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
-import {useNavigate} from "react-router-dom";
-import {Group} from "@mantine/core";
-import {ContactList} from "./ContactList";
-import {ContactMaker} from "../contactMaker/ContactMaker";
+import {useNavigate} from 'react-router-dom';
+import {Group} from '@mantine/core';
+import {ContactList} from './ContactList';
 
 interface MenuFormProps {
 }
@@ -15,7 +14,6 @@ export const MenuForm: FC<MenuFormProps> = () => {
             <div>
                 <ContactList/>
             </div>
-            <ContactMaker/>
         </Group>
     );
 };

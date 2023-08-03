@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {Button, MantineProvider, Paper, Text} from '@mantine/core';
 import Cookies from "js-cookie";
 import {Link} from "react-router-dom";
+import {UtilityDrawer} from "../../features/Messegify/drawer/UtilityDrawer";
 
 function removeJWTToken() {
     Cookies.remove('auth_token');
@@ -22,14 +23,10 @@ export const Header: FC = () => {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         marginBottom: '15px',
-                        flexDirection: 'row-reverse',
                     }}
                 >
-                    <Link to="/login" style={{textDecoration: 'none'}}>
-                        <Button variant="light" onClick={removeJWTToken}>
-                            Logout
-                        </Button>
-                    </Link>
+                    <UtilityDrawer/>
+
                     <div style={{flex: '1', textAlign: 'center'}}>
                         <Text
                             color={'#D5D7E0'}
@@ -43,6 +40,12 @@ export const Header: FC = () => {
                             Messegify
                         </Text>
                     </div>
+
+                    <Link to="/login" style={{textDecoration: 'none'}}>
+                        <Button variant="light" onClick={removeJWTToken}>
+                            Logout
+                        </Button>
+                    </Link>
                 </Paper>
             </MantineProvider>
         </header>
