@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useDisclosure} from "@mantine/hooks";
 import {Drawer, Group, ActionIcon} from "@mantine/core";
-import {ContactMaker} from "../../../contactMaker/ContactMaker";
+import {ContactMaker} from "../contactMaker/ContactMaker";
 import {IconAdjustments} from '@tabler/icons-react';
 
 interface UtilityDrawerProps {

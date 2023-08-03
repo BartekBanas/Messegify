@@ -1,11 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
 import {MantineProvider, Select} from '@mantine/core';
 import ky from 'ky';
-import {API_URL} from '../../config';
+import {API_URL} from '../../../../config';
 import Cookies from 'js-cookie';
-import {Account} from '../../types/account';
-import {Contact} from '../../types/contact';
-import {listContacts} from '../menu/api';
+import {Account} from '../../../../types/account';
+import {Contact} from '../../../../types/contact';
+import {listContacts} from '../../../menu/api';
 
 export const ContactMaker: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
