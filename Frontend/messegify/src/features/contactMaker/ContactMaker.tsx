@@ -73,8 +73,8 @@ export const ContactMaker: FC = () => {
                 label="Add a new contact"
                 placeholder="Contact's name"
                 nothingFound="No available contacts"
-                data={filteredAccounts.map((account) => account.name)} // Wyświetlane są tylko nazwy kont
-                transition="pop-top-left"
+                data={filteredAccounts.map((account) => account.name)}
+                transitionProps={{transition: 'pop-top-left', duration: 80, timingFunction: 'ease'}}
                 onChange={(value) => {
                     const selectedAccount = accounts.find((account) => account.name === value);
                     if (selectedAccount) {
