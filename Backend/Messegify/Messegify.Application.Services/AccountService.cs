@@ -118,15 +118,6 @@ public class AccountService : IAccountService
 
     public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
     {
-        var contacts = await _contactRepository
-            .GetAsync(contact => (contact.FirstAccountId == accountAId && contact.SecondAccountId == accountBId)
-                                 || (contact.FirstAccountId == accountBId && contact.SecondAccountId == accountAId));
-
-        if (contacts.Any())
-        {
-            throw new ItemDuplicatedErrorException("Contact already exists");
-        }
-        
         var newContact = new Contact()
         {
             FirstAccountId = accountAId,
