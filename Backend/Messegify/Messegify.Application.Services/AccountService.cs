@@ -31,6 +31,7 @@ public class AccountService : IAccountService
 
     private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
+    private readonly IValidator<Contact> _contactValidator;
     private readonly IJwtService _jwtService;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -41,16 +42,18 @@ public class AccountService : IAccountService
         IRepository<Account> accountRepository, 
         IRepository<Contact> contactRepository,
         IRepository<ChatRoom> chatroomRepository,
-        IHashingService hashingService, 
-        IValidator<Account> validator, 
+        IHashingService hashingService,
+        IValidator<Account> validator,
+        IValidator<Contact> contactValidator,
         IJwtService jwtService,
-        IHttpContextAccessor httpContextAccessor, 
+        IHttpContextAccessor httpContextAccessor,
         IMapper mapper)
     {
         _accountRepository = accountRepository;
         _contactRepository = contactRepository;
         _hashingService = hashingService;
         _validator = validator;
+        _contactValidator = contactValidator;
         _jwtService = jwtService;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
@@ -124,15 +127,17 @@ public class AccountService : IAccountService
             throw new ItemDuplicatedErrorException("Contact already exists");
         }
         
-        var newEntity = new Contact()
+        var newContact = new Contact()
         {
             FirstAccountId = accountAId,
             SecondAccountId = accountBId
         };
 
-        await _contactRepository.CreateAsync(newEntity);
+        await _contactValidator.ValidateAsync(newContact);
+
+        await _contactRepository.CreateAsync(newContact);
         
-        newEntity.AddDomainEvent(new ContactCreatedDomainEvent(newEntity));
+        newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
         
         await _contactRepository.SaveChangesAsync();
     }
