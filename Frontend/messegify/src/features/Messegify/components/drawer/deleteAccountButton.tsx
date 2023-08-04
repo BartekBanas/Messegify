@@ -1,12 +1,11 @@
-import {Button, Text} from '@mantine/core';
-import {modals} from '@mantine/modals';
+import {useDisclosure} from '@mantine/hooks';
+import {Modal, Button, Group, Text} from '@mantine/core';
 import Cookies from "js-cookie";
 import ky from "ky";
 import {API_URL} from "../../../../config";
-import {Message} from "../../../../types/message";
 import {removeJWTToken} from "../../../../pages/layout/Header";
 
-function DeleteAccount() {
+function deleteAccount() {
     const token = Cookies.get('auth_token');
     const authorizedKy = ky.extend({
         headers: {
@@ -16,7 +15,7 @@ function DeleteAccount() {
         },
     });
 
-    const response = authorizedKy.delete(`${API_URL}/account/me`).json<Message[]>();
+    const response = authorizedKy.delete(`${API_URL}/account/me`);
 
     removeJWTToken();
 
@@ -24,20 +23,31 @@ function DeleteAccount() {
 }
 
 export function DeleteAccountButton() {
-    const openDeleteModal = () =>
-        modals.openConfirmModal({
-            title: 'Delete your profile',
-            centered: true,
-            children: (
-                <Text size="sm">
-                    Are you sure you want to delete your account? This action cannot be reversed
-                </Text>
-            ),
-            labels: {confirm: 'Delete account', cancel: "No don't delete it"},
-            confirmProps: {color: 'red'},
-            onCancel: () => console.log('Account saved'),
-            onConfirm: () => DeleteAccount(),
-        });
+    const [opened, {close, open}] = useDisclosure(false);
 
-    return <Button onClick={openDeleteModal} color="red">Delete account</Button>;
+    const handleDeleteAccount = async () => {
+        await deleteAccount();
+        close();
+    };
+
+    return (
+        <>
+            <Modal opened={opened} onClose={close} size="auto" title="Delete your account">
+                <Text>Are you sure you want to delete your account?</Text>
+                <Text>This action cannot be reversed</Text>
+
+                <Group mt="xl" position="center">
+                    <Button color="gray" onClick={close}>
+                        No don't delete it
+                    </Button>
+                    <Button color="red" onClick={handleDeleteAccount}>
+                        Delete Account
+                    </Button>
+                </Group>
+            </Modal>
+            <Group position="center">
+                <Button color="red" onClick={open}>Delete Account</Button>
+            </Group>
+        </>
+    );
 }
