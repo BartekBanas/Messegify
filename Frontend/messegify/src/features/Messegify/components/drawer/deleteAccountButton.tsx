@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import ky from "ky";
 import {API_URL} from "../../../../config";
 import {removeJWTToken} from "../../../../pages/layout/Header";
+import {deletionErrorNotification, deletionSuccessNotification} from "./notifications";
 
 function deleteAccount() {
     const token = Cookies.get('auth_token');
@@ -26,7 +27,13 @@ export function DeleteAccountButton() {
     const [opened, {close, open}] = useDisclosure(false);
 
     const handleDeleteAccount = async () => {
-        await deleteAccount();
+        try {
+            await deleteAccount();
+            deletionSuccessNotification();
+        } catch (error) {
+            deletionErrorNotification();
+        }
+
         close();
     };
 
