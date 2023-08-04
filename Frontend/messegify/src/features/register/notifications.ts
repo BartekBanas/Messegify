@@ -9,3 +9,12 @@ export const RegisterErrorNotification = () => {
         styles: notificationStyles,
     })
 }
+
+export const RegisterSuccessNotification = () => {
+    showNotification({
+        color: 'green',
+        title: 'Success',
+        message: 'Registration successful',
+        styles: notificationStyles,
+    });
+};

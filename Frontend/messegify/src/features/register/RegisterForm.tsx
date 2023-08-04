@@ -4,7 +4,7 @@ import {Stack, TextInput, Button, MantineProvider, Text, Paper, PasswordInput} f
 import {useNavigate} from "react-router-dom";
 import {register} from "./api";
 import {RegisterFormType} from "./register-form.type";
-import {RegisterErrorNotification} from "./notifications";
+import {RegisterErrorNotification, RegisterSuccessNotification} from "./notifications";
 import '../../pages/layout/DarkBackground.css'
 
 export const RegisterForm: FC = () => {
@@ -20,6 +20,7 @@ export const RegisterForm: FC = () => {
     async function handleSubmit(data: RegisterFormType) {
         try {
             await register(data.Username, data.Password, data.Email);
+            RegisterSuccessNotification();
             navigate('/login');
         } catch (error) {
             RegisterErrorNotification();
