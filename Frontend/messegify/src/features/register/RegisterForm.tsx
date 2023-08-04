@@ -4,7 +4,7 @@ import {Stack, TextInput, Button, MantineProvider, Text, Paper, PasswordInput} f
 import {useNavigate} from "react-router-dom";
 import {register} from "./api";
 import {RegisterFormType} from "./register-form.type";
-import {RegisterErrorNotification} from "./notification";
+import {RegisterErrorNotification} from "./notifications";
 import '../../pages/layout/DarkBackground.css'
 
 export const RegisterForm: FC = () => {
