@@ -1,11 +1,11 @@
 import {showNotification} from "@mantine/notifications";
 import notificationStyles from "../../styles/notificationStyles";
 
-export const RegisterErrorNotification = () => {
+export const RegisterErrorNotification = (errorMessage: string) => {
     showNotification({
         color: 'red',
         title: 'Error',
-        message: 'Registration failed',
+        message: errorMessage,
         styles: notificationStyles,
     })
 }

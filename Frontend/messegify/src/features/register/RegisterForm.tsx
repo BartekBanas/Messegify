@@ -1,5 +1,5 @@
 import {useForm} from "@mantine/form";
-import {FC} from "react";
+import React, {FC} from "react";
 import {Stack, TextInput, Button, MantineProvider, Text, Paper, PasswordInput} from "@mantine/core";
 import {useNavigate} from "react-router-dom";
 import {register} from "./api";
@@ -18,12 +18,14 @@ export const RegisterForm: FC = () => {
     })
 
     async function handleSubmit(data: RegisterFormType) {
+        console.log(data)
         try {
             await register(data.Username, data.Password, data.Email);
             RegisterSuccessNotification();
-            navigate('/login');
-        } catch (error) {
-            RegisterErrorNotification();
+            navigate("/login");
+        } catch (error: any) {
+            console.log(error.message)
+            RegisterErrorNotification(error.message);
         }
     }
 
