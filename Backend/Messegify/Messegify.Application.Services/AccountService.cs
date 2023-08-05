@@ -159,10 +159,11 @@ public class AccountService : IAccountService
             var messages = await _messageRepository
                 .GetAsync(message => message.ChatRoomId == chatroom.Id);
             
-            var messageIdsToDelete = messages.Select(message => message.Id);
+            foreach (var message in messages)
+            {
+                await _messageRepository.DeleteAsync(message.Id);
+            }
 
-            await _messageRepository.DeleteAsync(messageIdsToDelete);
-            
             await _chatroomRepository.DeleteAsync(chatroom.Id);
             await _contactRepository.DeleteAsync(contact.Id);
         }
