@@ -7,7 +7,6 @@ using Messegify.Application.Service.Extensions;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
-using Messegify.Infrastructure.Error;
 using Microsoft.AspNetCore.Http;
 
 namespace Messegify.Application.Services;
