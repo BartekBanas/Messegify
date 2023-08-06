@@ -75,7 +75,11 @@ builder.Services.AddAuthentication(options =>
 
 
 services.AddDbContext<MessegifyDbContext>(contextOptionsBuilder =>
-    contextOptionsBuilder.UseMySQL(configuration.GetConnectionString("MessegifyDatabaseConnectionString")));
+    {
+        contextOptionsBuilder.UseMySQL(configuration.GetConnectionString("MessegifyDatabaseConnectionString") ?? throw new InvalidOperationException(),
+            optionsBuilder => { optionsBuilder.MigrationsAssembly("Messegify.Application"); });
+    }
+);
 
 services.AddValidatorsFromAssembly(typeof(Messegify.Domain.Validators.AssemblyMarker).Assembly);
 
