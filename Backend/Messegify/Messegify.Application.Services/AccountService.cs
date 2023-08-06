@@ -90,6 +90,7 @@ public class AccountService : IAccountService
             Email = registerDto.Email,
             Name = registerDto.Username,
             PasswordHash = passwordHash,
+            DateCreated = DateTime.UtcNow,
         };
         
         await _validator.ValidateRequiredAsync(newAccount);
