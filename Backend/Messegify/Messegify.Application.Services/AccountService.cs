@@ -18,7 +18,7 @@ public interface IAccountService
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     Task CreateContactAsync(Guid accountAId, Guid accountBId);
-    Task UpdateAccountAsync(UpdateAccountDto accountDto, Guid accountId);
+    Task UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto);
     Task DeleteAccountAsync(Guid accountId);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
@@ -137,7 +137,7 @@ public class AccountService : IAccountService
         await _contactRepository.SaveChangesAsync();
     }
 
-    public async Task UpdateAccountAsync(UpdateAccountDto accountDto, Guid accountId)
+    public async Task UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto)
     {
         var originalAccount = _accountRepository.GetOneRequiredAsync(accountId);
 
@@ -158,7 +158,7 @@ public class AccountService : IAccountService
             PasswordHash = passwordHash ?? originalAccount.Result.Email,
         };
 
-        await _accountRepository.UpdateAsync(updatedAccount, accountId);
+        await _accountRepository.UpdateAsync(accountId, updatedAccount);
         
         await _contactRepository.SaveChangesAsync();
     }
