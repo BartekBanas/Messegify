@@ -140,15 +140,22 @@ public class AccountService : IAccountService
     public async Task UpdateAccountAsync(UpdateAccountDto accountDto, Guid accountId)
     {
         var originalAccount = _accountRepository.GetOneRequiredAsync(accountId);
+
+        string? passwordHash = null;
+        
+        if (accountDto.Password != null)
+        {
+            passwordHash = _hashingService.HashPassword(accountDto.Password);
+        }
         
         var updatedAccount = new Account()
         {
             Id = originalAccount.Result.Id,
-            PasswordHash = originalAccount.Result.PasswordHash,
             DateCreated = originalAccount.Result.DateCreated,
 
             Name = accountDto.Name ?? originalAccount.Result.Name,
-            Email = accountDto.Email ?? originalAccount.Result.Email
+            Email = accountDto.Email ?? originalAccount.Result.Email,
+            PasswordHash = passwordHash ?? originalAccount.Result.Email,
         };
 
         await _accountRepository.UpdateAsync(updatedAccount, accountId);
