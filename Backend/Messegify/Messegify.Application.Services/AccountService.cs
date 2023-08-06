@@ -139,11 +139,14 @@ public class AccountService : IAccountService
 
     public async Task UpdateAccountAsync(UpdateAccountDto accountDto, Guid accountId)
     {
-        var originalAccount = GetAccountAsync(accountId);
+        var originalAccount = _accountRepository.GetOneRequiredAsync(accountId);
         
-        var updatedAccount = new Account
+        var updatedAccount = new Account()
         {
-            Id = Guid.Parse(originalAccount.Result.Id),
+            Id = originalAccount.Result.Id,
+            PasswordHash = originalAccount.Result.PasswordHash,
+            DateCreated = originalAccount.Result.DateCreated,
+
             Name = accountDto.Name ?? originalAccount.Result.Name,
             Email = accountDto.Email ?? originalAccount.Result.Email
         };
