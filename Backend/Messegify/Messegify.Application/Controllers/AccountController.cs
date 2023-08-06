@@ -80,4 +80,22 @@ public class AccountController : Controller
             return Unauthorized();
         }
     }
+
+    [Authorize]
+    [HttpPut("me")]
+    public async Task<IActionResult> UpdateMyAccount([FromBody] UpdateAccountDto dto)
+    {
+        if (_httpContextAccessor.HttpContext != null)
+        {
+            var userId = _httpContextAccessor.HttpContext.User.GetId();
+
+            await _accountService.UpdateAccountAsync(dto, userId);
+
+            return Ok();
+        }
+        else
+        {
+            return Unauthorized();
+        }
+    }
 }
