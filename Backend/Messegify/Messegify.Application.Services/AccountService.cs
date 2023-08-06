@@ -147,7 +147,7 @@ public class AccountService : IAccountService
             Email = accountDto.Email ?? originalAccount.Result.Email
         };
 
-        await _accountRepository.UpdateAsync(updatedAccount, accountDto);
+        await _accountRepository.UpdateAsync(updatedAccount, accountId);
         
         await _contactRepository.SaveChangesAsync();
     }
