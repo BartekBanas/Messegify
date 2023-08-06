@@ -18,6 +18,7 @@ public interface IAccountService
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     Task CreateContactAsync(Guid accountAId, Guid accountBId);
+    Task UpdateAccountAsync(UpdateAccountDto accountDto, Guid accountId);
     Task DeleteAccountAsync(Guid accountId);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
@@ -135,19 +136,20 @@ public class AccountService : IAccountService
         await _contactRepository.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId)
+    public async Task UpdateAccountAsync(UpdateAccountDto accountDto, Guid accountId)
     {
-        var account = await _accountRepository.GetOneAsync(accountId);
-        var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
+        var originalAccount = GetAccountAsync(accountId);
         
-        var contacts = await _contactRepository
-            .GetAsync(contact => contact.FirstAccountId == accountId || contact.SecondAccountId == accountId);
+        var updatedAccount = new Account
+        {
+            Id = Guid.Parse(originalAccount.Result.Id),
+            Name = accountDto.Name ?? originalAccount.Result.Name,
+            Email = accountDto.Email ?? originalAccount.Result.Email
+        };
 
-        var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
-        
-        return dtos;
+        await _accountRepository.UpdateAsync(updatedAccount, accountDto);
     }
-
+    
     public async Task DeleteAccountAsync(Guid accountId)
     {
         var contacts = await GetContactsAsync(accountId);
@@ -171,6 +173,19 @@ public class AccountService : IAccountService
         await _accountRepository.DeleteAsync(accountId);
 
         await _contactRepository.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId)
+    {
+        var account = await _accountRepository.GetOneAsync(accountId);
+        var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
+        
+        var contacts = await _contactRepository
+            .GetAsync(contact => contact.FirstAccountId == accountId || contact.SecondAccountId == accountId);
+
+        var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
+        
+        return dtos;
     }
 
     private ClaimsIdentity GenerateClaimsIdentity(Account account)
