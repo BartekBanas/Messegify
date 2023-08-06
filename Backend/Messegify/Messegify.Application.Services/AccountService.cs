@@ -148,6 +148,8 @@ public class AccountService : IAccountService
         };
 
         await _accountRepository.UpdateAsync(updatedAccount, accountDto);
+        
+        await _contactRepository.SaveChangesAsync();
     }
     
     public async Task DeleteAccountAsync(Guid accountId)
