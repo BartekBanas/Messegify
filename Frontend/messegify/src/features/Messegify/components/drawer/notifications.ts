@@ -18,3 +18,21 @@ export function deletionSuccessNotification() {
         styles: notificationStyles,
     });
 }
+
+export function updateErrorNotification() {
+    showNotification({
+        color: 'red',
+        title: 'Error',
+        message: 'Account could not be updated',
+        styles: notificationStyles,
+    })
+}
+
+export function updateSuccessNotification() {
+    showNotification({
+        color: 'green',
+        title: 'Success',
+        message: 'Account updated successfully',
+        styles: notificationStyles,
+    });
+}
