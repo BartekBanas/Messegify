@@ -155,7 +155,7 @@ public class AccountService : IAccountService
 
             Name = accountDto.Name ?? originalAccount.Result.Name,
             Email = accountDto.Email ?? originalAccount.Result.Email,
-            PasswordHash = passwordHash ?? originalAccount.Result.Email,
+            PasswordHash = passwordHash ?? originalAccount.Result.PasswordHash,
         };
 
         await _accountRepository.UpdateAsync(accountId, updatedAccount);
