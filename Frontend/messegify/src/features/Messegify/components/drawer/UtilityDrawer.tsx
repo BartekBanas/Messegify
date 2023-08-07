@@ -4,7 +4,7 @@ import {Drawer, Group, ActionIcon, Flex, Title} from "@mantine/core";
 import {ContactMaker} from "../contactMaker/ContactMaker";
 import {IconAdjustments} from '@tabler/icons-react';
 import {DeleteAccountButton} from "./deleteAccountButton";
-import {UpdateAccountButton} from "./editAccountButton";
+import {UpdateAccountButton} from "./updateAccountButton";
 
 interface UtilityDrawerProps {
 }
