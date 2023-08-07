@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import {Link} from "react-router-dom";
 import {UtilityDrawer} from "../../features/Messegify/components/drawer/UtilityDrawer";
 
-function removeJWTToken() {
+export function removeJWTToken() {
     Cookies.remove('auth_token');
 }
 

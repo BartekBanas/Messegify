@@ -69,17 +69,3 @@ export async function handleSubmit(data: Message, roomId: string) {
 
     }
 }
-
-export async function getUserId() {
-    const token = Cookies.get('auth_token');
-    const authorizedKy = ky.extend({
-        headers: {
-            authorization: `Bearer ${token}`,
-        },
-    });
-
-    const response = await authorizedKy.get(`${API_URL}/account/me`).json<AccountClaims>();
-    const userId = response['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'];
-
-    return userId;
-}

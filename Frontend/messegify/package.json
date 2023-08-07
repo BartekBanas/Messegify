@@ -58,6 +58,7 @@
     ]
   },
   "devDependencies": {
+    "@mantine/modals": "^6.0.17",
     "@types/js-cookie": "^3.0.2",
     "axios": "^1.2.3"
   }

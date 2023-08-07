@@ -1,10 +1,6 @@
 import {API_URL} from "../../config";
 
-export const register = async (username: string, password: string, email: string) => {
-
-    const uri = `${API_URL}/account`;
-    console.log(uri)
-
+export async function register(username: string, password: string, email: string) {
     const response = await fetch(`${API_URL}/account`, {
         method: 'POST',
         headers: {
@@ -18,6 +14,11 @@ export const register = async (username: string, password: string, email: string
         })
     });
 
-    if (response.status !== 200) throw new Error('Registration failed');
-    return await response.text();
+    const responseText = await response.text();
+
+    if (response.status !== 200) {
+        throw new Error(responseText);
+    }
+
+    return responseText;
 }

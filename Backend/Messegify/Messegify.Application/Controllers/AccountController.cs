@@ -1,4 +1,5 @@
 ﻿using Messegify.Application.Dtos;
+using Messegify.Application.Service.Extensions;
 using Messegify.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace Messegify.Application.Controllers;
 public class AccountController : Controller
 {
     private readonly IAccountService _accountService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AccountController(IAccountService accountService)
+    public AccountController(IAccountService accountService, IHttpContextAccessor httpContextAccessor)
     {
         _accountService = accountService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpPost]
@@ -64,19 +67,35 @@ public class AccountController : Controller
     [HttpDelete("me")]
     public async Task<IActionResult> DeleteMyAccount()
     {
-        var claims = User.Claims;
-        
-        var claimsInfo = claims.ToDictionary(claim => claim.Type, claim => claim.Value);
-
-        if (Guid.TryParse(claimsInfo.Values.FirstOrDefault(), out var userId))
+        if (_httpContextAccessor.HttpContext != null)
         {
+            var userId = _httpContextAccessor.HttpContext.User.GetId();
+
             await _accountService.DeleteAccountAsync(userId);
 
             return Ok();
         }
         else
         {
-            throw new FormatException("Invalid user id retrieved");
+            return Unauthorized();
+        }
+    }
+
+    [Authorize]
+    [HttpPut("me")]
+    public async Task<IActionResult> UpdateMyAccount([FromBody] UpdateAccountDto dto)
+    {
+        if (_httpContextAccessor.HttpContext != null)
+        {
+            var userId = _httpContextAccessor.HttpContext.User.GetId();
+
+            await _accountService.UpdateAccountAsync(userId, dto);
+
+            return Ok();
+        }
+        else
+        {
+            return Unauthorized();
         }
     }
 }

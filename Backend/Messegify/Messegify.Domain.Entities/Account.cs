@@ -16,8 +16,7 @@ public class Account : Entity
 
     [EmailAddress]
     public string Email { get; set; } = null!;
-
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    
     public DateTime DateCreated { get; set; }
 
     [ForeignKey(nameof(AccountChatRoom.AccountId))]

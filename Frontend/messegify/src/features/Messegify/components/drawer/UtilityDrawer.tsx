@@ -1,19 +1,36 @@
 import React, {FC} from 'react';
 import {useDisclosure} from "@mantine/hooks";
-import {Drawer, Group, ActionIcon} from "@mantine/core";
+import {Drawer, Group, ActionIcon, Flex, Title} from "@mantine/core";
 import {ContactMaker} from "../contactMaker/ContactMaker";
 import {IconAdjustments} from '@tabler/icons-react';
+import {DeleteAccountButton} from "./deleteAccountButton";
+import {UpdateAccountButton} from "./updateAccountButton";
 
 interface UtilityDrawerProps {
 }
 
-export const UtilityDrawer: FC<UtilityDrawerProps> = ({}) => {
+export const UtilityDrawer: FC<UtilityDrawerProps> = () => {
     const [opened, {open, close}] = useDisclosure(false);
 
     return (
         <>
-            <Drawer opened={opened} onClose={close} title="Authentication">
-                <ContactMaker/>
+            <Drawer opened={opened} onClose={close}>
+                <Title order={3} weight={100} align="center">
+                    Account Utilities
+                </Title>
+
+                <Flex
+                    mih={300}
+                    gap="xl"
+                    justify="center"
+                    align="center"
+                    direction="column"
+                    wrap="wrap"
+                >
+                    <ContactMaker/>
+                    <UpdateAccountButton/>
+                    <DeleteAccountButton/>
+                </Flex>
             </Drawer>
 
             <Group position="center">

@@ -6,7 +6,7 @@ import {API_URL} from '../../../../config';
 import ky from 'ky';
 import Cookies from 'js-cookie';
 import {Account} from '../../../../types/account';
-import {getUserId} from "../../../chatroom/api";
+import {getUserId} from "./api";
 
 export const ContactItem: FC<{ contact: Contact }> = ({contact}) => {
     const [name, setName] = React.useState<string | null>(null);
@@ -15,7 +15,7 @@ export const ContactItem: FC<{ contact: Contact }> = ({contact}) => {
 
     useEffect(() => {
         getFriendsName(contact).then(setName);
-    }, [contact]);
+    }, []);
 
     async function getFriendsName(contact: Contact): Promise<string> {
         const userId = await getUserId();

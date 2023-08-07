@@ -21,7 +21,6 @@ public interface IMessageRequestHandler : IRequestHandler<SendMessageRequest>,
 public class MessageRequestHandler : IMessageRequestHandler
 {
     private readonly IRepository<ChatRoom> _chatRoomRepository;
-    private readonly IRepository<Account> _accountRepository;
     private readonly IRepository<Message> _messageRepository;
 
     private readonly IMapper _mapper;
@@ -30,15 +29,14 @@ public class MessageRequestHandler : IMessageRequestHandler
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public MessageRequestHandler(IRepository<ChatRoom> chatRoomRepository,
-        IRepository<Account> accountRepository,
+    public MessageRequestHandler(
+        IRepository<ChatRoom> chatRoomRepository,
         IRepository<Message> messageRepository,
         IAuthorizationService authorizationService,
         IHttpContextAccessor httpContextAccessor, 
         IMapper mapper)
     {
         _chatRoomRepository = chatRoomRepository;
-        _accountRepository = accountRepository;
         _messageRepository = messageRepository;
         _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
