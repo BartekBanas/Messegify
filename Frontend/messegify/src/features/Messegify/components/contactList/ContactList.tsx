@@ -4,7 +4,7 @@ import {ContactItem} from "./ContactItem";
 import {Loader, MantineProvider, Paper, ScrollArea} from "@mantine/core";
 import {listContactsRequest} from "./api";
 
-export const ContactList: FC = React.memo(() => {
+export const ContactList: FC = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
 
     useEffect(() => {
@@ -42,4 +42,4 @@ export const ContactList: FC = React.memo(() => {
 
         </MantineProvider>
     );
-});
+};
