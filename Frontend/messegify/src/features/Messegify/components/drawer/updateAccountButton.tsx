@@ -53,6 +53,9 @@ export function UpdateAccountButton() {
                             <TextInput type="username" label="Username" {...form.getInputProps('Username')} />
                             <PasswordInput label="Password" withAsterisk {...form.getInputProps('Password')} />
                             <TextInput type="email" label="Email" {...form.getInputProps('Email')} />
+
+                            <Space h="sm"/>
+
                             <Button type="submit">
                                 Update Account
                             </Button>
