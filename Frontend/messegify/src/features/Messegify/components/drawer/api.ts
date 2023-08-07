@@ -1,0 +1,25 @@
+import Cookies from "js-cookie";
+import ky from "ky";
+import {API_URL} from "../../../../config";
+
+export async function updateAccountRequest(username: string | null, password: string | null, email: string | null) {
+    const requestBody: { username?: string; password?: string; email?: string } = {};
+
+    requestBody.username = username ?? undefined;
+    requestBody.password = password ?? undefined;
+    requestBody.email = email ?? undefined;
+
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(requestBody),
+    });
+
+    const response = authorizedKy.put(`${API_URL}/account/me`);
+
+    return response;
+}

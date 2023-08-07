@@ -1,34 +1,10 @@
 import {useDisclosure} from '@mantine/hooks';
 import {Modal, Button, Group, Paper, Stack, TextInput, PasswordInput, Space} from '@mantine/core';
-import Cookies from "js-cookie";
-import ky from "ky";
-import {API_URL} from "../../../../config";
 import {updateErrorNotification, updateSuccessNotification} from "./notifications";
 import React from "react";
 import {useForm} from "@mantine/form";
 import {RegisterFormType} from "../../../register/register-form.type";
-
-export async function updateAccountRequest(username: string | null, password: string | null, email: string | null) {
-    const requestBody: { username?: string; password?: string; email?: string } = {};
-
-    requestBody.username = username ?? undefined;
-    requestBody.password = password ?? undefined;
-    requestBody.email = email ?? undefined;
-
-    const token = Cookies.get('auth_token');
-    const authorizedKy = ky.extend({
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(requestBody),
-    });
-
-    const response = authorizedKy.put(`${API_URL}/account/me`);
-
-    return response;
-}
+import {updateAccountRequest} from "./api";
 
 export function UpdateAccountButton() {
     const [opened, {close, open}] = useDisclosure(false);
