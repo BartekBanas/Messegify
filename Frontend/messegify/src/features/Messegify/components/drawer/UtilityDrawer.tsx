@@ -4,6 +4,7 @@ import {Drawer, Group, ActionIcon, Flex, Title} from "@mantine/core";
 import {ContactMaker} from "../contactMaker/ContactMaker";
 import {IconAdjustments} from '@tabler/icons-react';
 import {DeleteAccountButton} from "./deleteAccountButton";
+import {UpdateAccountButton} from "./editAccountButton";
 
 interface UtilityDrawerProps {
 }
@@ -27,6 +28,7 @@ export const UtilityDrawer: FC<UtilityDrawerProps> = () => {
                     wrap="wrap"
                 >
                     <ContactMaker/>
+                    <UpdateAccountButton/>
                     <DeleteAccountButton/>
                 </Flex>
             </Drawer>
