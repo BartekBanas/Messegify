@@ -1,14 +1,14 @@
 import {useDisclosure} from '@mantine/hooks';
 import {Modal, Button, Group, Text} from '@mantine/core';
 import {deletionErrorNotification, deletionSuccessNotification} from "./notifications";
-import {deleteAccount} from "./api";
+import {deleteAccountRequest} from "./api";
 
 export function DeleteAccountButton() {
     const [opened, {close, open}] = useDisclosure(false);
 
     const handleDeleteAccount = async () => {
         try {
-            await deleteAccount();
+            await deleteAccountRequest();
             deletionSuccessNotification();
         } catch (error) {
             deletionErrorNotification();

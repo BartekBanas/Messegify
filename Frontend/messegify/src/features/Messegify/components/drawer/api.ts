@@ -25,7 +25,7 @@ export async function updateAccountRequest(username: string | null, password: st
     return response;
 }
 
-export async function deleteAccount() {
+export async function deleteAccountRequest() {
     const token = Cookies.get('auth_token');
     const authorizedKy = ky.extend({
         headers: {
