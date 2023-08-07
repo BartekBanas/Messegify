@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import ky from "ky";
 import {API_URL} from "../../../../config";
+import {removeJWTToken} from "../../../../pages/layout/Header";
 
 export async function updateAccountRequest(username: string | null, password: string | null, email: string | null) {
     const requestBody: { username?: string; password?: string; email?: string } = {};
@@ -20,6 +21,23 @@ export async function updateAccountRequest(username: string | null, password: st
     });
 
     const response = authorizedKy.put(`${API_URL}/account/me`);
+
+    return response;
+}
+
+export async function deleteAccount() {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        },
+    });
+
+    const response = authorizedKy.delete(`${API_URL}/account/me`);
+
+    removeJWTToken();
 
     return response;
 }

@@ -1,27 +1,7 @@
 import {useDisclosure} from '@mantine/hooks';
 import {Modal, Button, Group, Text} from '@mantine/core';
-import Cookies from "js-cookie";
-import ky from "ky";
-import {API_URL} from "../../../../config";
-import {removeJWTToken} from "../../../../pages/layout/Header";
 import {deletionErrorNotification, deletionSuccessNotification} from "./notifications";
-
-function deleteAccount() {
-    const token = Cookies.get('auth_token');
-    const authorizedKy = ky.extend({
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            authorization: `Bearer ${token}`
-        },
-    });
-
-    const response = authorizedKy.delete(`${API_URL}/account/me`);
-
-    removeJWTToken();
-
-    return response;
-}
+import {deleteAccount} from "./api";
 
 export function DeleteAccountButton() {
     const [opened, {close, open}] = useDisclosure(false);
