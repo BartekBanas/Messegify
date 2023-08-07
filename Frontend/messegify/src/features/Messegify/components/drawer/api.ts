@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import ky from "ky";
 import {API_URL} from "../../../../config";
 import {removeJWTToken} from "../../../../pages/layout/Header";
+import {useCookies} from "react-cookie";
 
 export async function updateAccountRequest(username: string | null, password: string | null, email: string | null) {
     const requestBody: { username?: string; password?: string; email?: string } = {};
@@ -38,6 +39,26 @@ export async function deleteAccountRequest() {
     const response = authorizedKy.delete(`${API_URL}/account/me`);
 
     removeJWTToken();
+
+    return response;
+}
+
+export async function verifyAccountRequest(username: string, password: string) {
+    const token = Cookies.get('auth_token');
+
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            UsernameOrEmail: username,
+            Password: password,
+        })
+    });
+
+    const response = authorizedKy.post(`${API_URL}/account/authenticate`);
 
     return response;
 }
