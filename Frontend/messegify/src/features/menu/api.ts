@@ -1,19 +1,3 @@
-import ky from "ky";
-import {API_URL} from "../../config";
-import {Contact} from "../../types/contact";
-import Cookies from "js-cookie";
-
 export const useMenuApi = () => {
 
-}
-
-export const listContacts = () => {
-    const token = Cookies.get('auth_token');
-    const authorizedKy = ky.extend({
-        headers: {
-            authorization: `Bearer ${token}`
-        }
-    });
-
-    return authorizedKy.get(`${API_URL}/contact`).json<Contact[]>();
 }
