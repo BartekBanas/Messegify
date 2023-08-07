@@ -158,7 +158,7 @@ public class AccountService : IAccountService
             PasswordHash = passwordHash ?? originalAccount.Result.PasswordHash,
         };
 
-        await _accountRepository.UpdateAsync(accountId, updatedAccount);
+        await _accountRepository.UpdateAsync(updatedAccount, accountId);
         
         await _contactRepository.SaveChangesAsync();
     }
