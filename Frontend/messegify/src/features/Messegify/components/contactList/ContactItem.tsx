@@ -15,7 +15,7 @@ export const ContactItem: FC<{ contact: Contact }> = ({contact}) => {
 
     useEffect(() => {
         getFriendsName(contact).then(setName);
-    }, [contact]);
+    }, []);
 
     async function getFriendsName(contact: Contact): Promise<string> {
         const userId = await getUserId();
