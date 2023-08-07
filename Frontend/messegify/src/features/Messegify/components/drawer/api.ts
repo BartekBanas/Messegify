@@ -44,13 +44,10 @@ export async function deleteAccountRequest() {
 }
 
 export async function verifyAccountRequest(username: string, password: string) {
-    const token = Cookies.get('auth_token');
-
-    const authorizedKy = ky.extend({
+    const kyInstance = ky.extend({
         headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            authorization: `Bearer ${token}`
+            'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
             UsernameOrEmail: username,
@@ -58,7 +55,7 @@ export async function verifyAccountRequest(username: string, password: string) {
         })
     });
 
-    const response = authorizedKy.post(`${API_URL}/account/authenticate`);
+    const response = kyInstance.post(`${API_URL}/account/authenticate`);
 
     return response;
 }
