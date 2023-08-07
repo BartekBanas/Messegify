@@ -1,5 +1,5 @@
 import {useDisclosure} from '@mantine/hooks';
-import {Modal, Button, Group, Text, Paper, Stack, TextInput, PasswordInput} from '@mantine/core';
+import {Modal, Button, Group, Paper, Stack, TextInput, PasswordInput, Space} from '@mantine/core';
 import Cookies from "js-cookie";
 import ky from "ky";
 import {API_URL} from "../../../../config";
@@ -57,7 +57,20 @@ export function UpdateAccountButton() {
 
     return (
         <>
-            <Modal opened={opened} onClose={close} size="auto" title="Update your account">
+            <Modal
+                opened={opened}
+                onClose={close}
+                size="auto"
+                styles={{
+                    title: {
+                        fontSize: '30px',
+                        textAlign: 'center',
+                        marginTop: '20px',
+                    },
+                }}
+                title="Update your account"
+            >
+                <Space h="xl"/>
                 <Paper shadow="sm" radius="md" p="lg" withBorder>
                     <form onSubmit={form.onSubmit(handleUpdateAccount)}>
                         <Stack spacing="md">
