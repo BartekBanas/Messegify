@@ -5,7 +5,7 @@ import {API_URL} from '../../../../config';
 import Cookies from 'js-cookie';
 import {Account} from '../../../../types/account';
 import {Contact} from '../../../../types/contact';
-import {listContacts} from '../../../menu/api';
+import {listContactsRequest} from "../contactList/api";
 
 export const ContactMaker: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
@@ -44,7 +44,7 @@ export const ContactMaker: FC = () => {
 
     const fetchContacts = async () => {
         try {
-            const response = await listContacts();
+            const response = await listContactsRequest();
             setContacts(response);
         } catch (error) {
             console.error('Error fetching contacts:', error);
