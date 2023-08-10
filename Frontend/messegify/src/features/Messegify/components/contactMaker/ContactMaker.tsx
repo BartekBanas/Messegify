@@ -5,17 +5,28 @@ import {API_URL} from '../../../../config';
 import Cookies from 'js-cookie';
 import {Account} from '../../../../types/account';
 import {Contact} from '../../../../types/contact';
-import {listContactsRequest} from "../contactList/api";
+import {getUserId, listContactsRequest} from "../contactList/api";
 
 export const ContactMaker: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const [userId, setUserId] = useState<string>();
 
     useEffect(() => {
         fetchAccounts();
         fetchContacts();
+        fetchUserId();
     }, []);
+
+    const fetchUserId = async () => {
+        try {
+            const response = await getUserId();
+            setUserId(response);
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+    };
 
     const fetchAccounts = async () => {
         try {
@@ -60,7 +71,8 @@ export const ContactMaker: FC = () => {
     const filteredAccounts = accounts.filter(
         (account) =>
             account.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-            !contactIds.has(account.id)
+            !contactIds.has(account.id) &&
+            account.id !== userId
     );
 
     return (
