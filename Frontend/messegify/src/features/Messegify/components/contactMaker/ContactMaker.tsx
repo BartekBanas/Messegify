@@ -10,7 +10,6 @@ import {getUserId, listContactsRequest} from "../contactList/api";
 export const ContactMaker: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [contacts, setContacts] = useState<Contact[]>([]);
-    const [searchQuery, setSearchQuery] = useState<string>('');
     const [userId, setUserId] = useState<string>();
 
     useEffect(() => {
@@ -37,6 +36,15 @@ export const ContactMaker: FC = () => {
         }
     };
 
+    const fetchContacts = async () => {
+        try {
+            const response = await listContactsRequest();
+            setContacts(response);
+        } catch (error) {
+            console.error('Error fetching contacts:', error);
+        }
+    };
+
     const handleContactCreate = async (accountId: string) => {
         const token = Cookies.get('auth_token');
         const authorizedKy = ky.extend({
@@ -52,16 +60,7 @@ export const ContactMaker: FC = () => {
             console.error('Error creating contact:', error);
         }
     };
-
-    const fetchContacts = async () => {
-        try {
-            const response = await listContactsRequest();
-            setContacts(response);
-        } catch (error) {
-            console.error('Error fetching contacts:', error);
-        }
-    };
-
+    
     const contactIds = contacts.reduce((contactedAccounts, contact) => {
         contactedAccounts.add(contact.firstAccountId);
         contactedAccounts.add(contact.secondAccountId);
@@ -70,7 +69,6 @@ export const ContactMaker: FC = () => {
 
     const filteredAccounts = accounts.filter(
         (account) =>
-            account.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
             !contactIds.has(account.id) &&
             account.id !== userId
     );
