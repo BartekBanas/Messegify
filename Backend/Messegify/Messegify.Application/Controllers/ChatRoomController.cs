@@ -9,7 +9,7 @@ namespace Messegify.Application.Controllers;
 [Route("api/chatroom")]
 public class ChatRoomController : Controller
 {
-    private IChatRoomRequestHandler _chatRoomRequestHandler;
+    private readonly IChatRoomRequestHandler _chatRoomRequestHandler;
 
     public ChatRoomController(IChatRoomRequestHandler chatRoomRequestHandler)
     {

@@ -16,10 +16,10 @@ public interface IAccountService
     Task<AccountDto> GetAccountAsync(Guid accountId);
     Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
-    Task<string> AuthenticateAsync(LoginDto loginDto);
-    Task CreateContactAsync(Guid accountAId, Guid accountBId);
     Task UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto);
     Task DeleteAccountAsync(Guid accountId);
+    Task<string> AuthenticateAsync(LoginDto loginDto);
+    Task CreateContactAsync(Guid accountAId, Guid accountBId);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
 
