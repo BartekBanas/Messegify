@@ -4,6 +4,7 @@ using FluentValidation;
 using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
+using Messegify.Application.Services.ChatRoomRequests;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
@@ -20,6 +21,7 @@ public interface IAccountService
     Task DeleteAccountAsync(Guid accountId);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     Task CreateContactAsync(Guid accountAId, Guid accountBId);
+    Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
 
@@ -189,6 +191,19 @@ public class AccountService : IAccountService
         
         newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
         
+        await _contactRepository.SaveChangesAsync();
+    }
+
+    public async Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken)
+    {
+        var contact = _contactRepository.GetOneRequiredAsync(contactId);
+
+        DeleteChatRoomRequest request = new DeleteChatRoomRequest(contact.Result.ContactChatRoomId);
+
+        await _chatRoomRequestHandler.Handle(request, cancellationToken);
+
+        await _contactRepository.DeleteAsync(contactId);
+
         await _contactRepository.SaveChangesAsync();
     }
 
