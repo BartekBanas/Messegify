@@ -36,5 +36,22 @@ namespace Messegify.Application.Controllers.Tests
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
         }
+
+        [Fact]
+        public async Task Authenticate_ValidDto_ReturnsOkWithToken()
+        {
+            // Arrange
+            var validDto = new LoginDto { /* Initialize valid DTO here */ };
+            var expectedToken = "sampleToken";
+            _mockAccountService.Setup(accountService => accountService.AuthenticateAsync(validDto)).ReturnsAsync(expectedToken);
+
+            // Act
+            var result = await _controller.Authenticate(validDto) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(200, result.StatusCode);
+            Assert.Equal(expectedToken, result.Value);
+        }
     }
 }
