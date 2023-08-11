@@ -101,42 +101,7 @@ public class AccountService : IAccountService
         
         await _accountRepository.SaveChangesAsync();
     }
-
-    public async Task<string> AuthenticateAsync(LoginDto loginDto)
-    {
-        var foundAccount = await _accountRepository
-            .GetOneAsync(account =>
-                account.Name == loginDto.UsernameOrEmail || account.Email == loginDto.UsernameOrEmail);
-
-        if (foundAccount == default)
-            throw new ForbiddenError();
-
-        if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
-            throw new ForbiddenError();
-
-        var claims = GenerateClaimsIdentity(foundAccount);
-
-        var token = _jwtService.GenerateSymmetricJwtToken(claims);
-        return token;
-    }
-
-    public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
-    {
-        var newContact = new Contact()
-        {
-            FirstAccountId = accountAId,
-            SecondAccountId = accountBId
-        };
-
-        await _contactValidator.ValidateAsync(newContact);
-
-        await _contactRepository.CreateAsync(newContact);
-        
-        newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
-        
-        await _contactRepository.SaveChangesAsync();
-    }
-
+    
     public async Task UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto)
     {
         var originalAccount = _accountRepository.GetOneRequiredAsync(accountId);
@@ -185,6 +150,41 @@ public class AccountService : IAccountService
         
         await _accountRepository.DeleteAsync(accountId);
 
+        await _contactRepository.SaveChangesAsync();
+    }
+
+    public async Task<string> AuthenticateAsync(LoginDto loginDto)
+    {
+        var foundAccount = await _accountRepository
+            .GetOneAsync(account =>
+                account.Name == loginDto.UsernameOrEmail || account.Email == loginDto.UsernameOrEmail);
+
+        if (foundAccount == default)
+            throw new ForbiddenError();
+
+        if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
+            throw new ForbiddenError();
+
+        var claims = GenerateClaimsIdentity(foundAccount);
+
+        var token = _jwtService.GenerateSymmetricJwtToken(claims);
+        return token;
+    }
+
+    public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
+    {
+        var newContact = new Contact()
+        {
+            FirstAccountId = accountAId,
+            SecondAccountId = accountBId
+        };
+
+        await _contactValidator.ValidateAsync(newContact);
+
+        await _contactRepository.CreateAsync(newContact);
+        
+        newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
+        
         await _contactRepository.SaveChangesAsync();
     }
 
