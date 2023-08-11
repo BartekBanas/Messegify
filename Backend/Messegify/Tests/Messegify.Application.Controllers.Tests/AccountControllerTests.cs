@@ -41,7 +41,11 @@ namespace Messegify.Application.Controllers.Tests
         public async Task Authenticate_ValidDto_ReturnsOkWithToken()
         {
             // Arrange
-            var validDto = new LoginDto { /* Initialize valid DTO here */ };
+            var validDto = new LoginDto
+            {
+                 UsernameOrEmail = "Bob",
+                 Password = "Password"
+            };
             var expectedToken = "sampleToken";
             _mockAccountService.Setup(accountService => accountService.AuthenticateAsync(validDto)).ReturnsAsync(expectedToken);
 
