@@ -1,4 +1,4 @@
-﻿using Messegify.Application.Services;
+﻿using MediatR;
 using Messegify.Application.Services.ChatRoomRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +9,11 @@ namespace Messegify.Application.Controllers;
 [Route("api/chatroom")]
 public class ChatRoomController : Controller
 {
-    private readonly IChatRoomRequestHandler _chatRoomRequestHandler;
+    private readonly IMediator _mediator;
 
-    public ChatRoomController(IChatRoomRequestHandler chatRoomRequestHandler)
+    public ChatRoomController(IMediator mediator)
     {
-        _chatRoomRequestHandler = chatRoomRequestHandler;
+        _mediator = mediator;
     }
 
     [Authorize]
@@ -22,7 +22,7 @@ public class ChatRoomController : Controller
     {
         var request = new CreateChatRoomRequest();
 
-        await _chatRoomRequestHandler.Handle(request, cancellationToken);
+        await _mediator.Send(request, cancellationToken);
 
         return Ok();
     }
@@ -33,7 +33,7 @@ public class ChatRoomController : Controller
     {
         var request = new GetUserChatRoomsRequest();
 
-        var requestResult = await _chatRoomRequestHandler.Handle(request, cancellationToken);
+        var requestResult = await _mediator.Send(request, cancellationToken);
 
         return Ok(requestResult);
     }
