@@ -30,10 +30,12 @@ public class AccountService : IAccountService
     private readonly IRepository<ChatRoom> _chatroomRepository;
     private readonly IRepository<Message> _messageRepository;
 
-    private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
     private readonly IValidator<Contact> _contactValidator;
+    private readonly IHashingService _hashingService;
     private readonly IJwtService _jwtService;
+    
+    private readonly IChatRoomRequestHandler _chatRoomRequestHandler;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -49,7 +51,8 @@ public class AccountService : IAccountService
         IValidator<Contact> contactValidator,
         IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor,
-        IMapper mapper)
+        IMapper mapper, 
+        IChatRoomRequestHandler chatRoomRequestHandler)
     {
         _accountRepository = accountRepository;
         _contactRepository = contactRepository;
@@ -61,6 +64,7 @@ public class AccountService : IAccountService
         _jwtService = jwtService;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
+        _chatRoomRequestHandler = chatRoomRequestHandler;
     }
 
     public async Task<AccountDto> GetAccountAsync(Guid accountId)
