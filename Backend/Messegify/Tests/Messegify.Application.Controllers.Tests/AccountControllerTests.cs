@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Moq;
 using Messegify.Application.Dtos;
 using Messegify.Application.Services;
@@ -93,6 +94,28 @@ namespace Messegify.Application.Controllers.Tests
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
             Assert.Equal(expectedAccountDtos, result.Value);
+        }
+        
+        [Fact]
+        public async Task Me_ReturnsOkResultWithClaims()
+        {
+            // Arrange
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "user_id"),
+                new Claim(ClaimTypes.Email, "test@example.com")
+                // Add more claims as needed
+            };
+            
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+            _controller.ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = claimsPrincipal } };
+
+            // Act
+            var result = await _controller.Me();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var claimsInfo = Assert.IsAssignableFrom<IDictionary<string, string>>(okResult.Value);
         }
     }
 }
