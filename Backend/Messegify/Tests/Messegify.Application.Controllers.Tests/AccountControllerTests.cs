@@ -53,5 +53,42 @@ namespace Messegify.Application.Controllers.Tests
             Assert.Equal(200, result.StatusCode);
             Assert.Equal(expectedToken, result.Value);
         }
+
+        [Fact]
+        public async Task GetAllAccounts_ReturnsOkWithAccountDtos()
+        {
+            // Arrange
+            var expectedAccountDtos = new List<AccountDto>
+            {
+                new()
+                {
+                    Id = "1",
+                    Name = "John Doe",
+                    Email = "john@example.com"
+                },
+                new()
+                {
+                    Id = "2",
+                    Name = "Jane Smith",
+                    Email = "jane@example.com"
+                },
+                new()
+                {
+                    Id = "3",
+                    Name = "Bob Johnson",
+                    Email = "bob@example.com"
+                }
+            };
+            
+            _mockAccountService.Setup(accountService => accountService.GetAllAccountsAsync()).ReturnsAsync(expectedAccountDtos);
+
+            // Act
+            var result = await _controller.GetAllAccounts() as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(200, result.StatusCode);
+            Assert.Equal(expectedAccountDtos, result.Value);
+        }
     }
 }
