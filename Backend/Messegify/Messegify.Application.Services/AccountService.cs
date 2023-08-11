@@ -4,6 +4,7 @@ using FluentValidation;
 using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
+using Messegify.Application.Services.ChatRoomRequests;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
@@ -16,10 +17,11 @@ public interface IAccountService
     Task<AccountDto> GetAccountAsync(Guid accountId);
     Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
-    Task<string> AuthenticateAsync(LoginDto loginDto);
-    Task CreateContactAsync(Guid accountAId, Guid accountBId);
     Task UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto);
     Task DeleteAccountAsync(Guid accountId);
+    Task<string> AuthenticateAsync(LoginDto loginDto);
+    Task CreateContactAsync(Guid accountAId, Guid accountBId);
+    Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
 
@@ -30,10 +32,12 @@ public class AccountService : IAccountService
     private readonly IRepository<ChatRoom> _chatroomRepository;
     private readonly IRepository<Message> _messageRepository;
 
-    private readonly IHashingService _hashingService;
     private readonly IValidator<Account> _validator;
     private readonly IValidator<Contact> _contactValidator;
+    private readonly IHashingService _hashingService;
     private readonly IJwtService _jwtService;
+    
+    private readonly IChatRoomRequestHandler _chatRoomRequestHandler;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -49,7 +53,8 @@ public class AccountService : IAccountService
         IValidator<Contact> contactValidator,
         IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor,
-        IMapper mapper)
+        IMapper mapper, 
+        IChatRoomRequestHandler chatRoomRequestHandler)
     {
         _accountRepository = accountRepository;
         _contactRepository = contactRepository;
@@ -61,6 +66,7 @@ public class AccountService : IAccountService
         _jwtService = jwtService;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
+        _chatRoomRequestHandler = chatRoomRequestHandler;
     }
 
     public async Task<AccountDto> GetAccountAsync(Guid accountId)
@@ -101,42 +107,7 @@ public class AccountService : IAccountService
         
         await _accountRepository.SaveChangesAsync();
     }
-
-    public async Task<string> AuthenticateAsync(LoginDto loginDto)
-    {
-        var foundAccount = await _accountRepository
-            .GetOneAsync(account =>
-                account.Name == loginDto.UsernameOrEmail || account.Email == loginDto.UsernameOrEmail);
-
-        if (foundAccount == default)
-            throw new ForbiddenError();
-
-        if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
-            throw new ForbiddenError();
-
-        var claims = GenerateClaimsIdentity(foundAccount);
-
-        var token = _jwtService.GenerateSymmetricJwtToken(claims);
-        return token;
-    }
-
-    public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
-    {
-        var newContact = new Contact()
-        {
-            FirstAccountId = accountAId,
-            SecondAccountId = accountBId
-        };
-
-        await _contactValidator.ValidateAsync(newContact);
-
-        await _contactRepository.CreateAsync(newContact);
-        
-        newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
-        
-        await _contactRepository.SaveChangesAsync();
-    }
-
+    
     public async Task UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto)
     {
         var originalAccount = _accountRepository.GetOneRequiredAsync(accountId);
@@ -184,6 +155,54 @@ public class AccountService : IAccountService
         }
         
         await _accountRepository.DeleteAsync(accountId);
+
+        await _contactRepository.SaveChangesAsync();
+    }
+
+    public async Task<string> AuthenticateAsync(LoginDto loginDto)
+    {
+        var foundAccount = await _accountRepository
+            .GetOneAsync(account =>
+                account.Name == loginDto.UsernameOrEmail || account.Email == loginDto.UsernameOrEmail);
+
+        if (foundAccount == default)
+            throw new ForbiddenError();
+
+        if (!_hashingService.VerifyPassword(foundAccount, loginDto.Password))
+            throw new ForbiddenError();
+
+        var claims = GenerateClaimsIdentity(foundAccount);
+
+        var token = _jwtService.GenerateSymmetricJwtToken(claims);
+        return token;
+    }
+
+    public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
+    {
+        var newContact = new Contact()
+        {
+            FirstAccountId = accountAId,
+            SecondAccountId = accountBId
+        };
+
+        await _contactValidator.ValidateAsync(newContact);
+
+        await _contactRepository.CreateAsync(newContact);
+        
+        newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
+        
+        await _contactRepository.SaveChangesAsync();
+    }
+
+    public async Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken)
+    {
+        var contact = _contactRepository.GetOneRequiredAsync(contactId);
+
+        DeleteChatRoomRequest request = new DeleteChatRoomRequest(contact.Result.ContactChatRoomId);
+
+        await _chatRoomRequestHandler.Handle(request, cancellationToken);
+
+        await _contactRepository.DeleteAsync(contactId);
 
         await _contactRepository.SaveChangesAsync();
     }

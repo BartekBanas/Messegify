@@ -38,4 +38,13 @@ public class ContactController : Controller
 
         return Ok(friendships);
     }
+
+    [Authorize]
+    [HttpDelete("{targetContactGuid:guid}")]
+    public async Task<IActionResult> DeleteContact([FromRoute] Guid targetContactGuid, CancellationToken cancellationToken)
+    {
+        await _accountService.DeleteContactAsync(targetContactGuid, cancellationToken);
+
+        return Ok();
+    }
 }

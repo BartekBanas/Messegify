@@ -4,7 +4,7 @@ using Messegify.Domain.Entities;
 
 namespace Messegify.Application.Services.ChatRoomRequests;
 
-public class GetUserChatRooms : IRequest<IEnumerable<ChatRoomDto>>
+public class GetUserChatRoomsRequest : IRequest<IEnumerable<ChatRoomDto>>
 {
     // Intentionally empty
 }
