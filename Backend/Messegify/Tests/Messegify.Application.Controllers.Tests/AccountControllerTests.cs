@@ -117,5 +117,28 @@ namespace Messegify.Application.Controllers.Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var claimsInfo = Assert.IsAssignableFrom<IDictionary<string, string>>(okResult.Value);
         }
+        
+        [Fact]
+        public async Task GetAccount_ReturnsOkResultWithAccountDto()
+        {
+            // Arrange
+            var accountGuid = new Guid("05c2a638-8d33-4a7c-2a2a-08db96b815eb");
+            var accountDto = new AccountDto()
+            {
+                Id = "05c2a638-8d33-4a7c-2a2a-08db96b815eb",
+                Name = "Michael",
+                Email = "michael@mail.com"
+            };
+            
+            _mockAccountService.Setup(svc => svc.GetAccountAsync(accountGuid)).ReturnsAsync(accountDto);
+
+            // Act
+            var result = await _controller.GetAccount(accountGuid);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var model = Assert.IsAssignableFrom<AccountDto>(okResult.Value);
+            Assert.Equal(accountDto, model);
+        }
     }
 }
