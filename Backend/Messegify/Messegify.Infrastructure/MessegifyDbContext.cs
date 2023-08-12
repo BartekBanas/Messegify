@@ -13,7 +13,7 @@ public class MessegifyDbContext : DbContext
 
     public DbSet<Account> Accounts { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
-    public DbSet<ChatRoom> Rooms { get; set; } = null!;
+    public DbSet<Chatroom> Rooms { get; set; } = null!;
     public DbSet<Message> Messages { get; set; } = null!;
     public DbSet<AccountChatRoom> AccountRooms { get; set; } = null!;
     public DbSet<Contact> Contacts { get; set; } = null!;
@@ -21,7 +21,7 @@ public class MessegifyDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .Entity<ChatRoom>()
+            .Entity<Chatroom>()
             .Property(chatRoom => chatRoom.ChatRoomType)
             .HasConversion<string>();
 

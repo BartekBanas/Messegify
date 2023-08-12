@@ -19,7 +19,7 @@ public class Contact : Entity
     
     [ForeignKey(nameof(ContactChatRoomId))]
     public Guid ContactChatRoomId { get; set; }
-    public virtual ChatRoom ContactChatRoom { get; set; } = null!;
+    public virtual Chatroom ContactChatroom { get; set; } = null!;
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated { get; set; }

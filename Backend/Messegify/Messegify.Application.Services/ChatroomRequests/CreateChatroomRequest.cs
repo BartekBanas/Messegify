@@ -2,7 +2,7 @@
 
 namespace Messegify.Application.Services.ChatroomRequests;
 
-public class CreateChatRoomRequest : IRequest
+public class CreateChatroomRequest : IRequest
 {
     // Intentionally empty
 }

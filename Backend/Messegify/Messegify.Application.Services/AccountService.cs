@@ -29,7 +29,7 @@ public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
     private readonly IRepository<Contact> _contactRepository;
-    private readonly IRepository<ChatRoom> _chatroomRepository;
+    private readonly IRepository<Chatroom> _chatroomRepository;
     private readonly IRepository<Message> _messageRepository;
 
     private readonly IValidator<Account> _validator;
@@ -37,7 +37,7 @@ public class AccountService : IAccountService
     private readonly IHashingService _hashingService;
     private readonly IJwtService _jwtService;
     
-    private readonly IChatRoomRequestHandler _chatRoomRequestHandler;
+    private readonly IChatroomRequestHandler _chatroomRequestHandler;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -46,7 +46,7 @@ public class AccountService : IAccountService
     public AccountService(
         IRepository<Account> accountRepository, 
         IRepository<Contact> contactRepository,
-        IRepository<ChatRoom> chatroomRepository,
+        IRepository<Chatroom> chatroomRepository,
         IRepository<Message> messageRepository,
         IHashingService hashingService,
         IValidator<Account> validator,
@@ -54,7 +54,7 @@ public class AccountService : IAccountService
         IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor,
         IMapper mapper, 
-        IChatRoomRequestHandler chatRoomRequestHandler)
+        IChatroomRequestHandler chatroomRequestHandler)
     {
         _accountRepository = accountRepository;
         _contactRepository = contactRepository;
@@ -66,7 +66,7 @@ public class AccountService : IAccountService
         _jwtService = jwtService;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
-        _chatRoomRequestHandler = chatRoomRequestHandler;
+        _chatroomRequestHandler = chatroomRequestHandler;
     }
 
     public async Task<AccountDto> GetAccountAsync(Guid accountId)
@@ -198,9 +198,9 @@ public class AccountService : IAccountService
     {
         var contact = _contactRepository.GetOneRequiredAsync(contactId);
 
-        DeleteChatRoomRequest request = new DeleteChatRoomRequest(contact.Result.ContactChatRoomId);
+        DeleteChatroomRequest request = new DeleteChatroomRequest(contact.Result.ContactChatRoomId);
 
-        await _chatRoomRequestHandler.Handle(request, cancellationToken);
+        await _chatroomRequestHandler.Handle(request, cancellationToken);
 
         await _contactRepository.DeleteAsync(contactId);
 

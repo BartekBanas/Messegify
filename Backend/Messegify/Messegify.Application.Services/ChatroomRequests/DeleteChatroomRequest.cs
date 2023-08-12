@@ -2,11 +2,11 @@
 
 namespace Messegify.Application.Services.ChatroomRequests;
 
-public class DeleteChatRoomRequest : IRequest
+public class DeleteChatroomRequest : IRequest
 {
     public Guid ChatRoomId { get; }
     
-    public DeleteChatRoomRequest(Guid chatRoomId)
+    public DeleteChatroomRequest(Guid chatRoomId)
     {
         ChatRoomId = chatRoomId;
     }

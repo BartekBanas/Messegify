@@ -4,7 +4,7 @@ using Messegify.Domain.Abstractions;
 
 namespace Messegify.Domain.Entities;
 
-public class ChatRoom : Entity
+public class Chatroom : Entity
 {
     [Key]
     public Guid Id { get; set; }

@@ -20,7 +20,7 @@ public interface IMessageRequestHandler : IRequestHandler<SendMessageRequest>,
 
 public class MessageRequestHandler : IMessageRequestHandler
 {
-    private readonly IRepository<ChatRoom> _chatRoomRepository;
+    private readonly IRepository<Chatroom> _chatRoomRepository;
     private readonly IRepository<Message> _messageRepository;
 
     private readonly IMapper _mapper;
@@ -30,7 +30,7 @@ public class MessageRequestHandler : IMessageRequestHandler
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public MessageRequestHandler(
-        IRepository<ChatRoom> chatRoomRepository,
+        IRepository<Chatroom> chatRoomRepository,
         IRepository<Message> messageRepository,
         IAuthorizationService authorizationService,
         IHttpContextAccessor httpContextAccessor, 
@@ -48,7 +48,7 @@ public class MessageRequestHandler : IMessageRequestHandler
         var user = _httpContextAccessor.HttpContext.User;
 
         var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId, 
-            nameof(ChatRoom.Members));
+            nameof(Chatroom.Members));
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
@@ -73,7 +73,7 @@ public class MessageRequestHandler : IMessageRequestHandler
         var user = _httpContextAccessor.HttpContext.User;
 
         var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId, 
-            nameof(ChatRoom.Members));
+            nameof(Chatroom.Members));
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
