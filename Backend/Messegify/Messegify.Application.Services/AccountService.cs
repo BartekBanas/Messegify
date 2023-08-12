@@ -29,8 +29,6 @@ public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
     private readonly IRepository<Contact> _contactRepository;
-    private readonly IRepository<Chatroom> _chatroomRepository;
-    private readonly IRepository<Message> _messageRepository;
 
     private readonly IValidator<Account> _validator;
     private readonly IValidator<Contact> _contactValidator;
@@ -46,8 +44,6 @@ public class AccountService : IAccountService
     public AccountService(
         IRepository<Account> accountRepository, 
         IRepository<Contact> contactRepository,
-        IRepository<Chatroom> chatroomRepository,
-        IRepository<Message> messageRepository,
         IHashingService hashingService,
         IValidator<Account> validator,
         IValidator<Contact> contactValidator,
@@ -58,8 +54,6 @@ public class AccountService : IAccountService
     {
         _accountRepository = accountRepository;
         _contactRepository = contactRepository;
-        _messageRepository = messageRepository;
-        _chatroomRepository = chatroomRepository;
         _hashingService = hashingService;
         _validator = validator;
         _contactValidator = contactValidator;
@@ -140,17 +134,11 @@ public class AccountService : IAccountService
 
         foreach (var contact in contacts)
         {
-            var chatroom = await _chatroomRepository.GetOneRequiredAsync(contact.ContactChatRoomId);
+            var deleteChatroomRequest = new DeleteChatroomRequest(contact.ContactChatRoomId);
+            var token = new CancellationToken();
 
-            var messages = await _messageRepository
-                .GetAsync(message => message.ChatRoomId == chatroom.Id);
+            await _chatroomRequestHandler.Handle(deleteChatroomRequest, token);
             
-            foreach (var message in messages)
-            {
-                await _messageRepository.DeleteAsync(message.Id);
-            }
-
-            await _chatroomRepository.DeleteAsync(chatroom.Id);
             await _contactRepository.DeleteAsync(contact.Id);
         }
         
