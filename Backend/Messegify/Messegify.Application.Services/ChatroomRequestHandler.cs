@@ -26,8 +26,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 {
     private readonly IRepository<Chatroom> _chatRoomRepository;
     private readonly IRepository<Account> _accountRepository;
-    private readonly IRepository<Message> _messageRepository;
-    
+
     private readonly IAuthorizationService _authorizationService;
     private readonly IMessageRequestHandler _messageRequestHandler;
 
@@ -38,7 +37,6 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
     public ChatroomRequestHandler(
         IRepository<Chatroom> chatRoomRepository,
         IRepository<Account> accountRepository,
-        IRepository<Message> messageRepository,
         IHttpContextAccessor httpContextAccessor,
         IAuthorizationService authorizationService,
         IMessageRequestHandler messageRequestHandler,
@@ -46,7 +44,6 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
     {
         _chatRoomRepository = chatRoomRepository;
         _accountRepository = accountRepository;
-        _messageRepository = messageRepository;
         _httpContextAccessor = httpContextAccessor;
         _authorizationService = authorizationService;
         _messageRequestHandler = messageRequestHandler;
@@ -103,13 +100,13 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         {
             throw new ForbiddenError("You can only delete private chatrooms");
         }
-        
-        var messages = await _messageRepository
-            .GetAsync(message => message.ChatRoomId == chatRoom.Id);
 
         var token = new CancellationToken();
         
-        foreach (var message in messages)
+        var getMessagesRequest = new GetMessagesRequest(request.ChatRoomId);
+        var messages = _messageRequestHandler.Handle(getMessagesRequest, token);
+
+        foreach (var message in messages.Result)
         {
             var deleteMessageRequest = new DeleteMessageRequest(message.Id);
 
