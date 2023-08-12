@@ -3,7 +3,7 @@ using MediatR;
 using Messegify.Application.Authorization;
 using Messegify.Application.Dtos;
 using Messegify.Application.Service.Extensions;
-using Messegify.Application.Services.ChatRoomRequests;
+using Messegify.Application.Services.MessageRequests;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;

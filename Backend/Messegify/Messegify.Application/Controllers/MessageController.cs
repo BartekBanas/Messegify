@@ -1,6 +1,6 @@
 ﻿using Messegify.Application.Dtos;
 using Messegify.Application.Services;
-using Messegify.Application.Services.ChatRoomRequests;
+using Messegify.Application.Services.MessageRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Messegify.Application.Controllers;

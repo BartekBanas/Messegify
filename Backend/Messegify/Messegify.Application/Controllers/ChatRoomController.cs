@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Messegify.Application.Services.ChatRoomRequests;
+using Messegify.Application.Services.ChatroomRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

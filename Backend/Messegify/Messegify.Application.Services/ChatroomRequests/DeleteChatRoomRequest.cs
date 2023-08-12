@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Messegify.Application.Services.ChatRoomRequests;
+namespace Messegify.Application.Services.ChatroomRequests;
 
 public class DeleteChatRoomRequest : IRequest
 {

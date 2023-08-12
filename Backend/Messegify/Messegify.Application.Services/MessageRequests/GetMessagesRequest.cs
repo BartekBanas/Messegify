@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Messegify.Application.Dtos;
 
-namespace Messegify.Application.Services.ChatRoomRequests;
+namespace Messegify.Application.Services.MessageRequests;
 
 public class GetMessagesRequest : IRequest<IEnumerable<MessageDto>>
 {
