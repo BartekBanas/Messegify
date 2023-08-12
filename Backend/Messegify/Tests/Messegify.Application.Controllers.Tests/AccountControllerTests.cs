@@ -10,13 +10,14 @@ namespace Messegify.Application.Controllers.Tests
     public class AccountControllerTests
     {
         private readonly Mock<IAccountService> _mockAccountService;
+        private readonly Mock<IHttpContextAccessor> _httpContextAccessorMock;
         private readonly AccountController _controller;
 
         public AccountControllerTests()
         {
             _mockAccountService = new Mock<IAccountService>();
-            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-            _controller = new AccountController(_mockAccountService.Object, mockHttpContextAccessor.Object);
+            _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+            _controller = new AccountController(_mockAccountService.Object, _httpContextAccessorMock.Object);
         }
 
         [Fact]
