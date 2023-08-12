@@ -9,7 +9,7 @@ public class AddCreatorToChatRoom : INotificationHandler<ChatRoomCreatedDomainEv
 {
     public Task Handle(ChatRoomCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        notification.CreatedEntity.Members = new List<AccountChatRoom>()
+        notification.CreatedEntity.Members = new List<AccountChatroom>()
         {
             new() { AccountId = notification.CreatorAccount.Id }
         };

@@ -23,7 +23,7 @@ public class CreateChatRoom : INotificationHandler<ContactCreatedDomainEvent>
         {
             Name = "DirectMessage",
             ChatRoomType = ChatRoomType.Direct,
-            Members = new List<AccountChatRoom>()
+            Members = new List<AccountChatroom>()
             {
                 new() { AccountId = contact.FirstAccountId },
                 new() { AccountId = contact.SecondAccountId }

@@ -10,5 +10,5 @@ public class ChatRoomDto
     
     public ChatRoomType ChatRoomType { get; set; }
     
-    // public virtual ICollection<AccountChatRoom> Members { get; set; }
+    // public virtual ICollection<AccountChatroom> Members { get; set; }
 }

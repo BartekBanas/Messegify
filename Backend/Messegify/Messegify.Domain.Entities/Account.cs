@@ -19,6 +19,6 @@ public class Account : Entity
     
     public DateTime DateCreated { get; set; }
 
-    [ForeignKey(nameof(AccountChatRoom.AccountId))]
-    public virtual ICollection<AccountChatRoom> AccountRooms { get; set; } = null!;
+    [ForeignKey(nameof(AccountChatroom.AccountId))]
+    public virtual ICollection<AccountChatroom> AccountRooms { get; set; } = null!;
 }

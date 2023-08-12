@@ -14,7 +14,7 @@ public class Chatroom : Entity
     [Column(TypeName = "nvarchar(24)")]
     public ChatRoomType ChatRoomType { get; set; }
 
-    public virtual ICollection<AccountChatRoom> Members { get; set; } = null!;
+    public virtual ICollection<AccountChatroom> Members { get; set; } = null!;
     public virtual ICollection<Message> Messages { get; set; } = null!;
 }
 
