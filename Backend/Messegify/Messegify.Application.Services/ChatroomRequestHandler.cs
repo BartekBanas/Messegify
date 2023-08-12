@@ -6,6 +6,7 @@ using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
 using Messegify.Application.Services.ChatroomRequests;
+using Messegify.Application.Services.MessageRequests;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
@@ -28,6 +29,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
     private readonly IRepository<Message> _messageRepository;
     
     private readonly IAuthorizationService _authorizationService;
+    private readonly IMessageRequestHandler _messageRequestHandler;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -39,14 +41,15 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         IRepository<Message> messageRepository,
         IHttpContextAccessor httpContextAccessor,
         IAuthorizationService authorizationService,
-        IMapper mapper
-        )
+        IMessageRequestHandler messageRequestHandler,
+        IMapper mapper)
     {
         _chatRoomRepository = chatRoomRepository;
         _accountRepository = accountRepository;
         _messageRepository = messageRepository;
         _httpContextAccessor = httpContextAccessor;
         _authorizationService = authorizationService;
+        _messageRequestHandler = messageRequestHandler;
         _mapper = mapper;
     }
 
@@ -103,10 +106,14 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         
         var messages = await _messageRepository
             .GetAsync(message => message.ChatRoomId == chatRoom.Id);
+
+        var token = new CancellationToken();
         
         foreach (var message in messages)
         {
-            await _messageRepository.DeleteAsync(message.Id);
+            var deleteMessageRequest = new DeleteMessageRequest(message.Id);
+
+            await _messageRequestHandler.Handle(deleteMessageRequest, token);
         }
         
         await _chatRoomRepository.DeleteAsync(chatRoom.Id);
