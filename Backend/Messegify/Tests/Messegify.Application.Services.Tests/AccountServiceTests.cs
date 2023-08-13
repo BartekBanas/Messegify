@@ -52,4 +52,46 @@ public class AccountServiceTests
         // Assert
         Assert.Equal(accountDto, result);
     }
+    
+    
+    [Fact]
+    public async Task GetAllAccountsAsync_ReturnsListOfAccountDtos()
+    {
+        // Arrange
+        var accounts = new List<Account>
+        {
+            new Account
+            {
+                Id = Guid.NewGuid(),
+                Name = "user1",
+                PasswordHash = "hashedPassword1",
+                Email = "user1@example.com",
+                DateCreated = DateTime.UtcNow
+            },
+            new Account
+            {
+                Id = Guid.NewGuid(),
+                Name = "user2",
+                PasswordHash = "hashedPassword2",
+                Email = "user2@example.com",
+                DateCreated = DateTime.UtcNow
+            }
+        };
+        
+        var accountDtos = accounts.Select(account => new AccountDto
+        {
+            Id = account.Id.ToString(),
+            Name = account.Name,
+            Email = account.Email
+        }).ToList();
+        
+        _accountRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(accounts);
+        _mapperMock.Setup(mapper => mapper.Map<IEnumerable<AccountDto>>(accounts)).Returns(accountDtos);
+
+        // Act
+        var result = await _accountService.GetAllAccountsAsync();
+
+        // Assert
+        Assert.Equal(accountDtos, result);
+    }
 }
