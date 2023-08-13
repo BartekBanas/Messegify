@@ -8,9 +8,9 @@ namespace Messegify.Application.DomainEventHandlers.ContactCreated;
 // ReSharper disable once UnusedType.Global
 public class CreateChatRoom : INotificationHandler<ContactCreatedDomainEvent>
 {
-    private readonly IRepository<ChatRoom> _chatRoomRepository;
+    private readonly IRepository<Chatroom> _chatRoomRepository;
 
-    public CreateChatRoom(IRepository<ChatRoom> chatRoomRepository)
+    public CreateChatRoom(IRepository<Chatroom> chatRoomRepository)
     {
         _chatRoomRepository = chatRoomRepository;
     }
@@ -19,18 +19,18 @@ public class CreateChatRoom : INotificationHandler<ContactCreatedDomainEvent>
     {
         var contact = notification.CreatedEntity;
 
-        var newChatRoom = new ChatRoom()
+        var newChatRoom = new Chatroom()
         {
             Name = "DirectMessage",
             ChatRoomType = ChatRoomType.Direct,
-            Members = new List<AccountChatRoom>()
+            Members = new List<AccountChatroom>()
             {
                 new() { AccountId = contact.FirstAccountId },
                 new() { AccountId = contact.SecondAccountId }
             }
         };
 
-        contact.ContactChatRoom = newChatRoom;
+        contact.ContactChatroom = newChatRoom;
 
         await _chatRoomRepository.CreateAsync(newChatRoom);
     }

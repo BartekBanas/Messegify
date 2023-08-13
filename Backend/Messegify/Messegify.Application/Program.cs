@@ -90,12 +90,12 @@ services.AddScoped<IJwtService, JwtService>();
 services.AddScoped<IRepository<Account>,     Repository<Account,  MessegifyDbContext>>();
 services.AddScoped<IRepository<User>,        Repository<User,     MessegifyDbContext>>();
 services.AddScoped<IRepository<Contact>,     Repository<Contact,  MessegifyDbContext>>();
-services.AddScoped<IRepository<ChatRoom>,    Repository<ChatRoom, MessegifyDbContext>>();
+services.AddScoped<IRepository<Chatroom>,    Repository<Chatroom, MessegifyDbContext>>();
 services.AddScoped<IRepository<Message>,     Repository<Message,  MessegifyDbContext>>();    
 
 services.AddScoped<IHashingService, HashingService>();
 services.AddScoped<IAccountService, AccountService>();
-services.AddScoped<IChatRoomRequestHandler, ChatRoomRequestHandler>();
+services.AddScoped<IChatroomRequestHandler, ChatroomRequestHandler>();
 services.AddScoped<IMessageRequestHandler, MessageRequestHandler>();
 
 services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));

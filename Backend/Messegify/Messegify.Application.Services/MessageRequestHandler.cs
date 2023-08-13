@@ -3,7 +3,7 @@ using MediatR;
 using Messegify.Application.Authorization;
 using Messegify.Application.Dtos;
 using Messegify.Application.Service.Extensions;
-using Messegify.Application.Services.ChatRoomRequests;
+using Messegify.Application.Services.MessageRequests;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
@@ -13,14 +13,15 @@ using Microsoft.AspNetCore.Http;
 namespace Messegify.Application.Services;
 
 public interface IMessageRequestHandler : IRequestHandler<SendMessageRequest>, 
-    IRequestHandler<GetMessagesRequest, IEnumerable<MessageDto>>
+    IRequestHandler<GetMessagesRequest, IEnumerable<MessageDto>>,
+    IRequestHandler<DeleteMessageRequest>
 {
     
 }
 
 public class MessageRequestHandler : IMessageRequestHandler
 {
-    private readonly IRepository<ChatRoom> _chatRoomRepository;
+    private readonly IRepository<Chatroom> _chatRoomRepository;
     private readonly IRepository<Message> _messageRepository;
 
     private readonly IMapper _mapper;
@@ -30,7 +31,7 @@ public class MessageRequestHandler : IMessageRequestHandler
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public MessageRequestHandler(
-        IRepository<ChatRoom> chatRoomRepository,
+        IRepository<Chatroom> chatRoomRepository,
         IRepository<Message> messageRepository,
         IAuthorizationService authorizationService,
         IHttpContextAccessor httpContextAccessor, 
@@ -48,7 +49,7 @@ public class MessageRequestHandler : IMessageRequestHandler
         var user = _httpContextAccessor.HttpContext.User;
 
         var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId, 
-            nameof(ChatRoom.Members));
+            nameof(Chatroom.Members));
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
@@ -73,7 +74,7 @@ public class MessageRequestHandler : IMessageRequestHandler
         var user = _httpContextAccessor.HttpContext.User;
 
         var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId, 
-            nameof(ChatRoom.Members));
+            nameof(Chatroom.Members));
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
@@ -86,5 +87,14 @@ public class MessageRequestHandler : IMessageRequestHandler
         var dtos = _mapper.Map<IEnumerable<MessageDto>>(messages);
         
         return dtos;
+    }
+    
+    public async Task<Unit> Handle(DeleteMessageRequest request, CancellationToken cancellationToken)
+    {
+        var message = await _messageRepository.GetOneRequiredAsync(message => message.Id == request.MessageId);
+        
+        await _messageRepository.DeleteAsync(message.Id);
+        
+        return Unit.Value;
     }
 }

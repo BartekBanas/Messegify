@@ -4,7 +4,7 @@ using FluentValidation;
 using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
 using Messegify.Application.Service.Extensions;
-using Messegify.Application.Services.ChatRoomRequests;
+using Messegify.Application.Services.ChatroomRequests;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Messegify.Domain.Events;
@@ -29,15 +29,13 @@ public class AccountService : IAccountService
 {
     private readonly IRepository<Account> _accountRepository;
     private readonly IRepository<Contact> _contactRepository;
-    private readonly IRepository<ChatRoom> _chatroomRepository;
-    private readonly IRepository<Message> _messageRepository;
 
     private readonly IValidator<Account> _validator;
     private readonly IValidator<Contact> _contactValidator;
     private readonly IHashingService _hashingService;
     private readonly IJwtService _jwtService;
     
-    private readonly IChatRoomRequestHandler _chatRoomRequestHandler;
+    private readonly IChatroomRequestHandler _chatroomRequestHandler;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -46,27 +44,23 @@ public class AccountService : IAccountService
     public AccountService(
         IRepository<Account> accountRepository, 
         IRepository<Contact> contactRepository,
-        IRepository<ChatRoom> chatroomRepository,
-        IRepository<Message> messageRepository,
         IHashingService hashingService,
         IValidator<Account> validator,
         IValidator<Contact> contactValidator,
         IJwtService jwtService,
         IHttpContextAccessor httpContextAccessor,
         IMapper mapper, 
-        IChatRoomRequestHandler chatRoomRequestHandler)
+        IChatroomRequestHandler chatroomRequestHandler)
     {
         _accountRepository = accountRepository;
         _contactRepository = contactRepository;
-        _messageRepository = messageRepository;
-        _chatroomRepository = chatroomRepository;
         _hashingService = hashingService;
         _validator = validator;
         _contactValidator = contactValidator;
         _jwtService = jwtService;
         _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
-        _chatRoomRequestHandler = chatRoomRequestHandler;
+        _chatroomRequestHandler = chatroomRequestHandler;
     }
 
     public async Task<AccountDto> GetAccountAsync(Guid accountId)
@@ -140,17 +134,11 @@ public class AccountService : IAccountService
 
         foreach (var contact in contacts)
         {
-            var chatroom = await _chatroomRepository.GetOneRequiredAsync(contact.ContactChatRoomId);
+            var deleteChatroomRequest = new DeleteChatroomRequest(contact.ContactChatRoomId);
+            var token = new CancellationToken();
 
-            var messages = await _messageRepository
-                .GetAsync(message => message.ChatRoomId == chatroom.Id);
+            await _chatroomRequestHandler.Handle(deleteChatroomRequest, token);
             
-            foreach (var message in messages)
-            {
-                await _messageRepository.DeleteAsync(message.Id);
-            }
-
-            await _chatroomRepository.DeleteAsync(chatroom.Id);
             await _contactRepository.DeleteAsync(contact.Id);
         }
         
@@ -198,9 +186,9 @@ public class AccountService : IAccountService
     {
         var contact = _contactRepository.GetOneRequiredAsync(contactId);
 
-        DeleteChatRoomRequest request = new DeleteChatRoomRequest(contact.Result.ContactChatRoomId);
+        DeleteChatroomRequest request = new DeleteChatroomRequest(contact.Result.ContactChatRoomId);
 
-        await _chatRoomRequestHandler.Handle(request, cancellationToken);
+        await _chatroomRequestHandler.Handle(request, cancellationToken);
 
         await _contactRepository.DeleteAsync(contactId);
 

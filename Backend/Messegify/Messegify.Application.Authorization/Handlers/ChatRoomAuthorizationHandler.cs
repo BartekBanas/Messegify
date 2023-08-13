@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Messegify.Application.Authorization.Handlers;
 
-public class ChatRoomAuthorizationHandler : AuthorizationHandler<IsMemberOfRequirement, ChatRoom>
+public class ChatRoomAuthorizationHandler : AuthorizationHandler<IsMemberOfRequirement, Chatroom>
 {
     protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context, 
         IsMemberOfRequirement requirement,
-        ChatRoom resource)
+        Chatroom resource)
     {
         var user = context.User;
         var userId = user.Claims.First(x => x.Type == ClaimTypes.PrimarySid).Value;

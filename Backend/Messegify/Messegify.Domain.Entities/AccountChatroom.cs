@@ -4,7 +4,7 @@ using Messegify.Domain.Abstractions;
 
 namespace Messegify.Domain.Entities;
 
-public class AccountChatRoom : Entity
+public class AccountChatroom : Entity
 {
     [Key]
     public Guid Id { get; set; }
@@ -13,9 +13,9 @@ public class AccountChatRoom : Entity
     public Guid AccountId { get; set; }
     public Account Account { get; set; } = null!;
 
-    [ForeignKey(nameof(ChatRoom))]
+    [ForeignKey(nameof(Chatroom))]
     public Guid RoomId { get; set; }
-    public ChatRoom ChatRoom { get; set; } = null!;
+    public Chatroom Chatroom { get; set; } = null!;
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateJoined { get; set; }

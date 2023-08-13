@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Messegify.Application.Services.ChatRoomRequests;
+using Messegify.Application.Services.ChatroomRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +20,7 @@ public class ChatRoomController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateChatRoom(CancellationToken cancellationToken)
     {
-        var request = new CreateChatRoomRequest();
+        var request = new CreateChatroomRequest();
 
         await _mediator.Send(request, cancellationToken);
 
@@ -31,7 +31,7 @@ public class ChatRoomController : Controller
     [HttpGet("list")]
     public async Task<IActionResult> GetChatRoom(CancellationToken cancellationToken)
     {
-        var request = new GetUserChatRoomsRequest();
+        var request = new GetUserChatroomsRequest();
 
         var requestResult = await _mediator.Send(request, cancellationToken);
 

@@ -18,7 +18,7 @@ public class Message : Entity
     public Guid AccountId { get; set; }
     public virtual Account Account { get; set; } = null!;
 
-    [ForeignKey(nameof(ChatRoom))]
+    [ForeignKey(nameof(Chatroom))]
     public Guid ChatRoomId { get; set; }
-    public virtual ChatRoom ChatRoom { get; set; } = null!;
+    public virtual Chatroom Chatroom { get; set; } = null!;
 }

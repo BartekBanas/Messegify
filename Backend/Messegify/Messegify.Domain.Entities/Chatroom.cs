@@ -4,7 +4,7 @@ using Messegify.Domain.Abstractions;
 
 namespace Messegify.Domain.Entities;
 
-public class ChatRoom : Entity
+public class Chatroom : Entity
 {
     [Key]
     public Guid Id { get; set; }
@@ -14,7 +14,7 @@ public class ChatRoom : Entity
     [Column(TypeName = "nvarchar(24)")]
     public ChatRoomType ChatRoomType { get; set; }
 
-    public virtual ICollection<AccountChatRoom> Members { get; set; } = null!;
+    public virtual ICollection<AccountChatroom> Members { get; set; } = null!;
     public virtual ICollection<Message> Messages { get; set; } = null!;
 }
 

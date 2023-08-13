@@ -3,14 +3,14 @@ using Messegify.Domain.Entities;
 
 namespace Messegify.Domain.Events;
 
-public class ChatRoomCreatedDomainEvent : DomainEvent<ChatRoom>
+public class ChatRoomCreatedDomainEvent : DomainEvent<Chatroom>
 {
-    public ChatRoomCreatedDomainEvent(ChatRoom createdEntity, Account creatorAccount)
+    public ChatRoomCreatedDomainEvent(Chatroom createdEntity, Account creatorAccount)
     {
         CreatedEntity = createdEntity;
         CreatorAccount = creatorAccount;
     }
 
-    public ChatRoom CreatedEntity { get; }
+    public Chatroom CreatedEntity { get; }
     public Account CreatorAccount { get; }
 }
