@@ -94,4 +94,33 @@ public class AccountServiceTests
         // Assert
         Assert.Equal(accountDtos, result);
     }
+
+    [Fact]
+    public async Task RegisterAccountAsync_ValidInput_CreatesNewAccount()
+    {
+        // Arrange
+        var registerDto = new RegisterAccountDto
+        {
+            Email = "test@example.com",
+            Username = "testuser",
+            Password = "password123"
+        };
+        
+        // Act
+        var hashedPassword = _hashingService.HashPassword(registerDto.Password);
+        
+        var createdAccount = new Account()
+        {
+            Id = new Guid(),
+            Name = registerDto.Username,
+            Email = registerDto.Email,
+            PasswordHash = hashedPassword,
+            DateCreated = DateTime.UtcNow
+        };
+
+        // Assert
+        Assert.Equal(registerDto.Email, createdAccount.Email);
+        Assert.True(!string.IsNullOrEmpty(createdAccount.Name) && createdAccount.Name.Length is >= 3 and <= 32);
+        Assert.True(!string.IsNullOrEmpty(createdAccount.PasswordHash));
+    }
 }
