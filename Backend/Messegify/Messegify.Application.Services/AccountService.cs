@@ -17,7 +17,7 @@ public interface IAccountService
     Task<AccountDto> GetAccountAsync(Guid accountId);
     Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
-    Task UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto);
+    Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto);
     Task DeleteAccountAsync(Guid accountId);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     Task CreateContactAsync(Guid accountAId, Guid accountBId);
@@ -102,7 +102,7 @@ public class AccountService : IAccountService
         await _accountRepository.SaveChangesAsync();
     }
     
-    public async Task UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto)
+    public async Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto)
     {
         var originalAccount = _accountRepository.GetOneRequiredAsync(accountId);
 
@@ -124,8 +124,11 @@ public class AccountService : IAccountService
         };
 
         await _accountRepository.UpdateAsync(updatedAccount, accountId);
-        
         await _contactRepository.SaveChangesAsync();
+
+        var dto = _mapper.Map<Account, AccountDto>(updatedAccount);
+
+        return dto;
     }
     
     public async Task DeleteAccountAsync(Guid accountId)
