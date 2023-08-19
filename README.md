@@ -23,4 +23,4 @@ Chatting application allowing for adding contacts, creating chatrooms as well as
 ![image](https://github.com/BartekBanas/Messegify/assets/56255827/ab91b6f6-a429-476f-8cdc-9a087fd586cb)
 
 - Chatroom page
-![image](https://github.com/BartekBanas/Messegify/assets/56255827/5663d27f-bd11-42f4-b577-26849c065af9)
+![2](https://github.com/BartekBanas/Messegify/assets/56255827/67b81dea-33dc-4e43-8c27-2872baee7049)
