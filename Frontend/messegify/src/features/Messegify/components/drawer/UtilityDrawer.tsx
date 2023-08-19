@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import {useDisclosure} from "@mantine/hooks";
 import {Drawer, Group, ActionIcon, Flex, Title} from "@mantine/core";
-import {ContactMaker} from "../contactMaker/ContactMaker";
+import {ContactMakerButton} from "./ContactMakerButton";
 import {IconAdjustments} from '@tabler/icons-react';
-import {DeleteAccountButton} from "./deleteAccountButton";
-import {UpdateAccountButton} from "./updateAccountButton";
+import {DeleteAccountButton} from "./DeleteAccountButton";
+import {UpdateAccountButton} from "./UpdateAccountButton";
 import {DeleteContactButton} from "./DeleteContactButton";
 
 interface UtilityDrawerProps {
@@ -28,7 +28,7 @@ export const UtilityDrawer: FC<UtilityDrawerProps> = () => {
                     direction="column"
                     wrap="wrap"
                 >
-                    <ContactMaker/>
+                    <ContactMakerButton/>
                     <UpdateAccountButton/>
                     <DeleteContactButton/>
                     <DeleteAccountButton/>

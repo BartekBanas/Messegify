@@ -7,7 +7,7 @@ import {Account} from '../../../../types/account';
 import {Contact} from '../../../../types/contact';
 import {getUserId, listContactsRequest} from "../contactList/api";
 
-export const ContactMaker: FC = () => {
+export const ContactMakerButton: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [userId, setUserId] = useState<string>();
