@@ -5,6 +5,7 @@ import {ContactMaker} from "../contactMaker/ContactMaker";
 import {IconAdjustments} from '@tabler/icons-react';
 import {DeleteAccountButton} from "./deleteAccountButton";
 import {UpdateAccountButton} from "./updateAccountButton";
+import {DeleteContactButton} from "./DeleteContactButton";
 
 interface UtilityDrawerProps {
 }
@@ -29,6 +30,7 @@ export const UtilityDrawer: FC<UtilityDrawerProps> = () => {
                 >
                     <ContactMaker/>
                     <UpdateAccountButton/>
+                    <DeleteContactButton/>
                     <DeleteAccountButton/>
                 </Flex>
             </Drawer>
