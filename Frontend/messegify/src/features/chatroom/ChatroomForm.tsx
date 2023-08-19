@@ -141,7 +141,8 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                 <ContactList/>
 
                 <div style={{flex: 4, height: '100%', maxHeight: '87vh'}}>
-                    <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 4, height: '90%', overflow: 'auto'}}
+                    <Paper shadow="sm" radius="md" p="lg" withBorder className="custom-scrollbar"
+                           style={{flex: 4, height: '90%', overflow: 'auto'}}
                            ref={messageContainerRef}>
                         {messages.map((message) => (
                             <ChatMessage key={message.id} message={message} userId={userId}/>
