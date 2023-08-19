@@ -42,6 +42,17 @@ export async function deleteAccountRequest() {
     return response;
 }
 
+export async function deleteContactRequest(contactId: string) {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            authorization: `Bearer ${token}`,
+        },
+    });
+
+    await authorizedKy.delete(`${API_URL}/contact/${contactId}`);
+}
+
 export async function verifyAccountRequest(name: string, password: string) {
     const kyInstance = ky.extend({
         headers: {

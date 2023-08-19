@@ -8,6 +8,7 @@ import {getUserId, listContactsRequest} from "../contactList/api";
 import {API_URL} from "../../../../config";
 import ky from "ky";
 import Cookies from 'js-cookie';
+import {deleteContactRequest} from "./api";
 
 export function DeleteContactButton() {
     const [opened, {close, open}] = useDisclosure(false);
@@ -59,17 +60,10 @@ export function DeleteContactButton() {
     const handleDeleteContact = async () => {
         if (selectedContactId) {
             try {
-                const token = Cookies.get('auth_token');
-                const authorizedKy = ky.extend({
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                    },
-                });
-
-                await authorizedKy.delete(`${API_URL}/contact/${selectedContactId}`);
+                await deleteContactRequest(selectedContactId);
                 setSelectedContactId(null);
-
                 contactDeletionSuccessNotification();
+
             } catch (error) {
                 contactDeletionErrorNotification();
             }
