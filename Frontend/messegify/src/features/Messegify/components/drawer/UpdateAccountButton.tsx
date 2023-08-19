@@ -64,7 +64,7 @@ export function UpdateAccountButton() {
                 </Paper>
             </Modal>
             <Group position="center">
-                <Button color="orange" size="md" onClick={open}>
+                <Button color="blue" size="md" onClick={open}>
                     Update Account
                 </Button>
             </Group>
