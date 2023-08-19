@@ -1,5 +1,5 @@
 export interface RegisterFormType {
-    Username: string;
+    Name: string;
     Password: string;
     Email: string;
 }

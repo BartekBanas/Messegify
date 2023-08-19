@@ -2,12 +2,11 @@ import Cookies from "js-cookie";
 import ky from "ky";
 import {API_URL} from "../../../../config";
 import {removeJWTToken} from "../../../../pages/layout/Header";
-import {useCookies} from "react-cookie";
 
-export async function updateAccountRequest(username: string | null, password: string | null, email: string | null) {
-    const requestBody: { username?: string; password?: string; email?: string } = {};
+export async function updateAccountRequest(name: string | null, password: string | null, email: string | null) {
+    const requestBody: { name?: string; password?: string; email?: string } = {};
 
-    requestBody.username = username ?? undefined;
+    requestBody.name = name ?? undefined;
     requestBody.password = password ?? undefined;
     requestBody.email = email ?? undefined;
 
@@ -43,14 +42,14 @@ export async function deleteAccountRequest() {
     return response;
 }
 
-export async function verifyAccountRequest(username: string, password: string) {
+export async function verifyAccountRequest(name: string, password: string) {
     const kyInstance = ky.extend({
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-            UsernameOrEmail: username,
+            UsernameOrEmail: name,
             Password: password,
         })
     });
