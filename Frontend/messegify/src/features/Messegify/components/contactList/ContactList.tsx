@@ -34,7 +34,7 @@ export const ContactList: FC = () => {
                 radius="md"
                 p="lg"
                 withBorder
-                style={{maxHeight: '87vh'}}
+                style={{maxHeight: '87vh', height: '100%'}}
                 className="custom-scrollbar"
             >
                 <ul>
