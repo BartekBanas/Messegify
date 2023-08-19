@@ -26,7 +26,7 @@ namespace Messegify.Application.Controllers.Tests
             // Arrange
             var validDto = new RegisterAccountDto
             {
-                Username = "Username",
+                Name = "Username",
                 Password = "Password",
                 Email = "email.com"
             };

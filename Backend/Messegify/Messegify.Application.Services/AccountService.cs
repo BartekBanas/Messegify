@@ -88,7 +88,7 @@ public class AccountService : IAccountService
         var newAccount = new Account()
         {
             Email = registerDto.Email,
-            Name = registerDto.Username,
+            Name = registerDto.Name,
             PasswordHash = passwordHash,
             DateCreated = DateTime.UtcNow,
         };
