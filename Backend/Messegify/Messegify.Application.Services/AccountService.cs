@@ -123,6 +123,8 @@ public class AccountService : IAccountService
             PasswordHash = passwordHash ?? originalAccount.Result.PasswordHash,
         };
 
+        await _validator.ValidateAsync(updatedAccount);
+
         await _accountRepository.UpdateAsync(updatedAccount, accountId);
         await _contactRepository.SaveChangesAsync();
 
