@@ -33,7 +33,7 @@ export function DeleteAccountButton() {
                 </Group>
             </Modal>
             <Group position="center">
-                <Button color="red" onClick={open}>Delete Account</Button>
+                <Button color="red" size="md" onClick={open}>Delete Account</Button>
             </Group>
         </>
     );

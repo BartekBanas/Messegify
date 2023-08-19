@@ -60,7 +60,7 @@ export const ContactMaker: FC = () => {
             console.error('Error creating contact:', error);
         }
     };
-    
+
     const contactIds = contacts.reduce((contactedAccounts, contact) => {
         contactedAccounts.add(contact.firstAccountId);
         contactedAccounts.add(contact.secondAccountId);
@@ -76,6 +76,7 @@ export const ContactMaker: FC = () => {
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Select
+                size="md"
                 searchable
                 clearable
                 maw={320}
