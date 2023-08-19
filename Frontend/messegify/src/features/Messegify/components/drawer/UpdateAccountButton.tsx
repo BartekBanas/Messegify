@@ -10,7 +10,7 @@ export function UpdateAccountButton() {
     const [opened, {close, open}] = useDisclosure(false);
     const form = useForm<RegisterFormType>({
         initialValues: {
-            Username: '',
+            Name: '',
             Password: '',
             Email: '',
         },
@@ -19,7 +19,7 @@ export function UpdateAccountButton() {
     const handleUpdateAccount = async () => {
         try {
             await updateAccountRequest(
-                form.values.Username || null,
+                form.values.Name || null,
                 form.values.Password || null,
                 form.values.Email || null
             );
@@ -50,7 +50,7 @@ export function UpdateAccountButton() {
                 <Paper shadow="sm" radius="md" p="lg" withBorder>
                     <form onSubmit={form.onSubmit(handleUpdateAccount)}>
                         <Stack spacing="md">
-                            <TextInput type="username" label="Username" {...form.getInputProps('Username')} />
+                            <TextInput type="username" label="Username" {...form.getInputProps('Name')} />
                             <PasswordInput label="Password" withAsterisk {...form.getInputProps('Password')} />
                             <TextInput type="email" label="Email" {...form.getInputProps('Email')} />
 
@@ -64,7 +64,7 @@ export function UpdateAccountButton() {
                 </Paper>
             </Modal>
             <Group position="center">
-                <Button color="orange" onClick={open}>
+                <Button color="blue" size="md" onClick={open}>
                     Update Account
                 </Button>
             </Group>

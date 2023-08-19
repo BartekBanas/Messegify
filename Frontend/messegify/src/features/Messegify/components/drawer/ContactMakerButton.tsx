@@ -7,7 +7,7 @@ import {Account} from '../../../../types/account';
 import {Contact} from '../../../../types/contact';
 import {getUserId, listContactsRequest} from "../contactList/api";
 
-export const ContactMaker: FC = () => {
+export const ContactMakerButton: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [userId, setUserId] = useState<string>();
@@ -60,7 +60,7 @@ export const ContactMaker: FC = () => {
             console.error('Error creating contact:', error);
         }
     };
-    
+
     const contactIds = contacts.reduce((contactedAccounts, contact) => {
         contactedAccounts.add(contact.firstAccountId);
         contactedAccounts.add(contact.secondAccountId);
@@ -76,6 +76,7 @@ export const ContactMaker: FC = () => {
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Select
+                size="md"
                 searchable
                 clearable
                 maw={320}

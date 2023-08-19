@@ -102,7 +102,7 @@ public class AccountServiceTests
         var registerDto = new RegisterAccountDto
         {
             Email = "test@example.com",
-            Username = "testuser",
+            Name = "testuser",
             Password = "password123"
         };
         
@@ -112,7 +112,7 @@ public class AccountServiceTests
         var createdAccount = new Account()
         {
             Id = new Guid(),
-            Name = registerDto.Username,
+            Name = registerDto.Name,
             Email = registerDto.Email,
             PasswordHash = hashedPassword,
             DateCreated = DateTime.UtcNow

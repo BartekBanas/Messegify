@@ -36,3 +36,21 @@ export function updateSuccessNotification() {
         styles: notificationStyles,
     });
 }
+
+export function contactDeletionErrorNotification() {
+    showNotification({
+        color: 'red',
+        title: 'Error',
+        message: 'Contact could not be deleted',
+        styles: notificationStyles,
+    })
+}
+
+export function contactDeletionSuccessNotification() {
+    showNotification({
+        color: 'green',
+        title: 'Success',
+        message: 'Contact deleted successfully',
+        styles: notificationStyles,
+    });
+}

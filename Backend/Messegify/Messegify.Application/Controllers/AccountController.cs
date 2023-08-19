@@ -89,9 +89,9 @@ public class AccountController : Controller
         {
             var userId = _httpContextAccessor.HttpContext.User.GetId();
 
-            await _accountService.UpdateAccountAsync(userId, dto);
+            var updatedAccount = await _accountService.UpdateAccountAsync(userId, dto);
 
-            return Ok();
+            return Ok(updatedAccount);
         }
         else
         {
