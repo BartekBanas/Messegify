@@ -3,7 +3,7 @@ import {Contact} from "../../../../types/contact";
 import {ContactItem} from "./ContactItem";
 import {Loader, MantineProvider, Paper} from "@mantine/core";
 import {listContactsRequest} from "./api";
-import './CustomScrollbar.css';
+import '../../../../styles/CustomScrollbar.css';
 
 export const ContactList: FC = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
