@@ -3,6 +3,7 @@ import {Contact} from "../../../../types/contact";
 import {ContactItem} from "./ContactItem";
 import {Loader, MantineProvider, Paper, ScrollArea} from "@mantine/core";
 import {listContactsRequest} from "./api";
+import './CustomScrollbar.css'; // Zaimportuj plik ze stylami
 
 export const ContactList: FC = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -28,18 +29,22 @@ export const ContactList: FC = () => {
 
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
-            <ScrollArea h={700} type="scroll" scrollHideDelay={500}>
-                <Paper shadow="sm" radius="md" p="lg" withBorder style={{flex: 1, height: '100%'}}>
-                    <ul>
-                        <React.Suspense fallback={<Loader color="indigo" variant="dots"/>}>
-                            {contacts.map((contact) => (
-                                <ContactItem key={contact.id} contact={contact}/>
-                            ))}
-                        </React.Suspense>
-                    </ul>
-                </Paper>
-            </ScrollArea>
-
+            <Paper
+                shadow="sm"
+                radius="md"
+                p="lg"
+                withBorder
+                style={{maxHeight: '87vh'}}
+                className="custom-scrollbar"
+            >
+                <ul>
+                    <React.Suspense fallback={<Loader color="indigo" variant="dots"/>}>
+                        {contacts.map((contact) => (
+                            <ContactItem key={contact.id} contact={contact}/>
+                        ))}
+                    </React.Suspense>
+                </ul>
+            </Paper>
         </MantineProvider>
     );
 };
