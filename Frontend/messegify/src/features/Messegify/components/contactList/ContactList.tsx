@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Contact} from "../../../../types/contact";
 import {ContactItem} from "./ContactItem";
-import {Loader, MantineProvider, Paper, ScrollArea} from "@mantine/core";
+import {Loader, MantineProvider, Paper} from "@mantine/core";
 import {listContactsRequest} from "./api";
-import './CustomScrollbar.css'; // Zaimportuj plik ze stylami
+import './CustomScrollbar.css';
 
 export const ContactList: FC = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
