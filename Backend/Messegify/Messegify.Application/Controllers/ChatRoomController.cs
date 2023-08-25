@@ -31,7 +31,7 @@ public class ChatRoomController : Controller
     }
     
     [Authorize]
-    [HttpGet("list")]
+    [HttpGet]
     public async Task<IActionResult> GetChatRoom(CancellationToken cancellationToken)
     {
         var request = new GetUserChatroomsRequest();
