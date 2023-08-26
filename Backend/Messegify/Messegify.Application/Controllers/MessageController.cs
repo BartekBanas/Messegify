@@ -17,7 +17,7 @@ public class MessageController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Send([FromRoute] Guid chatRoomId, SendMessageDto dto, CancellationToken ct)
+    public async Task<IActionResult> SendMessage([FromRoute] Guid chatRoomId, SendMessageDto dto, CancellationToken ct)
     {
         var request = new SendMessageRequest(dto, chatRoomId);
 
@@ -27,7 +27,7 @@ public class MessageController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> Send([FromRoute] Guid chatRoomId, CancellationToken ct)
+    public async Task<IActionResult> GetChatroomMessages([FromRoute] Guid chatRoomId, CancellationToken ct)
     {
         var request = new GetMessagesRequest(chatRoomId);
 
