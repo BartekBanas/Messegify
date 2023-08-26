@@ -92,7 +92,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                     }
                 });
 
-                const response = await authorizedKy.get(`${API_URL}/chatRoom/${roomId}/message/list`).json<Message[]>();
+                const response = await authorizedKy.get(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
                 if (response.length > 0) {
                     const latestMessage = response[response.length - 1];
                     if (latestMessage.id !== lastMessage?.id) {
