@@ -26,7 +26,7 @@ public class MessageController : Controller
         return Ok();
     }
     
-    [HttpGet("list")]
+    [HttpGet]
     public async Task<IActionResult> Send([FromRoute] Guid chatRoomId, CancellationToken ct)
     {
         var request = new GetMessagesRequest(chatRoomId);

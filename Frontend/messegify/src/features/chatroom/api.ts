@@ -18,7 +18,7 @@ export function useGetMessages() {
         }
     });
 
-    return authorizedKy.get(`${API_URL}/chatRoom/${roomId}/message/list`).json<Message[]>();
+    return authorizedKy.get(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
 }
 
 export function useMessageWebSocket() {
