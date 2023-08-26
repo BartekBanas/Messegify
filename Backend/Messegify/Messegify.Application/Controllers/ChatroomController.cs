@@ -8,12 +8,12 @@ namespace Messegify.Application.Controllers;
 
 [ApiController]
 [Route("api/chatroom")]
-public class ChatRoomController : Controller
+public class ChatroomController : Controller
 {
     private readonly IMediator _mediator;
     private readonly IChatroomRequestHandler _chatroomRequestHandler;
 
-    public ChatRoomController(IMediator mediator, IChatroomRequestHandler chatroomRequestHandler)
+    public ChatroomController(IMediator mediator, IChatroomRequestHandler chatroomRequestHandler)
     {
         _mediator = mediator;
         _chatroomRequestHandler = chatroomRequestHandler;
@@ -21,7 +21,7 @@ public class ChatRoomController : Controller
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> CreateChatRoom(CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateChatroom(CancellationToken cancellationToken)
     {
         var request = new CreateChatroomRequest();
 
@@ -32,7 +32,7 @@ public class ChatRoomController : Controller
     
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> GetChatRoom(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetChatroom(CancellationToken cancellationToken)
     {
         var request = new GetUserChatroomsRequest();
 
