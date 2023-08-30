@@ -4,6 +4,7 @@ import {API_URL} from "../../config";
 import {Message} from "../../types/message";
 import {useState} from "react";
 import useWebSocket from "react-use-websocket";
+import {sendMessageErrorNotification} from "./notifications";
 
 export function useGetMessages() {
     const currentUrl = window.location.href;
@@ -60,6 +61,6 @@ export async function handleSubmit(data: Message, roomId: string) {
 
         return authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
     } catch (error) {
-
+        sendMessageErrorNotification();
     }
 }
