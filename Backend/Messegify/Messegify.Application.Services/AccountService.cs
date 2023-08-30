@@ -15,7 +15,8 @@ namespace Messegify.Application.Services;
 public interface IAccountService
 {
     Task<AccountDto> GetAccountAsync(Guid accountId);
-    Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
+    Task<IEnumerable<AccountDto>> GetAccountsAsync();
+    Task<IEnumerable<AccountDto>> GetAccountsAsync(int pageSize, int pageNumber);
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
     Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto);
     Task DeleteAccountAsync(Guid accountId);
@@ -72,12 +73,20 @@ public class AccountService : IAccountService
         return dtos;
     }
 
-    public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync()
+    public async Task<IEnumerable<AccountDto>> GetAccountsAsync()
     {
         var accounts = await _accountRepository.GetAllAsync();
 
         var dtos = _mapper.Map<IEnumerable<AccountDto>>(accounts);
     
+        return dtos;
+    }
+
+    public async Task<IEnumerable<AccountDto>> GetAccountsAsync(int pageSize, int pageNumber)
+    {
+        var pagedAccounts = await _accountRepository.GetPagedAsync(pageSize, pageNumber);
+        var dtos = _mapper.Map<IEnumerable<AccountDto>>(pagedAccounts);
+        
         return dtos;
     }
 

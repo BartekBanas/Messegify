@@ -89,7 +89,7 @@ public class AccountServiceTests
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<AccountDto>>(accounts)).Returns(accountDtos);
 
         // Act
-        var result = await _accountService.GetAllAccountsAsync();
+        var result = await _accountService.GetAccountsAsync();
 
         // Assert
         Assert.Equal(accountDtos, result);

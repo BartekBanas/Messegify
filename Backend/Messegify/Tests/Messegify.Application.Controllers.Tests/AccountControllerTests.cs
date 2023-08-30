@@ -86,10 +86,10 @@ namespace Messegify.Application.Controllers.Tests
                 }
             };
             
-            _mockAccountService.Setup(accountService => accountService.GetAllAccountsAsync()).ReturnsAsync(expectedAccountDtos);
+            _mockAccountService.Setup(accountService => accountService.GetAccountsAsync()).ReturnsAsync(expectedAccountDtos);
 
             // Act
-            var result = await _controller.GetAllAccounts() as OkObjectResult;
+            var result = await _controller.GetAllAccounts(null, null) as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
