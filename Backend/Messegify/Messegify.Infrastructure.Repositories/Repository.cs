@@ -107,7 +107,7 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
         return entity;
     }
 
-    public virtual async Task<ICollection<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         var entities = await _dbSet.ToListAsync();
 
