@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace Messegify.Domain.Abstractions;
+﻿namespace Messegify.Domain.Abstractions;
 
 public abstract class Entity : IEntity
 {
