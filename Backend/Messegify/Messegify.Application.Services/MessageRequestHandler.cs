@@ -12,8 +12,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace Messegify.Application.Services;
 
-public interface IMessageRequestHandler : IRequestHandler<SendMessageRequest>, 
+public interface IMessageRequestHandler : 
+    IRequestHandler<SendMessageRequest>, 
     IRequestHandler<GetMessagesRequest, IEnumerable<MessageDto>>,
+    IRequestHandler<GetPagedMessagesRequest, IEnumerable<MessageDto>>,
     IRequestHandler<DeleteMessageRequest>
 {
     
@@ -83,6 +85,27 @@ public class MessageRequestHandler : IMessageRequestHandler
             message => message.ChatRoomId == request.ChatRoomId,
             query => query.OrderBy(message => message.SentDate) // Sent Date ascending
         );
+
+        var dtos = _mapper.Map<IEnumerable<MessageDto>>(messages);
+        
+        return dtos;
+    }
+    
+    public async Task<IEnumerable<MessageDto>> Handle(GetPagedMessagesRequest request, CancellationToken cancellationToken)
+    {
+        var user = _httpContextAccessor.HttpContext.User;
+
+        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId, 
+            nameof(Chatroom.Members));
+
+        await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
+
+        var messages = await _messageRepository
+            .GetAsync(
+                request.PageSize, request.PageNumber,
+                message => message.ChatRoomId == request.ChatRoomId,
+                query => query.OrderBy(message => message.SentDate)
+            );
 
         var dtos = _mapper.Map<IEnumerable<MessageDto>>(messages);
         
