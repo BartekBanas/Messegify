@@ -84,7 +84,7 @@ public class AccountService : IAccountService
 
     public async Task<IEnumerable<AccountDto>> GetAccountsAsync(int pageSize, int pageNumber)
     {
-        var pagedAccounts = await _accountRepository.GetPagedAsync(pageSize, pageNumber);
+        var pagedAccounts = await _accountRepository.GetAsync(pageSize, pageNumber);
         var dtos = _mapper.Map<IEnumerable<AccountDto>>(pagedAccounts);
         
         return dtos;

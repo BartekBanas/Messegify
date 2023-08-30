@@ -141,11 +141,6 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
 
         return entities;
     }
-    
-    public virtual async Task<IEnumerable<TEntity>> GetPagedAsync(int pageSize, int pageNumber)
-    {
-        return await _dbSet.Skip(pageNumber * pageSize).Take(pageSize).ToListAsync();
-    }
 
     public virtual async Task DeleteAsync(params object[] keys)
     {
