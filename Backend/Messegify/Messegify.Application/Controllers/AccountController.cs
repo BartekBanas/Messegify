@@ -36,9 +36,18 @@ public class AccountController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllAccounts()
+    public async Task<IActionResult> GetAllAccounts([FromQuery]int? pageSize, [FromQuery]int? pageNumber)
     {
-        var accountDtos = await _accountService.GetAllAccountsAsync();
+        IEnumerable<AccountDto> accountDtos;
+
+        if (pageSize != null && pageNumber != null)
+        {
+            accountDtos = await _accountService.GetAccountsAsync((int)pageSize, (int)pageNumber);
+        }
+        else
+        {
+            accountDtos = await _accountService.GetAccountsAsync();
+        }
         
         return Ok(accountDtos);
     }

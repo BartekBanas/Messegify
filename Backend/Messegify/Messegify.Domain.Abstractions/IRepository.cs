@@ -15,10 +15,15 @@ public interface IRepository<TEntity> : IRepository where TEntity : IEntity
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeProperties);
 
+    Task<IEnumerable<TEntity>> GetAsync(
+        int pageSize, int pageNumber,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeProperties);
+
     Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties);
     Task<TEntity> GetOneRequiredAsync(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties);
     Task<TEntity> GetOneRequiredAsync(params object[] guids);
-    Task<ICollection<TEntity>> GetAllAsync();
     Task DeleteAsync(params object[] keys);
     Task<TEntity> CreateAsync(TEntity entity);
     Task<TEntity> UpdateAsync(object update, params object[] keys);

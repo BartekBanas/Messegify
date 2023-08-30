@@ -1,4 +1,6 @@
-﻿using Messegify.Application.Dtos;
+﻿using MediatR;
+
+using Messegify.Application.Dtos;
 using Messegify.Application.Services;
 using Messegify.Application.Services.MessageRequests;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +29,22 @@ public class MessageController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetChatroomMessages([FromRoute] Guid chatRoomId, CancellationToken ct)
+    public async Task<IActionResult> GetChatroomMessages([FromRoute] Guid chatRoomId, 
+        [FromQuery]int? pageSize, [FromQuery]int? pageNumber, CancellationToken ct)
     {
-        var request = new GetMessagesRequest(chatRoomId);
+        object messagesDto;
 
-        var messagesDto = await _messageRequestHandler.Handle(request, ct);
-
+        if (pageSize != null && pageNumber != null)
+        {
+            var request = new GetPagedMessagesRequest(chatRoomId, (int)pageSize, (int)pageNumber);
+            messagesDto = await _messageRequestHandler.Handle(request, ct);
+        }
+        else
+        {
+            var request = new GetMessagesRequest(chatRoomId);
+            messagesDto = await _messageRequestHandler.Handle(request, ct);
+        }
+        
         return Ok(messagesDto);
     }
 }

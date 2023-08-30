@@ -4,6 +4,7 @@ import {API_URL} from "../../config";
 import {Message} from "../../types/message";
 import {useState} from "react";
 import useWebSocket from "react-use-websocket";
+import {sendMessageErrorNotification} from "./notifications";
 
 export function useGetMessages() {
     const currentUrl = window.location.href;
@@ -46,8 +47,6 @@ export function useMessageWebSocket() {
 
 export async function handleSubmit(data: Message, roomId: string) {
     try {
-        console.log("data = " + data.textContent);
-
         const token = Cookies.get('auth_token');
         const authorizedKy = ky.extend({
             headers: {
@@ -62,6 +61,6 @@ export async function handleSubmit(data: Message, roomId: string) {
 
         return authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
     } catch (error) {
-
+        sendMessageErrorNotification();
     }
 }

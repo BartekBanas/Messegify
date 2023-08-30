@@ -6,15 +6,19 @@ namespace Messegify.Application.Service.Extensions;
 
 public static class AuthorizationServiceExtensions
 {
-    public static async Task<AuthorizationResult> AuthorizeRequiredAsync(
-        this IAuthorizationService authorizationService, 
+    public static async Task AuthorizeRequiredAsync(this IAuthorizationService authorizationService,
         ClaimsPrincipal claimsPrincipal, object? resource, string policy)
     {
-        var authorizationResult = await authorizationService.AuthorizeAsync(claimsPrincipal, resource, policy);
+        try
+        {
+            var authorizationResult = await authorizationService.AuthorizeAsync(claimsPrincipal, resource, policy);
 
-        if (!authorizationResult.Succeeded)
-            throw new ForbiddenError();
-        
-        return authorizationResult;
+            if (!authorizationResult.Succeeded)
+                throw new ForbiddenError();
+        }
+        catch (Exception exception)
+        {
+            throw new UnauthorizedAccessException(exception.Message);
+        }
     }
 }
