@@ -61,6 +61,34 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
             return await query.ToListAsync();
         }
     }
+    
+    public virtual async Task<IEnumerable<TEntity>> GetAsync(
+        int pageSize, int pageNumber,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeProperties)
+    {
+        IQueryable<TEntity> query = _dbSet;
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+
+        query = query.Skip(pageNumber * pageSize).Take(pageSize);
+
+        return await query.ToListAsync();
+    }
 
     public async Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>>? filter = null,
         params string[] includeProperties)
