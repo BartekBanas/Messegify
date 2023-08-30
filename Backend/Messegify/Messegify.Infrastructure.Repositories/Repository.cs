@@ -135,13 +135,6 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
         return entity;
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
-    {
-        var entities = await _dbSet.ToListAsync();
-
-        return entities;
-    }
-
     public virtual async Task DeleteAsync(params object[] keys)
     {
         var entity = await GetOneRequiredAsync(keys);

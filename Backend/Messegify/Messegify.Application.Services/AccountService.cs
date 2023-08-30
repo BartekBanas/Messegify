@@ -75,7 +75,7 @@ public class AccountService : IAccountService
 
     public async Task<IEnumerable<AccountDto>> GetAccountsAsync()
     {
-        var accounts = await _accountRepository.GetAllAsync();
+        var accounts = await _accountRepository.GetAsync();
 
         var dtos = _mapper.Map<IEnumerable<AccountDto>>(accounts);
     

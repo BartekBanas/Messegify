@@ -85,7 +85,7 @@ public class AccountServiceTests
             Email = account.Email
         }).ToList();
         
-        _accountRepositoryMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(accounts);
+        _accountRepositoryMock.Setup(repo => repo.GetAsync(null, null)).ReturnsAsync(accounts);
         _mapperMock.Setup(mapper => mapper.Map<IEnumerable<AccountDto>>(accounts)).Returns(accountDtos);
 
         // Act
