@@ -46,8 +46,6 @@ export function useMessageWebSocket() {
 
 export async function handleSubmit(data: Message, roomId: string) {
     try {
-        console.log("data = " + data.textContent);
-
         const token = Cookies.get('auth_token');
         const authorizedKy = ky.extend({
             headers: {
