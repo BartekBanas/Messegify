@@ -1,11 +1,12 @@
 using System.Security.Claims;
+using Messegify.Application.Controllers;
 using Moq;
 using Messegify.Application.Dtos;
 using Messegify.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-namespace Messegify.Application.Controllers.Tests
+namespace Application.Controllers.Tests
 {
     public class AccountControllerTests
     {

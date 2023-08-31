@@ -38,11 +38,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Infrastructure.Er
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AF1C0E3A-785C-4601-A575-CDEC3384F1A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Infrastructure.Repositories.Tests", "Tests\Messegify.Infrastructure.Repositories.Tests\Messegify.Infrastructure.Repositories.Tests.csproj", "{8ECE28B9-D70E-4DD3-AE83-842DD4F46F36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Repositories.Tests", "Tests\Infrastructure.Repositories.Tests\Infrastructure.Repositories.Tests.csproj", "{8ECE28B9-D70E-4DD3-AE83-842DD4F46F36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Controllers.Tests", "Tests\Messegify.Application.Controllers.Tests\Messegify.Application.Controllers.Tests.csproj", "{6377D7D5-E13E-4CE5-ABF4-527829215F75}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Controllers.Tests", "Tests\Application.Controllers.Tests\Application.Controllers.Tests.csproj", "{6377D7D5-E13E-4CE5-ABF4-527829215F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messegify.Application.Services.Tests", "Tests\Messegify.Application.Services.Tests\Messegify.Application.Services.Tests.csproj", "{B9D8563B-170E-4102-BB06-570C8704A7CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Services.Tests", "Tests\Application.Services.Tests\Application.Services.Tests.csproj", "{B9D8563B-170E-4102-BB06-570C8704A7CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
