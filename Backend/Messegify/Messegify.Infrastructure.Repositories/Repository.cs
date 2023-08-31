@@ -85,7 +85,13 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
             query = orderBy(query);
         }
 
-        query = query.Skip(pageNumber * pageSize).Take(pageSize);
+        var totalCount = await query.CountAsync();
+
+        // Calculate the starting index for paging backwards
+        var startPageIndex = Math.Max(totalCount - (pageNumber + 1) * pageSize, 0);
+
+        // Query the data based on the starting index and page size
+        query = query.Skip(startPageIndex).Take(pageSize);
 
         return await query.ToListAsync();
     }
