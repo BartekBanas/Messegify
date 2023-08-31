@@ -21,35 +21,6 @@ public class JwtService : IJwtService
     {
         _jwtConfiguration = jwtConfiguration.Value;
     }
-    public string GenerateAsymmetricJwtToken(ClaimsIdentity claimsIdentity)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        string stringToken;
-        
-        using (var rsa = RSA.Create())
-        {
-            rsa.ImportRSAPrivateKey(Convert.FromBase64String(_jwtConfiguration.SecretKey), out int _);
-            
-            var signingCredentials = new SigningCredentials(
-                key: new RsaSecurityKey(rsa.ExportParameters(true)),
-                algorithm: SecurityAlgorithms.RsaSha256 // Important to use RSA version of the SHA algo 
-            );
-            
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddMinutes(_jwtConfiguration.Expires),
-                Issuer = _jwtConfiguration.Issuer,
-                Audience = _jwtConfiguration.Audience,
-                SigningCredentials = signingCredentials
-            };
-            
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            stringToken = tokenHandler.WriteToken(token);
-        }
-
-        return stringToken;
-    }
     
     public string GenerateSymmetricJwtToken(ClaimsIdentity claimsIdentity)
     {
@@ -66,5 +37,34 @@ public class JwtService : IJwtService
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+    
+    public string GenerateAsymmetricJwtToken(ClaimsIdentity claimsIdentity)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        string stringToken;
+
+        using var rsa = RSA.Create();
+        
+        rsa.ImportRSAPrivateKey(Convert.FromBase64String(_jwtConfiguration.SecretKey), out _);
+            
+        var signingCredentials = new SigningCredentials(
+            key: new RsaSecurityKey(rsa.ExportParameters(true)),
+            algorithm: SecurityAlgorithms.RsaSha256 // Important to use RSA version of the SHA algo 
+        );
+            
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = claimsIdentity,
+            Expires = DateTime.UtcNow.AddMinutes(_jwtConfiguration.Expires),
+            Issuer = _jwtConfiguration.Issuer,
+            Audience = _jwtConfiguration.Audience,
+            SigningCredentials = signingCredentials
+        };
+            
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        stringToken = tokenHandler.WriteToken(token);
+
+        return stringToken;
     }
 }
