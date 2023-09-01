@@ -1,5 +1,6 @@
 ﻿using Messegify.Application.Services;
 using Messegify.Domain.Entities;
+using Xunit;
 
 namespace Application.Services.Tests;
 

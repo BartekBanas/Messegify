@@ -5,6 +5,7 @@ using Messegify.Application.Dtos;
 using Messegify.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Xunit;
 
 namespace Application.Controllers.Tests
 {

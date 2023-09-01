@@ -6,6 +6,7 @@ using Messegify.Application.Services;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Xunit;
 
 namespace Application.Services.Tests;
 

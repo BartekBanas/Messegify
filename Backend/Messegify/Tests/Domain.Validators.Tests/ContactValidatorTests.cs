@@ -5,6 +5,7 @@ using Messegify.Domain.Entities;
 using Messegify.Domain.Validators;
 using Messegify.Infrastructure.Error;
 using Moq;
+using Xunit;
 
 namespace Domain.Validators.Tests;
 

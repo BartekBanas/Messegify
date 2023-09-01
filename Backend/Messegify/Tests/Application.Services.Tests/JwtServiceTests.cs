@@ -5,6 +5,7 @@ using Messegify.Application.Configuration;
 using Messegify.Application.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Xunit;
 
 namespace Application.Services.Tests;
 
