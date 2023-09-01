@@ -5,12 +5,12 @@ namespace Messegify.Domain.Events;
 
 public class ChatRoomCreatedDomainEvent : DomainEvent<Chatroom>
 {
+    public Chatroom CreatedEntity { get; }
+    public Account CreatorAccount { get; }
+    
     public ChatRoomCreatedDomainEvent(Chatroom createdEntity, Account creatorAccount)
     {
         CreatedEntity = createdEntity;
         CreatorAccount = creatorAccount;
     }
-
-    public Chatroom CreatedEntity { get; }
-    public Account CreatorAccount { get; }
 }

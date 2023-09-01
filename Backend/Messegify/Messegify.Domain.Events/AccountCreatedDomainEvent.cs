@@ -5,10 +5,10 @@ namespace Messegify.Domain.Events;
 
 public class AccountCreatedDomainEvent : DomainEvent<Account>
 {
+    public Account Entity { get; set; }
+    
     public AccountCreatedDomainEvent(Account entity)
     {
         Entity = entity;
     }
-
-    public Account Entity { get; set; }
 }
