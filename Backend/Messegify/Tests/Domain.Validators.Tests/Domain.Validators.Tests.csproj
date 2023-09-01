@@ -10,7 +10,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Castle.Core" Version="5.1.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
         <PackageReference Include="Moq" Version="4.20.69" />
         <PackageReference Include="xunit" Version="2.4.2" />
@@ -25,17 +24,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.21\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.AspNetCore.Mvc.Core">
-        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.21\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\Messegify.Application.Services\Messegify.Application.Services.csproj" />
-      <ProjectReference Include="..\..\Messegify.Application\Messegify.Application.csproj" />
+      <ProjectReference Include="..\..\Messegify.Domain.Abstractions\Messegify.Domain.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
+      <ProjectReference Include="..\..\Messegify.Domain.Validators\Messegify.Domain.Validators.csproj" />
     </ItemGroup>
 
 </Project>

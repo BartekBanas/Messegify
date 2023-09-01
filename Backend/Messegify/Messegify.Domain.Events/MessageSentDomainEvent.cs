@@ -5,10 +5,10 @@ namespace Messegify.Domain.Events;
 
 public class MessageSentDomainEvent : IDomainEvent
 {
+    public Message Entity { get; set; }
+    
     public MessageSentDomainEvent(Message entity)
     {
         Entity = entity;
     }
-
-    public Message Entity { get; set; }
 }

@@ -2,11 +2,13 @@
 using AutoMapper;
 using FluentValidation;
 using Messegify.Application.Dtos;
+using Messegify.Application.Services;
 using Messegify.Domain.Abstractions;
 using Messegify.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Xunit;
 
-namespace Messegify.Application.Services.Tests;
+namespace Application.Services.Tests;
 
 public class AccountServiceTests
 {
