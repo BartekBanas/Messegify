@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import ky from "ky";
-import {API_URL} from "../../../../config";
-import {removeJWTToken} from "../../../../pages/layout/Header";
+import {API_URL} from "../../config";
+import {removeJWTToken} from "../../pages/layout/Header";
 
 export async function updateAccountRequest(name: string | null, password: string | null, email: string | null) {
     const requestBody: { name?: string; password?: string; email?: string } = {};
@@ -20,9 +20,7 @@ export async function updateAccountRequest(name: string | null, password: string
         body: JSON.stringify(requestBody),
     });
 
-    const response = authorizedKy.put(`${API_URL}/account/me`);
-
-    return response;
+    return authorizedKy.put(`${API_URL}/account/me`);
 }
 
 export async function deleteAccountRequest() {
@@ -65,7 +63,5 @@ export async function verifyAccountRequest(name: string, password: string) {
         })
     });
 
-    const response = kyInstance.post(`${API_URL}/account/authenticate`);
-
-    return response;
+    return kyInstance.post(`${API_URL}/account/authenticate`);
 }

@@ -3,7 +3,7 @@ import {useForm} from '@mantine/form';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
 import {useLocation} from 'react-router-dom';
 import {API_URL} from '../../config';
-import {ContactList} from '../Messegify/components/contactList/ContactList';
+import {ContactList} from '../contactList/ContactList';
 import Cookies from 'js-cookie';
 import ky from 'ky';
 import {AccountClaims} from '../../types/accountClaims';

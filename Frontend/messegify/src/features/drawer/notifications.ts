@@ -1,5 +1,5 @@
 import {showNotification} from "@mantine/notifications";
-import notificationStyles from "../../../../styles/notificationStyles";
+import notificationStyles from "../../styles/notificationStyles";
 
 export function deletionErrorNotification() {
     showNotification({
