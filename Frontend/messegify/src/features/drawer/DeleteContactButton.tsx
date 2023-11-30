@@ -7,7 +7,6 @@ import {Contact} from "../../types/contact";
 import {getUserId, listContactsRequest} from "../contactList/api";
 import {API_URL} from "../../config";
 import ky from "ky";
-import Cookies from 'js-cookie';
 import {deleteContactRequest} from "./api";
 
 export function DeleteContactButton() {
