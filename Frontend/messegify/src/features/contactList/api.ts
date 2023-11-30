@@ -1,8 +1,8 @@
 import Cookies from "js-cookie";
 import ky from "ky";
-import {API_URL} from "../../../../config";
-import {Contact} from "../../../../types/contact";
-import {AccountClaims} from "../../../../types/accountClaims";
+import {API_URL} from "../../config";
+import {Contact} from "../../types/contact";
+import {AccountClaims} from "../../types/accountClaims";
 
 export async function listContactsRequest() {
     const token = Cookies.get('auth_token');

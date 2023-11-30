@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Button, MantineProvider, Paper, Text} from '@mantine/core';
 import Cookies from "js-cookie";
 import {Link} from "react-router-dom";
-import {UtilityDrawer} from "../../features/Messegify/components/drawer/UtilityDrawer";
+import {UtilityDrawer} from "../../features/drawer/UtilityDrawer";
 
 export function removeJWTToken() {
     Cookies.remove('auth_token');

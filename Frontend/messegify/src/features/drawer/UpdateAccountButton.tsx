@@ -3,7 +3,7 @@ import {Modal, Button, Group, Paper, Stack, TextInput, PasswordInput, Space} fro
 import {updateErrorNotification, updateSuccessNotification} from "./notifications";
 import React from "react";
 import {useForm} from "@mantine/form";
-import {RegisterFormType} from "../../../register/register-form.type";
+import {RegisterFormType} from "../register/register-form.type";
 import {updateAccountRequest} from "./api";
 
 export function UpdateAccountButton() {

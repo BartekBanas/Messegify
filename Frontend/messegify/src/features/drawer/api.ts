@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import ky from "ky";
-import {API_URL} from "../../../../config";
-import {removeJWTToken} from "../../../../pages/layout/Header";
+import {API_URL} from "../../config";
+import {removeJWTToken} from "../../pages/layout/Header";
 
 export async function updateAccountRequest(name: string | null, password: string | null, email: string | null) {
     const requestBody: { name?: string; password?: string; email?: string } = {};
