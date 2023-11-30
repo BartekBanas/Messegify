@@ -56,29 +56,17 @@ const privateRoutes = [
             {
                 path: '*',
                 element: <Navigate to="/Menu" replace/>
-                //element: <ErrorPage/>
             }
         ]
     }
 ]
 
-export const Routing: FC = () => {
-
-    // const token = Cookies.get('auth_token');
-    // console.log("outside: ", token)
-
+export const Routing: FC = function () {
     const isLogged = useIsLogged();
 
     const routes = isLogged() ? privateRoutes : publicRoutes
-    //const routes = privateRoutes
-
-    // console.log('routes')
-    // console.log(routes)
-    // console.log(publicRoutes)
-    // console.log(privateRoutes)
 
     if (!isLogged) {
-        console.log("Ooops an error")
         AuthenticationErrorNotification();
     }
 
