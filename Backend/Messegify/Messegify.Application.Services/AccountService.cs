@@ -18,7 +18,7 @@ public interface IAccountService
     Task<IEnumerable<AccountDto>> GetAccountsAsync();
     Task<IEnumerable<AccountDto>> GetAccountsAsync(int pageSize, int pageNumber);
     Task RegisterAccountAsync(RegisterAccountDto registerDto);
-    Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto);
+    Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto updateDto);
     Task DeleteAccountAsync(Guid accountId);
     Task<string> AuthenticateAsync(LoginDto loginDto);
     Task CreateContactAsync(Guid accountAId, Guid accountBId);
@@ -111,28 +111,43 @@ public class AccountService : IAccountService
         await _accountRepository.SaveChangesAsync();
     }
     
-    public async Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto accountDto)
+    public async Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto updateDto)
     {
-        var originalAccount = _accountRepository.GetOneRequiredAsync(accountId);
+        var originalAccount = _accountRepository.GetOneRequiredAsync(accountId).Result;
 
         string? passwordHash = null;
         
-        if (accountDto.Password != null)
+        if (updateDto.Password != null)
         {
-            passwordHash = _hashingService.HashPassword(accountDto.Password);
+            passwordHash = _hashingService.HashPassword(updateDto.Password);
         }
-        
-        var updatedAccount = new Account()
-        {
-            Id = originalAccount.Result.Id,
-            DateCreated = originalAccount.Result.DateCreated,
 
-            Name = accountDto.Name ?? originalAccount.Result.Name,
-            Email = accountDto.Email ?? originalAccount.Result.Email,
-            PasswordHash = passwordHash ?? originalAccount.Result.PasswordHash,
+        var testAccount = new Account
+        {
+            Id = new Guid(),
+            DateCreated = originalAccount.DateCreated,
+
+            Name = updateDto.Name ?? "testAccountName",
+            Email = updateDto.Email ?? "testAccountEmail@email.com",
+            PasswordHash = passwordHash ?? "testAccountPassword"
         };
 
-        await _validator.ValidateAsync(updatedAccount);
+        await _validator.ValidateAsync(testAccount);
+        
+        var updatedAccount = new Account
+        {
+            Id = originalAccount.Id,
+            DateCreated = originalAccount.DateCreated,
+
+            Name = updateDto.Name ?? originalAccount.Name,
+            Email = updateDto.Email ?? originalAccount.Email,
+            PasswordHash = passwordHash ?? originalAccount.PasswordHash
+        };
+
+        if (originalAccount.Equals(updatedAccount))
+        {
+            throw new BadRequestError("Updated account is indifferent to the original");
+        }
 
         await _accountRepository.UpdateAsync(updatedAccount, accountId);
         await _contactRepository.SaveChangesAsync();
