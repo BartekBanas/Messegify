@@ -7,4 +7,8 @@ public class BadRequestError : ErrorException
     public BadRequestError(string? message, Exception? innerException) : base(message, innerException)
     {
     }
+    
+    public BadRequestError(string? message) : base(message)
+    {
+    }
 }
