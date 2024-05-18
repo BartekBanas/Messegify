@@ -11,13 +11,21 @@ namespace Application.Services.Tests;
 
 public class JwtServiceTests
 {
-    private readonly JwtConfiguration _jwtConfiguration = new()
+    private readonly JwtConfiguration _jwtConfiguration;
+    private readonly JwtService _jwtService;
+
+    public JwtServiceTests()
     {
-        SecretKey = Convert.ToBase64String(new byte[32]),
-        Expires = 60,
-        Issuer = "your-issuer",
-        Audience = "your-audience"
-    };
+        _jwtConfiguration = new JwtConfiguration
+        {
+            SecretKey = Convert.ToBase64String(new byte[32]),
+            Expires = 60,
+            Issuer = "your-issuer",
+            Audience = "your-audience"
+        };
+        
+        _jwtService = new JwtService(Options.Create(_jwtConfiguration));
+    }
 
     [Fact]
     public void GenerateSymmetricJwtToken_ReturnsValidToken()
@@ -30,10 +38,8 @@ public class JwtServiceTests
             new(ClaimTypes.Name, testClaimValue)
         });
 
-        var jwtService = new JwtService(Options.Create(_jwtConfiguration));
-
         // Act
-        var token = jwtService.GenerateSymmetricJwtToken(claimsIdentity);
+        var token = _jwtService.GenerateSymmetricJwtToken(claimsIdentity);
 
         // Assert
         Assert.NotNull(token);
