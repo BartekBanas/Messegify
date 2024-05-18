@@ -11,9 +11,9 @@ namespace Application.Services.Tests;
 
 public class JwtServiceTests
 {
-    private readonly JwtConfiguration _jwtConfiguration = new JwtConfiguration
+    private readonly JwtConfiguration _jwtConfiguration = new()
     {
-        SecretKey = "SUUUUPER_SEKRET_OWO",
+        SecretKey = Convert.ToBase64String(new byte[32]),
         Expires = 60,
         Issuer = "your-issuer",
         Audience = "your-audience"
@@ -25,7 +25,7 @@ public class JwtServiceTests
         // Arrange
         var claimsIdentity = new ClaimsIdentity(new Claim[]
         {
-            new Claim(ClaimTypes.Name, "testuser")
+            new(ClaimTypes.Name, "testuser")
         });
 
         var jwtService = new JwtService(Options.Create(_jwtConfiguration));
@@ -50,6 +50,6 @@ public class JwtServiceTests
         }, out _);
 
         Assert.NotNull(principal);
-        Assert.Equal("testuser", principal.Identity.Name);
+        Assert.Equal("testuser", principal.Identity!.Name);
     }
 }
