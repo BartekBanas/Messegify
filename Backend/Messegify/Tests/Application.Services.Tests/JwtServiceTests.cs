@@ -22,10 +22,12 @@ public class JwtServiceTests
     [Fact]
     public void GenerateSymmetricJwtToken_ReturnsValidToken()
     {
+        const string testClaimValue = "testUser";
+        
         // Arrange
         var claimsIdentity = new ClaimsIdentity(new Claim[]
         {
-            new(ClaimTypes.Name, "testuser")
+            new(ClaimTypes.Name, testClaimValue)
         });
 
         var jwtService = new JwtService(Options.Create(_jwtConfiguration));
@@ -50,6 +52,6 @@ public class JwtServiceTests
         }, out _);
 
         Assert.NotNull(principal);
-        Assert.Equal("testuser", principal.Identity!.Name);
+        Assert.Equal(testClaimValue, principal.Identity!.Name);
     }
 }
