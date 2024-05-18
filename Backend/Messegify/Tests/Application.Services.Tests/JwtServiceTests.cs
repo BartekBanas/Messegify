@@ -11,27 +11,35 @@ namespace Application.Services.Tests;
 
 public class JwtServiceTests
 {
-    private readonly JwtConfiguration _jwtConfiguration = new JwtConfiguration
+    private readonly JwtConfiguration _jwtConfiguration;
+    private readonly JwtService _jwtService;
+
+    public JwtServiceTests()
     {
-        SecretKey = "SUUUUPER_SEKRET_OWO",
-        Expires = 60,
-        Issuer = "your-issuer",
-        Audience = "your-audience"
-    };
+        _jwtConfiguration = new JwtConfiguration
+        {
+            SecretKey = Convert.ToBase64String(new byte[32]),
+            Expires = 60,
+            Issuer = "your-issuer",
+            Audience = "your-audience"
+        };
+        
+        _jwtService = new JwtService(Options.Create(_jwtConfiguration));
+    }
 
     [Fact]
     public void GenerateSymmetricJwtToken_ReturnsValidToken()
     {
+        const string testClaimValue = "testUser";
+        
         // Arrange
         var claimsIdentity = new ClaimsIdentity(new Claim[]
         {
-            new Claim(ClaimTypes.Name, "testuser")
+            new(ClaimTypes.Name, testClaimValue)
         });
 
-        var jwtService = new JwtService(Options.Create(_jwtConfiguration));
-
         // Act
-        var token = jwtService.GenerateSymmetricJwtToken(claimsIdentity);
+        var token = _jwtService.GenerateSymmetricJwtToken(claimsIdentity);
 
         // Assert
         Assert.NotNull(token);
@@ -50,6 +58,6 @@ public class JwtServiceTests
         }, out _);
 
         Assert.NotNull(principal);
-        Assert.Equal("testuser", principal.Identity.Name);
+        Assert.Equal(testClaimValue, principal.Identity!.Name);
     }
 }
