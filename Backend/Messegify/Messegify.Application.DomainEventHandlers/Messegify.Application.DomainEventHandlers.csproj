@@ -14,8 +14,4 @@
       <ProjectReference Include="..\Messegify.Domain.Events\Messegify.Domain.Events.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="MessageSent" />
-    </ItemGroup>
-
 </Project>
