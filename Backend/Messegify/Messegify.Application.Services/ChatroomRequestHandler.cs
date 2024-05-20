@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
-using MediatR;
 using Messegify.Application.Authorization;
 using Messegify.Application.Dtos;
 using Messegify.Application.Errors;
@@ -15,11 +14,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace Messegify.Application.Services;
 
-public interface IChatroomRequestHandler :
-    IRequestHandler<CreateChatroomRequest>,
-    IRequestHandler<GetUserChatroomsRequest, IEnumerable<ChatRoomDto>>,
-    IRequestHandler<DeleteChatroomRequest>
+public interface IChatroomRequestHandler
 {
+    Task Handle(CreateChatroomRequest request, CancellationToken cancellationToken);
+    Task Handle(DeleteChatroomRequest request, CancellationToken cancellationToken);
+    Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatroomsRequest request, CancellationToken cancellationToken);
 }
 
 public class ChatroomRequestHandler : IChatroomRequestHandler
@@ -50,9 +49,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(
-        CreateChatroomRequest request,
-        CancellationToken cancellationToken)
+    public async Task Handle(CreateChatroomRequest request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.HttpContext.User.GetId();
 
@@ -68,8 +65,6 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         newChatRoom.AddDomainEvent(new ChatRoomCreatedDomainEvent(newChatRoom, account));
 
         await _chatRoomRepository.SaveChangesAsync();
-
-        return Unit.Value;
     }
 
     public async Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatroomsRequest request, CancellationToken cancellationToken)
@@ -87,7 +82,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         return dtos;
     }
 
-    public async Task<Unit> Handle(DeleteChatroomRequest request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
         
@@ -114,7 +109,5 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         }
         
         await _chatRoomRepository.DeleteAsync(chatRoom.Id);
-
-        return Unit.Value;
     }
 }
