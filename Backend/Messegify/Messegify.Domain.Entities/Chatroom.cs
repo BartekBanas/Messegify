@@ -9,7 +9,7 @@ public class Chatroom : Entity
     [Key]
     public Guid Id { get; set; }
     
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
     [Column(TypeName = "nvarchar(24)")]
     public ChatRoomType ChatRoomType { get; set; }
