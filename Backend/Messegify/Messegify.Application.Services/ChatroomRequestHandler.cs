@@ -14,6 +14,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace Messegify.Application.Services;
 
+public interface IChatroomRequestHandler
+{
+    Task Handle(CreateChatroomRequest request, CancellationToken cancellationToken);
+    Task Handle(DeleteChatroomRequest request, CancellationToken cancellationToken);
+    Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatroomsRequest request, CancellationToken cancellationToken);
+}
+
 public class ChatroomRequestHandler : IChatroomRequestHandler
 {
     private readonly IRepository<Chatroom> _chatRoomRepository;
