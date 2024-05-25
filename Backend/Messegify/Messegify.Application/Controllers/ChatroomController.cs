@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Messegify.Application.Services;
 using Messegify.Application.Services.ChatroomRequests;
+using Messegify.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ public class ChatroomController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateChatroom(CancellationToken cancellationToken)
     {
-        var request = new CreateChatroomRequest();
+        var request = new CreateChatroomRequest(ChatRoomType.Regular);
 
         await _mediator.Send(request, cancellationToken);
 
