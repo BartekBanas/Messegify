@@ -58,10 +58,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
         var account = await _accountRepository.GetOneRequiredAsync(userId);
 
-        var newChatRoom = new Chatroom
-        {
-            Name = $"{account.Name}'s room"
-        };
+        var newChatRoom = CreateChatroom(request);
 
         await _chatRoomRepository.CreateAsync(newChatRoom);
 
@@ -116,5 +113,17 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         await _chatRoomRepository.DeleteAsync(chatRoom.Id);
 
         return Unit.Value;
+    }
+    
+    private static Chatroom CreateChatroom(CreateChatroomRequest request)
+    {
+        return request.ChatRoomType switch
+        {
+            ChatRoomType.Direct => new Chatroom { Name = "Private chatroom" },
+            ChatRoomType.Regular => request.Name is not null
+                ? new Chatroom { Name = request.Name }
+                : throw new Exception(),
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 }
