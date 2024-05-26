@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Messegify.Application.Dtos;
 using Messegify.Application.Services;
 using Messegify.Application.Services.ChatroomRequests;
 using Messegify.Domain.Entities;
@@ -30,7 +31,18 @@ public class ChatroomController : Controller
 
         return Ok();
     }
-    
+
+    [Authorize]
+    [HttpPost("invite")]
+    public async Task<IActionResult> InviteToChatroom([FromBody] ChatroomInvite dto, CancellationToken cancellationToken)
+    {
+        var request = new InviteToChatroomRequest(dto);
+
+        await _mediator.Send(request, cancellationToken);
+
+        return Ok();
+    }
+
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetChatroom(CancellationToken cancellationToken)
