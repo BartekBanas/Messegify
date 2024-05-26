@@ -46,7 +46,7 @@ public class MessageRequestHandler : IMessageRequestHandler
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(SendMessageRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SendMessageRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
 
@@ -67,8 +67,6 @@ public class MessageRequestHandler : IMessageRequestHandler
         newMessage.AddDomainEvent(new MessageSentDomainEvent(newMessage));
 
         await _messageRepository.SaveChangesAsync();
-        
-        return Unit.Value;
     }
 
     public async Task<IEnumerable<MessageDto>> Handle(GetMessagesRequest request, CancellationToken cancellationToken)
@@ -112,12 +110,10 @@ public class MessageRequestHandler : IMessageRequestHandler
         return dtos;
     }
     
-    public async Task<Unit> Handle(DeleteMessageRequest request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteMessageRequest request, CancellationToken cancellationToken)
     {
         var message = await _messageRepository.GetOneRequiredAsync(message => message.Id == request.MessageId);
         
         await _messageRepository.DeleteAsync(message.Id);
-        
-        return Unit.Value;
     }
 }

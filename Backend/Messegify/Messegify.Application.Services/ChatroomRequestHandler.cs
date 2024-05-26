@@ -85,7 +85,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         return dtos;
     }
 
-    public async Task<Unit> Handle(DeleteChatroomRequest request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
         
@@ -112,11 +112,9 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         }
         
         await _chatRoomRepository.DeleteAsync(chatRoom.Id);
-
-        return Unit.Value;
     }
     
-    public async Task<Unit> Handle(InviteToChatroomRequest request, CancellationToken cancellationToken)
+    public async Task Handle(InviteToChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
         var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatroomId, 
@@ -132,8 +130,6 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         var invitedAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
         
         chatRoom.Members.Add(new AccountChatroom { AccountId = invitedAccount.Id });
-        
-        return Unit.Value;
     }
 
     private static Chatroom CreateChatroom(CreateChatroomRequest request)

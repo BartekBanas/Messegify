@@ -1,7 +1,7 @@
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
-using MediatR;
 using Messegify.Application;
 using Messegify.Application.Authorization;
 using Messegify.Application.Authorization.Handlers;
@@ -98,7 +98,10 @@ services.AddScoped<IAccountService, AccountService>();
 services.AddScoped<IChatroomRequestHandler, ChatroomRequestHandler>();
 services.AddScoped<IMessageRequestHandler, MessageRequestHandler>();
 
-services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));
+services.AddMediatR(serviceConfiguration =>
+    serviceConfiguration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+services.AddMediatR(serviceConfiguration =>
+    serviceConfiguration.RegisterServicesFromAssemblies(typeof(ChatroomRequestHandler).GetTypeInfo().Assembly));
 
 services.AddScoped<ErrorHandlingMiddleware>();
 services.AddScoped<InfrastructureErrorHandlingMiddleware>();
