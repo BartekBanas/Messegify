@@ -18,7 +18,8 @@ namespace Messegify.Application.Services;
 public interface IChatroomRequestHandler :
     IRequestHandler<CreateChatroomRequest>,
     IRequestHandler<GetUserChatroomsRequest, IEnumerable<ChatRoomDto>>,
-    IRequestHandler<DeleteChatroomRequest>
+    IRequestHandler<DeleteChatroomRequest>,
+    IRequestHandler<InviteToChatroomRequest>
 {
 }
 
@@ -115,6 +116,26 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         return Unit.Value;
     }
     
+    public async Task<Unit> Handle(InviteToChatroomRequest request, CancellationToken cancellationToken)
+    {
+        var user = _httpContextAccessor.HttpContext.User;
+        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatroomId, 
+            nameof(Chatroom.Members));
+        
+        if (chatRoom.ChatRoomType is ChatRoomType.Direct)
+        {
+            throw new BadRequestError("You cannot invite anyone to a direct messaging chatroom");
+        }
+        
+        await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
+        
+        var invitedAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
+        
+        chatRoom.Members.Add(new AccountChatroom { AccountId = invitedAccount.Id });
+        
+        return Unit.Value;
+    }
+
     private static Chatroom CreateChatroom(CreateChatroomRequest request)
     {
         return request.ChatRoomType switch
