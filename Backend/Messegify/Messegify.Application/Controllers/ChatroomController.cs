@@ -27,7 +27,7 @@ public class ChatroomController : Controller
     {
         var request = new CreateChatroomRequest(ChatRoomType.Regular, dto.Name);
 
-        var createdChatroom = (ChatRoomDto)(await _mediator.Send(request, cancellationToken))!;
+        var createdChatroom = await _mediator.Send(request, cancellationToken);
 
         return Created($"api/chatroom/{createdChatroom.Id}", createdChatroom);
     }
