@@ -23,9 +23,9 @@ public class ChatroomController : Controller
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> CreateChatroom(CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateChatroom(ChatroomCreateDto dto, CancellationToken cancellationToken)
     {
-        var request = new CreateChatroomRequest(ChatRoomType.Regular);
+        var request = new CreateChatroomRequest(ChatRoomType.Regular, dto.Name);
 
         await _mediator.Send(request, cancellationToken);
 
