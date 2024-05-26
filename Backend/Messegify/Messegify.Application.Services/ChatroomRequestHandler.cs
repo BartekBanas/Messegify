@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Http;
 namespace Messegify.Application.Services;
 
 public interface IChatroomRequestHandler :
-    IRequestHandler<CreateChatroomRequest>,
+    IRequestHandler<CreateChatroomRequest, ChatRoomDto>,
     IRequestHandler<GetUserChatroomsRequest, IEnumerable<ChatRoomDto>>,
     IRequestHandler<DeleteChatroomRequest>,
     IRequestHandler<InviteToChatroomRequest>
@@ -51,7 +51,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(
+    public async Task<ChatRoomDto> Handle(
         CreateChatroomRequest request,
         CancellationToken cancellationToken)
     {
@@ -67,7 +67,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
         await _chatRoomRepository.SaveChangesAsync();
 
-        return Unit.Value;
+        return _mapper.Map<ChatRoomDto>(newChatRoom);
     }
 
     public async Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatroomsRequest request, CancellationToken cancellationToken)
