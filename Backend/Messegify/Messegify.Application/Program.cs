@@ -99,9 +99,9 @@ services.AddScoped<IChatroomRequestHandler, ChatroomRequestHandler>();
 services.AddScoped<IMessageRequestHandler, MessageRequestHandler>();
 
 services.AddMediatR(serviceConfiguration =>
-    serviceConfiguration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-services.AddMediatR(serviceConfiguration =>
-    serviceConfiguration.RegisterServicesFromAssemblies(typeof(ChatroomRequestHandler).GetTypeInfo().Assembly));
+    serviceConfiguration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly(),
+        typeof(ChatroomRequestHandler).GetTypeInfo().Assembly,
+        typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker).GetTypeInfo().Assembly));
 
 services.AddScoped<ErrorHandlingMiddleware>();
 services.AddScoped<InfrastructureErrorHandlingMiddleware>();
