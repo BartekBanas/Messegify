@@ -16,6 +16,10 @@ public static class AuthorizationServiceExtensions
             if (!authorizationResult.Succeeded)
                 throw new ForbiddenError();
         }
+        catch (ForbiddenError exception)
+        {
+            throw new ForbiddenError(exception.Message);
+        }
         catch (Exception exception)
         {
             throw new UnauthorizedAccessException(exception.Message);
