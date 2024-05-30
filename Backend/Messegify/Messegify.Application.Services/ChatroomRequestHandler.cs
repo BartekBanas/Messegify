@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using AutoMapper;
 using MediatR;
 using Messegify.Application.Authorization;
 using Messegify.Application.Dtos;
@@ -33,22 +32,18 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    private readonly IMapper _mapper;
-
     public ChatroomRequestHandler(
         IRepository<Chatroom> chatRoomRepository,
         IRepository<Account> accountRepository,
         IHttpContextAccessor httpContextAccessor,
         IAuthorizationService authorizationService,
-        IMessageRequestHandler messageRequestHandler,
-        IMapper mapper)
+        IMessageRequestHandler messageRequestHandler)
     {
         _chatRoomRepository = chatRoomRepository;
         _accountRepository = accountRepository;
         _httpContextAccessor = httpContextAccessor;
         _authorizationService = authorizationService;
         _messageRequestHandler = messageRequestHandler;
-        _mapper = mapper;
     }
 
     public async Task<ChatRoomDto> Handle(
@@ -67,7 +62,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
         await _chatRoomRepository.SaveChangesAsync();
 
-        return _mapper.Map<ChatRoomDto>(newChatRoom);
+        return newChatRoom.ToDto();
     }
 
     public async Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatroomsRequest request, CancellationToken cancellationToken)
@@ -80,7 +75,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         var chatRooms = await _chatRoomRepository
             .GetAsync(filter, null, nameof(Chatroom.Members));
 
-        var dtos = _mapper.Map<IEnumerable<ChatRoomDto>>(chatRooms);
+        var dtos = chatRooms.ToDto();
 
         return dtos;
     }
