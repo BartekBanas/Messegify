@@ -45,9 +45,20 @@ public class ChatroomController : Controller
 
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> GetChatroom(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUserChatrooms(CancellationToken cancellationToken)
     {
         var request = new GetUserChatroomsRequest();
+
+        var requestResult = await _chatroomRequestHandler.Handle(request, cancellationToken);
+
+        return Ok(requestResult);
+    }
+
+    [Authorize]
+    [HttpGet("{targetChatroomId:guid}")]
+    public async Task<IActionResult> GetChatroom(Guid targetChatroomId, CancellationToken cancellationToken)
+    {
+        var request = new GetChatroomRequest(targetChatroomId);
 
         var requestResult = await _chatroomRequestHandler.Handle(request, cancellationToken);
 

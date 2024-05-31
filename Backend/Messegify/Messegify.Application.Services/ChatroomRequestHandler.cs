@@ -16,6 +16,7 @@ namespace Messegify.Application.Services;
 
 public interface IChatroomRequestHandler :
     IRequestHandler<CreateChatroomRequest, ChatRoomDto>,
+    IRequestHandler<GetChatroomRequest, ChatRoomDto>, 
     IRequestHandler<GetUserChatroomsRequest, IEnumerable<ChatRoomDto>>,
     IRequestHandler<DeleteChatroomRequest>,
     IRequestHandler<InviteToChatroomRequest>
@@ -63,6 +64,16 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         await _chatRoomRepository.SaveChangesAsync();
 
         return newChatRoom.ToDto();
+    }
+
+    public async Task<ChatRoomDto> Handle(GetChatroomRequest request, CancellationToken cancellationToken)
+    {
+        var user = _httpContextAccessor.HttpContext.User;
+        var chatroom = await _chatRoomRepository.GetOneRequiredAsync(request.Id);
+
+        await _authorizationService.AuthorizeRequiredAsync(user, chatroom, AuthorizationPolicies.IsMemberOf);
+        
+        return chatroom.ToDto();
     }
 
     public async Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatroomsRequest request, CancellationToken cancellationToken)
