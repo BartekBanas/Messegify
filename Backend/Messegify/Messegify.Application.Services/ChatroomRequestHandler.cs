@@ -120,6 +120,8 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         }
         
         await _chatRoomRepository.DeleteAsync(chatRoom.Id);
+        
+        await _chatRoomRepository.SaveChangesAsync();
     }
     
     public async Task Handle(InviteToChatroomRequest request, CancellationToken cancellationToken)
@@ -138,6 +140,8 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         var invitedAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
         
         chatRoom.Members.Add(new AccountChatroom { AccountId = invitedAccount.Id });
+        
+        await _chatRoomRepository.SaveChangesAsync();
     }
 
     private static Chatroom CreateChatroom(CreateChatroomRequest request)
