@@ -47,7 +47,8 @@ public class ChatRoomAuthorizationHandler : AuthorizationHandler<IAuthorizationR
     {
         var user = context.User;
         var userId = user.Claims.First(claim => claim.Type == ClaimTypes.PrimarySid).Value;
-        var chatroomOwnerId = resource.Members.First().AccountId.ToString();
+        var members = resource.Members.OrderBy(accountChatroom => accountChatroom.DateJoined).ToList();
+        var chatroomOwnerId = members.First().AccountId.ToString();
 
         if (userId == chatroomOwnerId)
         {
