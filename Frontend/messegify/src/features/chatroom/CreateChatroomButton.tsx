@@ -4,13 +4,13 @@ import React from "react";
 import {createChatroomRequest} from "./api";
 import {useForm} from "@mantine/form";
 
-interface InviteToChatroomButtonProps {
-    chatroomId: string;
-}
-
 export const CreateChatroomButton = () => {
     const [opened, {close, open}] = useDisclosure(false);
-    const form = useForm<InviteToChatroomButtonProps>({})
+    const form = useForm({
+        initialValues: {
+            chatroomId: '',
+        },
+    });
 
     function handleSubmit(chatroomName: string) {
         try {
@@ -31,9 +31,9 @@ export const CreateChatroomButton = () => {
                     align="center"
                     direction="column"
                 >
-                    <form onSubmit={form.onSubmit(value => handleSubmit(value.chatroomId))}>
+                    <form onSubmit={form.onSubmit(input => handleSubmit(input.chatroomId))}>
                         <Stack spacing="md">
-                            <TextInput required type="" label="" {...form.getInputProps('chatroomId')}/>
+                            <TextInput {...form.getInputProps('chatroomId')}/>
                             <Button type="submit">Done</Button>
                         </Stack>
                     </form>
