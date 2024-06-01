@@ -14,7 +14,7 @@ export const InviteToChatroomButton: FC<InviteToChatroomButtonProps> = ({chatroo
     const [opened, {close, open}] = useDisclosure(false);
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
-    let [nonMembers, setNonMembers] = useState<string[]>([]);
+    const [nonMembers, setNonMembers] = useState<string[]>([]);
 
     useEffect(() => {
         fetchAccounts();
@@ -45,14 +45,6 @@ export const InviteToChatroomButton: FC<InviteToChatroomButtonProps> = ({chatroo
         } catch (error) {
             console.error('Error fetching accounts:', error);
         }
-    };
-
-    const GetNonMembers = async (chatroomId: string) => {
-        let accounts = await getAllAccountsRequest();
-        let accountIds = accounts.map((account) => account.id);
-        let chatroom = await getChatroomRequest(chatroomId);
-
-        setNonMembers(accountIds.filter((element: string) => !chatroom.members.includes(element)));
     };
 
     const handleInviteToChatroom = async () => {
