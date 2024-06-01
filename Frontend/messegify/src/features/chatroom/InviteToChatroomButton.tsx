@@ -104,7 +104,7 @@ export const InviteToChatroomButton: FC<InviteToChatroomButtonProps> = ({chatroo
                 </Flex>
             </Modal>
             <Group position="center">
-                <Button color="yellow" size="md" onClick={open}>Delete Contact</Button>
+                <Button color="blue" onClick={open}>Invite</Button>
             </Group>
         </>
     );
