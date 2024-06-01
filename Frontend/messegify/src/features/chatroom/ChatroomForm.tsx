@@ -67,8 +67,6 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     async function fetchData() {
         const receivedMessages = await getMessages;
         setMessages(receivedMessages);
-
-        console.log(receivedMessages);
     }
 
     useEffect(() => {
