@@ -5,6 +5,8 @@ import {Message} from "../../types/message";
 import {useState} from "react";
 import useWebSocket from "react-use-websocket";
 import {sendMessageErrorNotification} from "./notifications";
+import {Account} from "../../types/account";
+import {Chatroom} from "../../types/chatroom";
 
 export function useGetMessages() {
     const currentUrl = window.location.href;
@@ -63,4 +65,21 @@ export async function handleSubmit(data: Message, roomId: string) {
     } catch (error) {
         sendMessageErrorNotification();
     }
+}
+
+export async function InviteToChatroomRequest(chatroomId: string, accountId: string) {
+    const token = Cookies.get('auth_token');
+    const kyInstance = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            ChatroomId: chatroomId,
+            AccountId: accountId,
+        })
+    });
+
+    return kyInstance.post(`${API_URL}/chatroom/invite`);
 }
