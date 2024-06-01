@@ -83,3 +83,16 @@ export async function InviteToChatroomRequest(chatroomId: string, accountId: str
 
     return kyInstance.post(`${API_URL}/chatroom/invite`);
 }
+
+export async function getAllAccountsRequest(): Promise<Account[]> {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        }
+    });
+
+    return authorizedKy.get(`${API_URL}/account`).json<Account[]>();
+}
