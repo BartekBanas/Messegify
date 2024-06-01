@@ -109,3 +109,19 @@ export async function getChatroomRequest(chatroomId: string): Promise<Chatroom> 
 
     return authorizedKy.get(`${API_URL}/chatroom/${chatroomId}`).json<Chatroom>();
 }
+
+export async function createChatroomRequest(chatroomName: string) {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            Name: chatroomName,
+        })
+    });
+
+    return authorizedKy.post(`${API_URL}/chatroom`);
+}
