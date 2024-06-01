@@ -12,6 +12,7 @@ import {Message} from '../../types/message';
 import {handleSubmit, useGetMessages} from './api';
 import {MenuButton} from "./MenuButton";
 import {InviteToChatroomButton} from "./InviteToChatroomButton";
+import {CreateChatroomButton} from "./CreateChatroomButton";
 
 type ChatMessageProps = {
     message: Message;
@@ -158,24 +159,27 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                                     fontFamily: '"Open Sans", sans-serif',
                                 }}
                             >
-                                <form onSubmit={form.onSubmit((values) => {
-                                    handleSubmit(values, roomId);
-                                    form.reset();
-                                })}>
-                                    <Group>
-                                        <TextInput required type="message" {...form.getInputProps('textContent')}
-                                                   style={{width: '300px'}}/>
+                                <Group>
+                                    <form onSubmit={form.onSubmit((values) => {
+                                        handleSubmit(values, roomId);
+                                        form.reset();
+                                    })}>
+                                        <Group>
+                                            <TextInput required type="message" {...form.getInputProps('textContent')}
+                                                       style={{width: '300px'}}/>
 
-                                        <Button type="submit"> Send </Button>
+                                            <Button type="submit"> Send </Button>
+                                        </Group>
+                                    </form>
 
-                                        <div style={{marginLeft: 'auto'}}>
-                                            <Group>
-                                                <InviteToChatroomButton chatroomId={roomId}/>
-                                                <MenuButton/>
-                                            </Group>
-                                        </div>
-                                    </Group>
-                                </form>
+                                    <div style={{marginLeft: 'auto'}}>
+                                        <Group>
+                                            <CreateChatroomButton/>
+                                            <InviteToChatroomButton chatroomId={roomId}/>
+                                            <MenuButton/>
+                                        </Group>
+                                    </div>
+                                </Group>
                             </Text>
                         </div>
                     </Paper>
