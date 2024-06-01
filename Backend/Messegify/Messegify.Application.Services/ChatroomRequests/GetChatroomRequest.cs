@@ -5,10 +5,10 @@ namespace Messegify.Application.Services.ChatroomRequests;
 
 public class GetChatroomRequest : IRequest<ChatRoomDto>
 {
-    public Guid Id { get; }
+    public Guid ChatroomId { get; }
 
-    public GetChatroomRequest(Guid targetChatroomId)
+    public GetChatroomRequest(Guid targetChatroomChatroomId)
     {
-        Id = targetChatroomId;
+        ChatroomId = targetChatroomChatroomId;
     }
 }
