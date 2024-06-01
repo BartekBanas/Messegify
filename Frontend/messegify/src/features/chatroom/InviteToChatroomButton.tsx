@@ -5,30 +5,42 @@ import {Account} from "../../types/account";
 import ky from "ky";
 import {API_URL} from "../../config";
 import {getAllAccountsRequest, getChatroomRequest, InviteToChatroomRequest} from "./api";
+import {Chatroom} from "../../types/chatroom";
+import {useLocation} from "react-router-dom";
 
 interface InviteToChatroomButtonProps {
     chatroomId: string;
 }
 
-export const InviteToChatroomButton: FC<InviteToChatroomButtonProps> = ({chatroomId}) => {
+export const InviteToChatroomButton: FC<InviteToChatroomButtonProps> = () => {
+    const chatroomId = window.location.href.split('/').pop() ?? '';
+    const [chatroom, setChatroom] = useState<Chatroom | null>(null);
     const [opened, {close, open}] = useDisclosure(false);
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
     const [nonMembers, setNonMembers] = useState<string[]>([]);
+    const location = useLocation();
 
     useEffect(() => {
+        fetchChatroom()
         fetchAccounts();
-        fetchNonMembers();
-    }, []);
+    }, [location]);
 
-    const fetchNonMembers = async () => {
+    function fetchChatroom() {
+        getChatroomRequest(chatroomId).then((response: Chatroom) => {
+            setChatroom(response);
+            fetchNonMembers(response);
+        }).catch((error) => {
+            console.error(`Error fetching chatroom ${chatroomId}:`, error);
+        });
+    }
+
+    const fetchNonMembers = async (fetchedChatroom: Chatroom) => {
         try {
-            console.log("fetching non members");
             let accounts = await getAllAccountsRequest();
             let accountIds = accounts.map((account) => account.id);
-            let chatroom = await getChatroomRequest(chatroomId);
 
-            let nonMemberIds = accountIds.filter((element: string) => !chatroom.members.includes(element));
+            let nonMemberIds = accountIds.filter((element: string) => !fetchedChatroom!.members.includes(element));
             let nonMemberAccounts = accounts.filter((account) => nonMemberIds.includes(account.id));
             let nonMemberNames = nonMemberAccounts.map(account => account.name);
 
@@ -50,7 +62,6 @@ export const InviteToChatroomButton: FC<InviteToChatroomButtonProps> = ({chatroo
     const handleInviteToChatroom = async () => {
         if (selectedAccountId) {
             try {
-                console.log(`Inviting probably ${selectedAccountId} to chatroom ${chatroomId}`)
                 await InviteToChatroomRequest(chatroomId, selectedAccountId);
                 setSelectedAccountId(null);
 
@@ -59,13 +70,13 @@ export const InviteToChatroomButton: FC<InviteToChatroomButtonProps> = ({chatroo
             }
         }
 
-        await fetchNonMembers();
         close();
+        fetchChatroom();
     };
 
     return (
         <>
-            <Modal opened={opened} onClose={close} size="auto" title={`Invite to ${chatroomId}`}>
+            <Modal opened={opened} onClose={close} size="auto" title={`Invite to ${chatroom?.name}`}>
                 <Flex
                     justify="center"
                     align="center"
