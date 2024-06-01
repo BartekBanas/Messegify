@@ -69,7 +69,9 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
     public async Task<ChatRoomDto> Handle(GetChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
-        var chatroom = await _chatRoomRepository.GetOneRequiredAsync(request.Id);
+
+        var chatroom = await _chatRoomRepository.GetOneRequiredAsync(
+            chatRoom => chatRoom.Id == request.Id, nameof(Chatroom.Members));
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatroom, AuthorizationPolicies.IsMemberOf);
         
