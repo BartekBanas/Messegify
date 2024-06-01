@@ -11,6 +11,7 @@ import './ChatroomForm.css';
 import {Message} from '../../types/message';
 import {handleSubmit, useGetMessages} from './api';
 import {MenuButton} from "./MenuButton";
+import {InviteToChatroomButton} from "./InviteToChatroomButton";
 
 type ChatMessageProps = {
     message: Message;
@@ -168,7 +169,10 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                                         <Button type="submit"> Send </Button>
 
                                         <div style={{marginLeft: 'auto'}}>
-                                            <MenuButton/>
+                                            <Group>
+                                                <InviteToChatroomButton chatroomId={roomId}/>
+                                                <MenuButton/>
+                                            </Group>
                                         </div>
                                     </Group>
                                 </form>
