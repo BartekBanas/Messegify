@@ -96,3 +96,16 @@ export async function getAllAccountsRequest(): Promise<Account[]> {
 
     return authorizedKy.get(`${API_URL}/account`).json<Account[]>();
 }
+
+export async function getChatroomRequest(chatroomId: string): Promise<Chatroom> {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        }
+    });
+
+    return authorizedKy.get(`${API_URL}/chatroom/${chatroomId}`).json<Chatroom>();
+}
