@@ -45,3 +45,21 @@ export function createChatroomErrorNotification() {
         styles: notificationStyles,
     })
 }
+
+export function leaveChatroomSuccessNotification() {
+    showNotification({
+        color: 'green',
+        title: 'Success',
+        message: 'Successfully left chatroom',
+        styles: notificationStyles,
+    });
+}
+
+export function leaveChatroomErrorNotification() {
+    showNotification({
+        color: 'red',
+        title: 'Error',
+        message: 'An error occurred while leaving chatroom',
+        styles: notificationStyles,
+    })
+}
