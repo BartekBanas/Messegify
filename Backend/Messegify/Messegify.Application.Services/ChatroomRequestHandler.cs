@@ -16,10 +16,11 @@ namespace Messegify.Application.Services;
 
 public interface IChatroomRequestHandler :
     IRequestHandler<CreateChatroomRequest, ChatRoomDto>,
-    IRequestHandler<GetChatroomRequest, ChatRoomDto>, 
+    IRequestHandler<GetChatroomRequest, ChatRoomDto>,
     IRequestHandler<GetUserChatroomsRequest, IEnumerable<ChatRoomDto>>,
     IRequestHandler<DeleteChatroomRequest>,
-    IRequestHandler<InviteToChatroomRequest>
+    IRequestHandler<InviteToChatroomRequest>,
+    IRequestHandler<LeaveChatroomRequest>
 {
 }
 
@@ -47,9 +48,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         _messageRequestHandler = messageRequestHandler;
     }
 
-    public async Task<ChatRoomDto> Handle(
-        CreateChatroomRequest request,
-        CancellationToken cancellationToken)
+    public async Task<ChatRoomDto> Handle(CreateChatroomRequest request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.HttpContext.User.GetId();
 
@@ -74,7 +73,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
             chatRoom => chatRoom.Id == request.ChatroomId, nameof(Chatroom.Members));
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatroom, AuthorizationPolicies.IsMemberOf);
-        
+
         return chatroom.ToDto();
     }
 
@@ -96,10 +95,10 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
     public async Task Handle(DeleteChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
-        
-        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId, 
+
+        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId,
             nameof(Chatroom.Members));
-        
+
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
         if (chatRoom.ChatRoomType != ChatRoomType.Direct)
@@ -108,7 +107,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         }
 
         var token = new CancellationToken();
-        
+
         var getMessagesRequest = new GetMessagesRequest(request.ChatRoomId);
         var messages = _messageRequestHandler.Handle(getMessagesRequest, token);
 
@@ -118,18 +117,18 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
             await _messageRequestHandler.Handle(deleteMessageRequest, token);
         }
-        
+
         await _chatRoomRepository.DeleteAsync(chatRoom.Id);
-        
+
         await _chatRoomRepository.SaveChangesAsync();
     }
-    
+
     public async Task Handle(InviteToChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
-        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatroomId, 
+        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatroomId,
             nameof(Chatroom.Members));
-        
+
         if (chatRoom.ChatRoomType is ChatRoomType.Direct)
         {
             throw new BadRequestError("You cannot invite anyone to a direct messaging chatroom");
@@ -139,13 +138,34 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         {
             throw new BadRequestError("You cannot invite users that are already members of this account");
         }
-        
+
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
-        
+
         var invitedAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
-        
+
         chatRoom.Members.Add(new AccountChatroom { AccountId = invitedAccount.Id });
-        
+
+        await _chatRoomRepository.SaveChangesAsync();
+    }
+
+    public async Task Handle(LeaveChatroomRequest request, CancellationToken cancellationToken)
+    {
+        var user = _httpContextAccessor.HttpContext.User;
+        var chatroom = await _chatRoomRepository.GetOneRequiredAsync(
+            filter: chatRoom => chatRoom.Id == request.ChatroomId, includeProperties: nameof(Chatroom.Members));
+
+        await _authorizationService.AuthorizeRequiredAsync(user, chatroom, AuthorizationPolicies.IsMemberOf);
+
+        if (chatroom.Members.Count == 1)
+        {
+            await Handle(new DeleteChatroomRequest(request.ChatroomId), cancellationToken);
+        }
+        else
+        {
+            chatroom.Members.Remove(
+                chatroom.Members.First(accountChatroom => accountChatroom.AccountId == user.GetId()));
+        }
+
         await _chatRoomRepository.SaveChangesAsync();
     }
 
