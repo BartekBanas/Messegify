@@ -106,16 +106,14 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
             throw new ForbiddenError("You can only delete private chatrooms");
         }
 
-        var token = new CancellationToken();
-
         var getMessagesRequest = new GetMessagesRequest(request.ChatRoomId);
-        var messages = _messageRequestHandler.Handle(getMessagesRequest, token);
+        var messages = _messageRequestHandler.Handle(getMessagesRequest, cancellationToken);
 
         foreach (var message in messages.Result)
         {
             var deleteMessageRequest = new DeleteMessageRequest(message.Id);
 
-            await _messageRequestHandler.Handle(deleteMessageRequest, token);
+            await _messageRequestHandler.Handle(deleteMessageRequest, cancellationToken);
         }
 
         await _chatRoomRepository.DeleteAsync(chatRoom.Id);
