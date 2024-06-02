@@ -7,6 +7,7 @@ import {API_URL} from "../../config";
 import {getAllAccountsRequest, getChatroomRequest, InviteToChatroomRequest} from "./api";
 import {Chatroom} from "../../types/chatroom";
 import {useLocation} from "react-router-dom";
+import {InviteToChatroomErrorNotification, InviteToChatroomSuccessNotification} from "./notifications";
 
 interface InviteToChatroomButtonProps {
     chatroomId: string;
@@ -64,9 +65,9 @@ export const InviteToChatroomButton: FC<InviteToChatroomButtonProps> = () => {
             try {
                 await InviteToChatroomRequest(chatroomId, selectedAccountId);
                 setSelectedAccountId(null);
-
+                InviteToChatroomSuccessNotification();
             } catch (error) {
-
+                InviteToChatroomErrorNotification();
             }
         }
 

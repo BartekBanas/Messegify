@@ -3,6 +3,7 @@ import {Button, Flex, Group, Modal, Stack, TextInput} from "@mantine/core";
 import React from "react";
 import {createChatroomRequest} from "./api";
 import {useForm} from "@mantine/form";
+import {createChatroomErrorNotification, createChatroomSuccessNotification} from "./notifications";
 
 export const CreateChatroomButton = () => {
     const [opened, {close, open}] = useDisclosure(false);
@@ -15,9 +16,10 @@ export const CreateChatroomButton = () => {
     function handleSubmit(chatroomName: string) {
         try {
             createChatroomRequest(chatroomName);
+            createChatroomSuccessNotification();
         }
         catch (error) {
-            console.error('Error creating chatroom:', error);
+            createChatroomErrorNotification();
         }
 
         close();
