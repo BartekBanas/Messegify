@@ -9,10 +9,11 @@ import ky from 'ky';
 import {AccountClaims} from '../../types/accountClaims';
 import './ChatroomForm.css';
 import {Message} from '../../types/message';
-import {handleSubmit, useGetMessages} from './api';
+import {sendMessageRequest, useGetMessages} from './api';
 import {MenuButton} from "./MenuButton";
 import {InviteToChatroomButton} from "./InviteToChatroomButton";
 import {CreateChatroomButton} from "./CreateChatroomButton";
+import {sendMessageErrorNotification} from "./notifications";
 
 type ChatMessageProps = {
     message: Message;
@@ -134,6 +135,14 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
             });
         }
     };
+
+    async function handleSubmit(data: Message, roomId: string) {
+        try {
+            await sendMessageRequest(data, roomId);
+        } catch (error) {
+            sendMessageErrorNotification();
+        }
+    }
 
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
