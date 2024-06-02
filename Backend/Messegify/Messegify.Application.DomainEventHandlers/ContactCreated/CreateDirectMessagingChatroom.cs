@@ -6,11 +6,11 @@ using Messegify.Domain.Events;
 namespace Messegify.Application.DomainEventHandlers.ContactCreated;
 
 // ReSharper disable once UnusedType.Global
-public class CreateChatRoom : INotificationHandler<ContactCreatedDomainEvent>
+public class CreateDirectMessagingChatroom : INotificationHandler<ContactCreatedDomainEvent>
 {
     private readonly IRepository<Chatroom> _chatRoomRepository;
 
-    public CreateChatRoom(IRepository<Chatroom> chatRoomRepository)
+    public CreateDirectMessagingChatroom(IRepository<Chatroom> chatRoomRepository)
     {
         _chatRoomRepository = chatRoomRepository;
     }
@@ -21,7 +21,7 @@ public class CreateChatRoom : INotificationHandler<ContactCreatedDomainEvent>
 
         var newChatRoom = new Chatroom()
         {
-            Name = "DirectMessage",
+            Name = "Direct Messaging Chatroom",
             ChatRoomType = ChatRoomType.Direct,
             Members = new List<AccountChatroom>()
             {

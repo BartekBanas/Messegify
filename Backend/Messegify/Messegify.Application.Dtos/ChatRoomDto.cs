@@ -4,11 +4,8 @@ namespace Messegify.Application.Dtos;
 
 public class ChatRoomDto
 {
-    public Guid Id { get; set; }
-    
-    public required string Name { get; set; }
-    
-    public ChatRoomType ChatRoomType { get; set; }
-    
-    // public virtual ICollection<AccountChatroom> Members { get; set; }
+    public required Guid Id { get; init; }
+    public required string Name { get; init; }
+    public required ChatRoomType ChatRoomType { get; init; }
+    public required IEnumerable<Guid> Members { get; init; }
 }

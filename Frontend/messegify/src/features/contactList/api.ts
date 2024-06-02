@@ -3,6 +3,7 @@ import ky from "ky";
 import {API_URL} from "../../config";
 import {Contact} from "../../types/contact";
 import {AccountClaims} from "../../types/accountClaims";
+import {Chatroom} from "../../types/chatroom";
 
 export async function listContactsRequest() {
     const token = Cookies.get('auth_token');
@@ -13,6 +14,17 @@ export async function listContactsRequest() {
     });
 
     return authorizedKy.get(`${API_URL}/contact`).json<Contact[]>();
+}
+
+export async function getChatroomsRequest() {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    });
+
+    return authorizedKy.get(`${API_URL}/chatroom`).json<[Chatroom]>();
 }
 
 export async function getUserId() {

@@ -1,12 +1,12 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Contact} from "../../types/contact";
-import {ContactItem} from "./ContactItem";
+import {ChatroomItem} from "./ChatroomItem";
 import {Loader, MantineProvider, Paper} from "@mantine/core";
-import {listContactsRequest} from "./api";
+import {getChatroomsRequest} from "./api";
 import '../../styles/CustomScrollbar.css';
+import {Chatroom} from "../../types/chatroom";
 
-export const ContactList: FC = () => {
-    const [contacts, setContacts] = useState<Contact[]>([]);
+export const ChatroomList: FC = () => {
+    const [chatrooms, setChatrooms] = useState<Chatroom[]>([]);
 
     useEffect(() => {
         fetchContacts();
@@ -20,10 +20,10 @@ export const ContactList: FC = () => {
 
     async function fetchContacts() {
         try {
-            const data = await listContactsRequest();
-            setContacts(data);
+            const data = await getChatroomsRequest();
+            setChatrooms(data);
         } catch (error) {
-            console.error('Error fetching contacts:', error);
+            console.error('Error fetching chatrooms:', error);
         }
     }
 
@@ -39,8 +39,8 @@ export const ContactList: FC = () => {
             >
                 <ul>
                     <React.Suspense fallback={<Loader color="indigo" variant="dots"/>}>
-                        {contacts.map((contact) => (
-                            <ContactItem key={contact.id} contact={contact}/>
+                        {chatrooms.map((contact) => (
+                            <ChatroomItem key={contact.id} chatroom={contact}/>
                         ))}
                     </React.Suspense>
                 </ul>

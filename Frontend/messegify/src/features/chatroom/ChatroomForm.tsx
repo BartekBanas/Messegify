@@ -3,7 +3,7 @@ import {useForm} from '@mantine/form';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
 import {useLocation} from 'react-router-dom';
 import {API_URL} from '../../config';
-import {ContactList} from '../contactList/ContactList';
+import {ChatroomList} from '../contactList/ChatroomList';
 import Cookies from 'js-cookie';
 import ky from 'ky';
 import {AccountClaims} from '../../types/accountClaims';
@@ -11,6 +11,8 @@ import './ChatroomForm.css';
 import {Message} from '../../types/message';
 import {handleSubmit, useGetMessages} from './api';
 import {MenuButton} from "./MenuButton";
+import {InviteToChatroomButton} from "./InviteToChatroomButton";
+import {CreateChatroomButton} from "./CreateChatroomButton";
 
 type ChatMessageProps = {
     message: Message;
@@ -67,8 +69,6 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     async function fetchData() {
         const receivedMessages = await getMessages;
         setMessages(receivedMessages);
-
-        console.log(receivedMessages);
     }
 
     useEffect(() => {
@@ -138,7 +138,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Group style={{width: '100%', display: 'flex', height: '100%'}}>
-                <ContactList/>
+                <ChatroomList/>
 
                 <div style={{flex: 4, height: '100%', maxHeight: '87vh'}}>
                     <Paper shadow="sm" radius="md" p="lg" withBorder className="custom-scrollbar"
@@ -159,21 +159,27 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
                                     fontFamily: '"Open Sans", sans-serif',
                                 }}
                             >
-                                <form onSubmit={form.onSubmit((values) => {
-                                    handleSubmit(values, roomId);
-                                    form.reset();
-                                })}>
-                                    <Group>
-                                        <TextInput required type="message" {...form.getInputProps('textContent')}
-                                                   style={{width: '300px'}}/>
+                                <Group>
+                                    <form onSubmit={form.onSubmit((values) => {
+                                        handleSubmit(values, roomId);
+                                        form.reset();
+                                    })}>
+                                        <Group>
+                                            <TextInput required type="message" {...form.getInputProps('textContent')}
+                                                       style={{width: '300px'}}/>
 
-                                        <Button type="submit"> Send </Button>
+                                            <Button type="submit"> Send </Button>
+                                        </Group>
+                                    </form>
 
-                                        <div style={{marginLeft: 'auto'}}>
+                                    <div style={{marginLeft: 'auto'}}>
+                                        <Group>
+                                            <CreateChatroomButton/>
+                                            <InviteToChatroomButton chatroomId={roomId}/>
                                             <MenuButton/>
-                                        </div>
-                                    </Group>
-                                </form>
+                                        </Group>
+                                    </div>
+                                </Group>
                             </Text>
                         </div>
                     </Paper>
