@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
     </ItemGroup>
 

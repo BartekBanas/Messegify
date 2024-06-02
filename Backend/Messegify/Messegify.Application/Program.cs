@@ -1,7 +1,7 @@
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
-using MediatR;
 using Messegify.Application;
 using Messegify.Application.Authorization;
 using Messegify.Application.Authorization.Handlers;
@@ -43,12 +43,15 @@ services.AddAuthorization(options =>
         policy.Requirements.Add(new IsOwnerRequirement()));
 });
 
-
 services.Configure<JwtConfiguration>(configuration.GetSection(nameof(JwtConfiguration)));
 
 services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
-);
+).AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGenWithAuthorization();
 services.AddHttpContextAccessor();
@@ -98,7 +101,10 @@ services.AddScoped<IAccountService, AccountService>();
 services.AddScoped<IChatroomRequestHandler, ChatroomRequestHandler>();
 services.AddScoped<IMessageRequestHandler, MessageRequestHandler>();
 
-services.AddMediatR(typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker));
+services.AddMediatR(serviceConfiguration =>
+    serviceConfiguration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly(),
+        typeof(ChatroomRequestHandler).GetTypeInfo().Assembly,
+        typeof(Messegify.Application.DomainEventHandlers.AssemblyMarker).GetTypeInfo().Assembly));
 
 services.AddScoped<ErrorHandlingMiddleware>();
 services.AddScoped<InfrastructureErrorHandlingMiddleware>();

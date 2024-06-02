@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using AutoMapper;
 using MediatR;
 using Messegify.Application.Authorization;
 using Messegify.Application.Dtos;
@@ -16,9 +15,11 @@ using Microsoft.AspNetCore.Http;
 namespace Messegify.Application.Services;
 
 public interface IChatroomRequestHandler :
-    IRequestHandler<CreateChatroomRequest>,
+    IRequestHandler<CreateChatroomRequest, ChatRoomDto>,
+    IRequestHandler<GetChatroomRequest, ChatRoomDto>, 
     IRequestHandler<GetUserChatroomsRequest, IEnumerable<ChatRoomDto>>,
-    IRequestHandler<DeleteChatroomRequest>
+    IRequestHandler<DeleteChatroomRequest>,
+    IRequestHandler<InviteToChatroomRequest>
 {
 }
 
@@ -32,25 +33,21 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    private readonly IMapper _mapper;
-
     public ChatroomRequestHandler(
         IRepository<Chatroom> chatRoomRepository,
         IRepository<Account> accountRepository,
         IHttpContextAccessor httpContextAccessor,
         IAuthorizationService authorizationService,
-        IMessageRequestHandler messageRequestHandler,
-        IMapper mapper)
+        IMessageRequestHandler messageRequestHandler)
     {
         _chatRoomRepository = chatRoomRepository;
         _accountRepository = accountRepository;
         _httpContextAccessor = httpContextAccessor;
         _authorizationService = authorizationService;
         _messageRequestHandler = messageRequestHandler;
-        _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(
+    public async Task<ChatRoomDto> Handle(
         CreateChatroomRequest request,
         CancellationToken cancellationToken)
     {
@@ -66,7 +63,19 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
         await _chatRoomRepository.SaveChangesAsync();
 
-        return Unit.Value;
+        return newChatRoom.ToDto();
+    }
+
+    public async Task<ChatRoomDto> Handle(GetChatroomRequest request, CancellationToken cancellationToken)
+    {
+        var user = _httpContextAccessor.HttpContext.User;
+
+        var chatroom = await _chatRoomRepository.GetOneRequiredAsync(
+            chatRoom => chatRoom.Id == request.ChatroomId, nameof(Chatroom.Members));
+
+        await _authorizationService.AuthorizeRequiredAsync(user, chatroom, AuthorizationPolicies.IsMemberOf);
+        
+        return chatroom.ToDto();
     }
 
     public async Task<IEnumerable<ChatRoomDto>> Handle(GetUserChatroomsRequest request, CancellationToken cancellationToken)
@@ -79,12 +88,12 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         var chatRooms = await _chatRoomRepository
             .GetAsync(filter, null, nameof(Chatroom.Members));
 
-        var dtos = _mapper.Map<IEnumerable<ChatRoomDto>>(chatRooms);
+        var dtos = chatRooms.ToDto();
 
         return dtos;
     }
 
-    public async Task<Unit> Handle(DeleteChatroomRequest request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
         
@@ -111,10 +120,35 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         }
         
         await _chatRoomRepository.DeleteAsync(chatRoom.Id);
-
-        return Unit.Value;
+        
+        await _chatRoomRepository.SaveChangesAsync();
     }
     
+    public async Task Handle(InviteToChatroomRequest request, CancellationToken cancellationToken)
+    {
+        var user = _httpContextAccessor.HttpContext.User;
+        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatroomId, 
+            nameof(Chatroom.Members));
+        
+        if (chatRoom.ChatRoomType is ChatRoomType.Direct)
+        {
+            throw new BadRequestError("You cannot invite anyone to a direct messaging chatroom");
+        }
+
+        if (chatRoom.Members.Any(accountChatroom => accountChatroom.AccountId == request.AccountId))
+        {
+            throw new BadRequestError("You cannot invite users that are already members of this account");
+        }
+        
+        await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
+        
+        var invitedAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
+        
+        chatRoom.Members.Add(new AccountChatroom { AccountId = invitedAccount.Id });
+        
+        await _chatRoomRepository.SaveChangesAsync();
+    }
+
     private static Chatroom CreateChatroom(CreateChatroomRequest request)
     {
         return request.ChatRoomType switch
