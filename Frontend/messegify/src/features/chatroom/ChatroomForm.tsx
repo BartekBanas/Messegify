@@ -14,6 +14,7 @@ import {MenuButton} from "./MenuButton";
 import {InviteToChatroomButton} from "./InviteToChatroomButton";
 import {CreateChatroomButton} from "./CreateChatroomButton";
 import {sendMessageErrorNotification} from "./notifications";
+import {LeaveChatroomButton} from "./LeaveChatroomButton";
 
 type ChatMessageProps = {
     message: Message;
@@ -183,6 +184,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
 
                                     <div style={{marginLeft: 'auto'}}>
                                         <Group>
+                                            <LeaveChatroomButton/>
                                             <CreateChatroomButton/>
                                             <InviteToChatroomButton chatroomId={roomId}/>
                                             <MenuButton/>
