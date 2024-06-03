@@ -4,6 +4,7 @@ import React, {useEffect, useState} from "react";
 import {getChatroomRequest, leaveChatroomRequest} from "./api";
 import {useLocation} from "react-router-dom";
 import {Chatroom} from "../../types/chatroom";
+import {leaveChatroomErrorNotification, leaveChatroomSuccessNotification} from "./notifications";
 
 export const LeaveChatroomButton = () => {
     const [opened, {close, open}] = useDisclosure(false);
@@ -22,8 +23,10 @@ export const LeaveChatroomButton = () => {
     function handleSubmit() {
         try {
             leaveChatroomRequest(chatroomId);
+            leaveChatroomSuccessNotification();
         }
         catch (error) {
+            leaveChatroomErrorNotification();
         }
 
         close();
