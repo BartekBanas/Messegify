@@ -145,7 +145,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
         if (chatRoom.Members.Any(accountChatroom => accountChatroom.AccountId == request.AccountId))
         {
-            throw new BadRequestError("You cannot invite users that are already members of this account");
+            throw new BadRequestError("Invited user is already a member of this chatroom");
         }
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
