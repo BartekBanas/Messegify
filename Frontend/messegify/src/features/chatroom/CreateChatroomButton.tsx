@@ -4,19 +4,24 @@ import React from "react";
 import {createChatroomRequest} from "./api";
 import {useForm} from "@mantine/form";
 import {createChatroomErrorNotification, createChatroomSuccessNotification} from "./notifications";
+import {useNavigate} from "react-router-dom";
+import {Chatroom} from "../../types/chatroom";
 
 export const CreateChatroomButton = () => {
     const [opened, {close, open}] = useDisclosure(false);
+    const navigate = useNavigate();
     const form = useForm({
         initialValues: {
             chatroomId: '',
         },
     });
 
-    function handleSubmit(chatroomName: string) {
+    async function handleSubmit(chatroomName: string) {
         try {
-            createChatroomRequest(chatroomName);
+            let response = await createChatroomRequest(chatroomName);
+            let createdChatroom : Chatroom = await response.json();
             createChatroomSuccessNotification();
+            navigate(`/chatroom/${createdChatroom.id}`);
         }
         catch (error) {
             createChatroomErrorNotification();
