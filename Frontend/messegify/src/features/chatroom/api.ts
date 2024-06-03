@@ -121,3 +121,16 @@ export async function createChatroomRequest(chatroomName: string) {
 
     return authorizedKy.post(`${API_URL}/chatroom`);
 }
+
+export async function leaveChatroomRequest(chatroomId: string) {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        }
+    });
+
+    return authorizedKy.post(`${API_URL}/chatroom/${chatroomId}/leave`);
+}
