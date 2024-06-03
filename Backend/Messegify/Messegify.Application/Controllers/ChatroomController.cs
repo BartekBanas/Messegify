@@ -64,4 +64,15 @@ public class ChatroomController : Controller
 
         return Ok(requestResult);
     }
+
+    [Authorize]
+    [HttpPost("{targetChatroomId:guid}/leave")]
+    public async Task<IActionResult> LeaveChatroom([FromRoute] Guid targetChatroomId, CancellationToken cancellationToken)
+    {
+        var request = new LeaveChatroomRequest(targetChatroomId);
+
+        await _mediator.Send(request, cancellationToken);
+
+        return Ok();
+    }
 }
