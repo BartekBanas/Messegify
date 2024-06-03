@@ -96,14 +96,26 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
     {
         var user = _httpContextAccessor.HttpContext.User;
 
-        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId,
+        var chatroom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId,
             nameof(Chatroom.Members));
 
-        await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
-
-        if (chatRoom.ChatRoomType != ChatRoomType.Direct)
+        switch (chatroom.ChatRoomType)
         {
-            throw new ForbiddenError("You can only delete private chatrooms");
+            case ChatRoomType.Regular:
+                await _authorizationService.AuthorizeRequiredAsync(user, chatroom, AuthorizationPolicies.IsOwnerOf);
+                break;
+
+            case ChatRoomType.Direct:
+            {
+                await _authorizationService.AuthorizeRequiredAsync(user, chatroom, AuthorizationPolicies.IsMemberOf);
+
+                if (chatroom.Members.Count < 2)
+                {
+                    throw new ForbiddenError("You cannot delete private conversations");
+                }
+
+                break;
+            }
         }
 
         var getMessagesRequest = new GetMessagesRequest(request.ChatRoomId);
@@ -116,8 +128,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
             await _messageRequestHandler.Handle(deleteMessageRequest, cancellationToken);
         }
 
-        await _chatRoomRepository.DeleteAsync(chatRoom.Id);
-
+        await _chatRoomRepository.DeleteAsync(chatroom.Id);
         await _chatRoomRepository.SaveChangesAsync();
     }
 
