@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Group} from '@mantine/core';
-import {ChatroomList} from '../contactList/ChatroomList';
+import {ChatroomList} from '../chatroomList/ChatroomList';
 
 interface MenuFormProps {
 }

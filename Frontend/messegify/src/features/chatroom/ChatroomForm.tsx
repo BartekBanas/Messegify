@@ -3,16 +3,18 @@ import {useForm} from '@mantine/form';
 import {Button, Group, MantineProvider, Paper, Text, TextInput} from '@mantine/core';
 import {useLocation} from 'react-router-dom';
 import {API_URL} from '../../config';
-import {ChatroomList} from '../contactList/ChatroomList';
+import {ChatroomList} from '../chatroomList/ChatroomList';
 import Cookies from 'js-cookie';
 import ky from 'ky';
 import {AccountClaims} from '../../types/accountClaims';
 import './ChatroomForm.css';
 import {Message} from '../../types/message';
-import {handleSubmit, useGetMessages} from './api';
+import {sendMessageRequest, useGetMessages} from './api';
 import {MenuButton} from "./MenuButton";
 import {InviteToChatroomButton} from "./InviteToChatroomButton";
 import {CreateChatroomButton} from "./CreateChatroomButton";
+import {sendMessageErrorNotification} from "./notifications";
+import {LeaveChatroomButton} from "./LeaveChatroomButton";
 
 type ChatMessageProps = {
     message: Message;
@@ -135,6 +137,14 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
         }
     };
 
+    async function handleSubmit(data: Message, roomId: string) {
+        try {
+            await sendMessageRequest(data, roomId);
+        } catch (error) {
+            sendMessageErrorNotification();
+        }
+    }
+
     return (
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <Group style={{width: '100%', display: 'flex', height: '100%'}}>
@@ -174,6 +184,7 @@ export const ChatroomForm: FC<ChatroomFormProps> = () => {
 
                                     <div style={{marginLeft: 'auto'}}>
                                         <Group>
+                                            <LeaveChatroomButton/>
                                             <CreateChatroomButton/>
                                             <InviteToChatroomButton chatroomId={roomId}/>
                                             <MenuButton/>

@@ -47,24 +47,20 @@ export function useMessageWebSocket() {
     }
 }
 
-export async function handleSubmit(data: Message, roomId: string) {
-    try {
-        const token = Cookies.get('auth_token');
-        const authorizedKy = ky.extend({
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                textContent: data.textContent
-            })
-        });
+export async function sendMessageRequest(data: Message, roomId: string) {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            textContent: data.textContent
+        })
+    });
 
-        return authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
-    } catch (error) {
-        sendMessageErrorNotification();
-    }
+    return authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
 }
 
 export async function InviteToChatroomRequest(chatroomId: string, accountId: string) {
@@ -124,4 +120,17 @@ export async function createChatroomRequest(chatroomName: string) {
     });
 
     return authorizedKy.post(`${API_URL}/chatroom`);
+}
+
+export async function leaveChatroomRequest(chatroomId: string) {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            authorization: `Bearer ${token}`
+        }
+    });
+
+    return authorizedKy.post(`${API_URL}/chatroom/${chatroomId}/leave`);
 }

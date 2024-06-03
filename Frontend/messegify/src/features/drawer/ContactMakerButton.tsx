@@ -5,7 +5,7 @@ import {API_URL} from '../../config';
 import Cookies from 'js-cookie';
 import {Account} from '../../types/account';
 import {Contact} from '../../types/contact';
-import {getUserId, listContactsRequest} from "../contactList/api";
+import {getUserId, listContactsRequest} from "../chatroomList/api";
 
 export const ContactMakerButton: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
