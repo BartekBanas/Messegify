@@ -2,7 +2,7 @@ import {useDisclosure} from "@mantine/hooks";
 import {Button, Group, Modal, Text} from "@mantine/core";
 import React, {useEffect, useState} from "react";
 import {getChatroomRequest, leaveChatroomRequest} from "./api";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Chatroom} from "../../types/chatroom";
 import {leaveChatroomErrorNotification, leaveChatroomSuccessNotification} from "./notifications";
 
@@ -11,6 +11,7 @@ export const LeaveChatroomButton = () => {
     const [chatroom, setChatroom] = useState<Chatroom | null>(null);
     const chatroomId = window.location.href.split('/').pop() ?? '';
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getChatroomRequest(chatroomId).then((response: Chatroom) => {
@@ -24,6 +25,7 @@ export const LeaveChatroomButton = () => {
         try {
             leaveChatroomRequest(chatroomId);
             leaveChatroomSuccessNotification();
+            navigate('/menu');
         }
         catch (error) {
             leaveChatroomErrorNotification();
