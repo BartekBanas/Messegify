@@ -237,7 +237,7 @@ public class AccountService : IAccountService
         return dtos;
     }
 
-    private ClaimsIdentity GenerateClaimsIdentity(Account account)
+    private static ClaimsIdentity GenerateClaimsIdentity(Account account)
     {
         return new ClaimsIdentity(new Claim[]
         {
