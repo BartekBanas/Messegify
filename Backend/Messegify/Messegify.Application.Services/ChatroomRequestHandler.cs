@@ -97,7 +97,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         var user = _httpContextAccessor.HttpContext.User;
 
         var chatroom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatRoomId,
-            nameof(Chatroom.Members));
+            nameof(Chatroom.Members), nameof(Chatroom.Messages));
 
         switch (chatroom.ChatRoomType)
         {
@@ -118,10 +118,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
             }
         }
 
-        var getMessagesRequest = new GetMessagesRequest(request.ChatRoomId);
-        var messages = await _messageRequestHandler.Handle(getMessagesRequest, cancellationToken);
-
-        var deleteMessagesRequest = new DeleteMessagesRequest(messages);
+        var deleteMessagesRequest = new DeleteMessagesRequest(chatroom.Messages);
 
         await _messageRequestHandler.Handle(deleteMessagesRequest, cancellationToken);
 
