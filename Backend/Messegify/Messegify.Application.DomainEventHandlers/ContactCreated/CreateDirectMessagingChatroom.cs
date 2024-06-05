@@ -21,7 +21,7 @@ public class CreateDirectMessagingChatroom : INotificationHandler<ContactCreated
 
         var newChatRoom = new Chatroom()
         {
-            Name = "Direct Messaging Chatroom",
+            Name = "Private conversation",
             ChatRoomType = ChatRoomType.Direct,
             Members = new List<AccountChatroom>()
             {
