@@ -119,14 +119,11 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         }
 
         var getMessagesRequest = new GetMessagesRequest(request.ChatRoomId);
-        var messages = _messageRequestHandler.Handle(getMessagesRequest, cancellationToken);
+        var messages = await _messageRequestHandler.Handle(getMessagesRequest, cancellationToken);
 
-        foreach (var message in messages.Result)
-        {
-            var deleteMessageRequest = new DeleteMessageRequest(message.Id);
+        var deleteMessagesRequest = new DeleteMessagesRequest(messages);
 
-            await _messageRequestHandler.Handle(deleteMessageRequest, cancellationToken);
-        }
+        await _messageRequestHandler.Handle(deleteMessagesRequest, cancellationToken);
 
         await _chatRoomRepository.DeleteAsync(chatroom.Id);
         await _chatRoomRepository.SaveChangesAsync();
