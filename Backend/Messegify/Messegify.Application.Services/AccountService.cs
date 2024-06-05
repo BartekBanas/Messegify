@@ -150,7 +150,7 @@ public class AccountService : IAccountService
         }
 
         await _accountRepository.UpdateAsync(updatedAccount, accountId);
-        await _contactRepository.SaveChangesAsync();
+        await _accountRepository.SaveChangesAsync();
 
         var dto = _mapper.Map<Account, AccountDto>(updatedAccount);
 
