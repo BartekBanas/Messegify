@@ -150,7 +150,7 @@ public class AccountService : IAccountService
         }
 
         await _accountRepository.UpdateAsync(updatedAccount, accountId);
-        await _contactRepository.SaveChangesAsync();
+        await _accountRepository.SaveChangesAsync();
 
         var dto = _mapper.Map<Account, AccountDto>(updatedAccount);
 
@@ -237,7 +237,7 @@ public class AccountService : IAccountService
         return dtos;
     }
 
-    private ClaimsIdentity GenerateClaimsIdentity(Account account)
+    private static ClaimsIdentity GenerateClaimsIdentity(Account account)
     {
         return new ClaimsIdentity(new Claim[]
         {
