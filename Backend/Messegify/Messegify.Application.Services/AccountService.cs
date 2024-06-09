@@ -196,19 +196,30 @@ public class AccountService : IAccountService
 
     public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
     {
-        var newContact = new Contact()
+        var contact = await _contactRepository
+            .GetOneAsync(contact => contact.FirstAccountId == accountAId & contact.SecondAccountId == accountBId ||
+                                 contact.FirstAccountId == accountBId & contact.SecondAccountId == accountAId);
+
+        if (contact is not null)
         {
-            FirstAccountId = accountAId,
-            SecondAccountId = accountBId
-        };
+            contact.Active = true;
+        }
+        else
+        {
+            var newContact = new Contact
+            {
+                FirstAccountId = accountAId,
+                SecondAccountId = accountBId
+            };
 
-        await _contactValidator.ValidateAsync(newContact);
+            await _contactValidator.ValidateAsync(newContact);
 
-        await _contactRepository.CreateAsync(newContact);
-        
-        newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
-        
-        await _contactRepository.SaveChangesAsync();
+            await _contactRepository.CreateAsync(newContact);
+
+            newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
+
+            await _contactRepository.SaveChangesAsync();
+        }
     }
 
     public async Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken)
