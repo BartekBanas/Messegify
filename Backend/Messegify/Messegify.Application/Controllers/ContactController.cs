@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Messegify.Application.Service.Extensions;
 using Messegify.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,9 +31,7 @@ public class ContactController : Controller
     [HttpGet]
     public async Task<IActionResult> GetFriends()
     {
-        var accountGuid = User.GetId();
-
-        var friendships = await _accountService.GetContactsAsync(accountGuid);
+        var friendships = await _accountService.GetActiveContactsAsync();
 
         return Ok(friendships);
     }

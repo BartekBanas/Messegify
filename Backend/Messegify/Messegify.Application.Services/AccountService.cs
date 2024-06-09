@@ -24,6 +24,7 @@ public interface IAccountService
     Task CreateContactAsync(Guid accountAId, Guid accountBId, CancellationToken cancellationToken);
     Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
+    Task<IEnumerable<ContactDto>> GetActiveContactsAsync();
 }
 
 public class AccountService : IAccountService
@@ -257,6 +258,18 @@ public class AccountService : IAccountService
         
         var contacts = await _contactRepository
             .GetAsync(contact => contact.FirstAccountId == accountId || contact.SecondAccountId == accountId);
+
+        var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
+        
+        return dtos;
+    }
+
+    public async Task<IEnumerable<ContactDto>> GetActiveContactsAsync()
+    {
+        var accountId = _httpContextAccessor.HttpContext.User.GetId();
+
+        var contacts = await _contactRepository.GetAsync(contact =>
+                contact.Active & (contact.FirstAccountId == accountId || contact.SecondAccountId == accountId));
 
         var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
         
