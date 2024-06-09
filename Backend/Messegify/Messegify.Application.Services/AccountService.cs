@@ -21,7 +21,7 @@ public interface IAccountService
     Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto updateDto);
     Task DeleteAccountAsync(Guid accountId);
     Task<string> AuthenticateAsync(LoginDto loginDto);
-    Task CreateContactAsync(Guid accountAId, Guid accountBId);
+    Task CreateContactAsync(Guid accountAId, Guid accountBId, CancellationToken cancellationToken);
     Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken);
     Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
 }
@@ -194,7 +194,7 @@ public class AccountService : IAccountService
         return token;
     }
 
-    public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
+    public async Task CreateContactAsync(Guid accountAId, Guid accountBId, CancellationToken cancellationToken)
     {
         var contact = await _contactRepository
             .GetOneAsync(contact => contact.FirstAccountId == accountAId & contact.SecondAccountId == accountBId ||
@@ -203,6 +203,7 @@ public class AccountService : IAccountService
         if (contact is not null)
         {
             contact.Active = true;
+            await _chatroomRequestHandler.Handle(new LeaveChatroomRequest(contact.ContactChatRoomId), cancellationToken);
         }
         else
         {
@@ -212,7 +213,7 @@ public class AccountService : IAccountService
                 SecondAccountId = accountBId
             };
 
-            await _contactValidator.ValidateAsync(newContact);
+            await _contactValidator.ValidateAsync(newContact, cancellationToken);
 
             await _contactRepository.CreateAsync(newContact);
 
@@ -232,6 +233,7 @@ public class AccountService : IAccountService
         if (contact.Active)
         {
             contact.Active = false;
+            await _chatroomRequestHandler.Handle(new LeaveChatroomRequest(contact.ContactChatRoomId), cancellationToken);
         }
         else if (chatroom.Members.Count() == 1 &&
                  chatroom.Members.Any(memberId => memberId == userId)) 
