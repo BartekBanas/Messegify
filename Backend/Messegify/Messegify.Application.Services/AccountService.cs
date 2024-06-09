@@ -213,15 +213,28 @@ public class AccountService : IAccountService
 
     public async Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken)
     {
-        var contact = _contactRepository.GetOneRequiredAsync(contactId);
+        var userId = _httpContextAccessor.HttpContext.User.GetId();
+        var contact = await _contactRepository.GetOneRequiredAsync(contactId);
+        var getChatroomRequest = new GetChatroomRequest(contact.ContactChatRoomId);
+        var chatroom = await _chatroomRequestHandler.Handle(getChatroomRequest, cancellationToken);
 
-        DeleteChatroomRequest request = new DeleteChatroomRequest(contact.Result.ContactChatRoomId);
+        if (contact.Active)
+        {
+            contact.Active = false;
+        }
+        else if (chatroom.Members.Count() == 1 &&
+                 chatroom.Members.Any(memberId => memberId == userId)) 
+        {
+            var request = new DeleteChatroomRequest(contact.ContactChatRoomId);
+            await _chatroomRequestHandler.Handle(request, cancellationToken);
 
-        await _chatroomRequestHandler.Handle(request, cancellationToken);
-
-        await _contactRepository.DeleteAsync(contactId);
-
-        await _contactRepository.SaveChangesAsync();
+            await _contactRepository.DeleteAsync(contactId);
+            await _contactRepository.SaveChangesAsync();
+        }
+        else
+        {
+            throw new BadRequestError("You had already abandoned this contact");
+        }
     }
 
     public async Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId)
