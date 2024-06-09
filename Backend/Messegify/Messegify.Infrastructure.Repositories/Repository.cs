@@ -131,6 +131,23 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
         return await query.FirstOrDefaultAsync() ?? throw new ItemNotFoundErrorException();
     }
 
+    public virtual async Task<TEntity> GetOneRequiredAsync(object key, params string[] includeProperties)
+    {
+        var entity = await _dbSet.FindAsync(key);
+
+        if (entity == null)
+        {
+            throw new ItemNotFoundErrorException();
+        }
+
+        foreach (var includeProperty in includeProperties)
+        {
+            await _dbContext.Entry(entity).Reference(includeProperty).LoadAsync();
+        }
+
+        return entity;
+    }
+
     public virtual async Task<TEntity> GetOneRequiredAsync(params object[] guids)
     {
         var entity = await GetOneAsync(guids);
