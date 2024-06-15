@@ -203,7 +203,11 @@ public class AccountService : IAccountService
 
         if (contact is not null)
         {
-            if (!contact.Active)
+            if (contact.Active)
+            {
+                throw new BadRequestError("You are already in a contact with this user");
+            }
+            else
             {
                 contact.Active = true;
                 var contactChatroom = await _chatroomRequestHandler.Handle(
