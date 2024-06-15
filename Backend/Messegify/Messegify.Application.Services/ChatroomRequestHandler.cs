@@ -109,7 +109,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
             {
                 await _authorizationService.AuthorizeRequiredAsync(user, chatroom, AuthorizationPolicies.IsMemberOf);
 
-                if (chatroom.Members.Count < 2)
+                if (chatroom.Members.Count > 1)
                 {
                     throw new ForbiddenError("You cannot delete private conversations");
                 }
