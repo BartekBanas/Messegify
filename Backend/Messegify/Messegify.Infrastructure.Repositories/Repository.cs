@@ -158,7 +158,7 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
         return entity;
     }
 
-    public virtual async Task DeleteAsync(params object[] keys)
+    public virtual async Task DeleteOneAsync(params object[] keys)
     {
         var entity = await GetOneRequiredAsync(keys);
 

@@ -169,10 +169,10 @@ public class AccountService : IAccountService
 
             await _chatroomRequestHandler.Handle(deleteChatroomRequest, token);
             
-            await _contactRepository.DeleteAsync(contact.Id);
+            await _contactRepository.DeleteOneAsync(contact.Id);
         }
         
-        await _accountRepository.DeleteAsync(accountId);
+        await _accountRepository.DeleteOneAsync(accountId);
 
         await _contactRepository.SaveChangesAsync();
     }
@@ -262,7 +262,7 @@ public class AccountService : IAccountService
             var request = new DeleteChatroomRequest(contact.ContactChatRoomId);
             await _chatroomRequestHandler.Handle(request, cancellationToken);
 
-            await _contactRepository.DeleteAsync(contactId);
+            await _contactRepository.DeleteOneAsync(contactId);
             await _contactRepository.SaveChangesAsync();
         }
         else

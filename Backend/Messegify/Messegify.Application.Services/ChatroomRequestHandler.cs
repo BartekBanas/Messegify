@@ -122,7 +122,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
         await _messageRequestHandler.Handle(deleteMessagesRequest, cancellationToken);
 
-        await _chatRoomRepository.DeleteAsync(chatroom.Id);
+        await _chatRoomRepository.DeleteOneAsync(chatroom.Id);
         await _chatRoomRepository.SaveChangesAsync();
     }
 
