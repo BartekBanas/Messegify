@@ -8,7 +8,7 @@ public interface IRepository
 
 public interface IRepository<TEntity> : IRepository where TEntity : IEntity
 {
-    Task<TEntity?> GetOneAsync(params object[] guids);
+    Task<TEntity?> GetOneAsync(params object[] keys);
 
     Task<IEnumerable<TEntity>> GetAsync(
         Expression<Func<TEntity, bool>>? filter = null,
@@ -24,7 +24,7 @@ public interface IRepository<TEntity> : IRepository where TEntity : IEntity
     Task<TEntity?> GetOneAsync(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties);
     Task<TEntity> GetOneRequiredAsync(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties);
     Task<TEntity> GetOneRequiredAsync(object key, params string[] includeProperties);
-    Task<TEntity> GetOneRequiredAsync(params object[] guids);
+    Task<TEntity> GetOneRequiredAsync(params object[] keys);
     Task DeleteAsync(params object[] keys);
     Task<TEntity> CreateAsync(TEntity entity);
     Task<TEntity> UpdateAsync(object update, params object[] keys);
