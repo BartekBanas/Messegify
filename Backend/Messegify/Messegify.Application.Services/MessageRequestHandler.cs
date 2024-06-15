@@ -118,6 +118,9 @@ public class MessageRequestHandler : IMessageRequestHandler
 
     public async Task Handle(DeleteMessagesRequest request, CancellationToken cancellationToken)
     {
-        await _messageRepository.DeleteAsync(request.MessageIds);
+        foreach (var messageId in request.MessageIds)
+        {
+            await _messageRepository.DeleteAsync(messageId);
+        }
     }
 }
