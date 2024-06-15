@@ -205,7 +205,7 @@ public class AccountService : IAccountService
         {
             if (contact.Active)
             {
-                throw new BadRequestError("You are already in a contact with this user");
+                throw new RedundantContactCreationRequestError();
             }
             else
             {
