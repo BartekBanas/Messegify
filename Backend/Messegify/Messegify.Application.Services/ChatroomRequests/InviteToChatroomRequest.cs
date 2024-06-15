@@ -5,8 +5,14 @@ namespace Messegify.Application.Services.ChatroomRequests;
 
 public class InviteToChatroomRequest : IRequest
 {
-    public Guid ChatroomId { get; set; }
-    public Guid AccountId { get; set; }
+    public Guid ChatroomId { get; }
+    public Guid AccountId { get; }
+
+    public InviteToChatroomRequest(Guid chatroomId, Guid accountId)
+    {
+        ChatroomId = chatroomId;
+        AccountId = accountId;
+    }
 
     public InviteToChatroomRequest(ChatroomInvite chatroomInvite)
     {
