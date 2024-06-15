@@ -203,8 +203,24 @@ public class AccountService : IAccountService
 
         if (contact is not null)
         {
-            contact.Active = true;
-            await _chatroomRequestHandler.Handle(new LeaveChatroomRequest(contact.ContactChatRoomId), cancellationToken);
+            if (!contact.Active)
+            {
+                contact.Active = true;
+                var contactChatroom = await _chatroomRequestHandler.Handle(
+                    new GetChatroomRequest(contact.ContactChatRoomId), cancellationToken);
+
+                if (!contactChatroom.Members.Contains(accountAId))
+                {
+                    await _chatroomRequestHandler.Handle(new InviteToChatroomRequest(
+                        contact.ContactChatRoomId, accountAId), cancellationToken);
+                }
+                
+                if (!contactChatroom.Members.Contains(accountBId))
+                {
+                    await _chatroomRequestHandler.Handle(new InviteToChatroomRequest(
+                        contact.ContactChatRoomId, accountBId), cancellationToken);
+                }
+            }
         }
         else
         {
