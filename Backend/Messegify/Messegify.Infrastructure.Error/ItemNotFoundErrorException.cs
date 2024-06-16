@@ -2,6 +2,4 @@
 
 namespace Messegify.Infrastructure.Error;
 
-public class ItemNotFoundErrorException : InfrastructureErrorException
-{
-}
+public class ItemNotFoundErrorException : InfrastructureErrorException;
