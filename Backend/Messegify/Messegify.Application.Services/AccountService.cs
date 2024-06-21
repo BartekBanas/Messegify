@@ -23,7 +23,7 @@ public interface IAccountService
     Task<string> AuthenticateAsync(LoginDto loginDto);
     Task CreateContactAsync(Guid accountAId, Guid accountBId, CancellationToken cancellationToken);
     Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken);
-    Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
+    Task<IEnumerable<ContactDto>> GetContactsAsync();
     Task<IEnumerable<ContactDto>> GetActiveContactsAsync();
 }
 
@@ -160,7 +160,7 @@ public class AccountService : IAccountService
     
     public async Task DeleteAccountAsync(Guid accountId)
     {
-        var contacts = await GetContactsAsync(accountId);
+        var contacts = await GetContactsAsync();
 
         foreach (var contact in contacts)
         {
@@ -271,10 +271,9 @@ public class AccountService : IAccountService
         }
     }
 
-    public async Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId)
+    public async Task<IEnumerable<ContactDto>> GetContactsAsync()
     {
-        var account = await _accountRepository.GetOneAsync(accountId);
-        var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
+        var accountId = _httpContextAccessor.HttpContext.User.GetId();
         
         var contacts = await _contactRepository
             .GetAsync(contact => contact.FirstAccountId == accountId || contact.SecondAccountId == accountId);

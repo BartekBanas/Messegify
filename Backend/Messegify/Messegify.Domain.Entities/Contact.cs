@@ -20,7 +20,7 @@ public class Contact : Entity
 
     public virtual Chatroom ContactChatroom { get; set; } = null!;
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)] public DateTime DateCreated { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] public DateTime DateCreated { get; set; }
 
     public bool Active { get; set; } = true;
 }
