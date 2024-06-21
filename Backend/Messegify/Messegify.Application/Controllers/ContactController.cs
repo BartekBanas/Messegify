@@ -29,11 +29,20 @@ public class ContactController : Controller
     
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> GetFriends()
+    public async Task<IActionResult> GetContacts()
     {
-        var friendships = await _accountService.GetActiveContactsAsync();
+        var contacts = await _accountService.GetContactsAsync();
 
-        return Ok(friendships);
+        return Ok(contacts);
+    }
+    
+    [Authorize]
+    [HttpGet("active")]
+    public async Task<IActionResult> GetActiveContacts()
+    {
+        var activeContacts = await _accountService.GetActiveContactsAsync();
+
+        return Ok(activeContacts);
     }
 
     [Authorize]
