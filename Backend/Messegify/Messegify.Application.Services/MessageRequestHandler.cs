@@ -17,10 +17,7 @@ public interface IMessageRequestHandler :
     IRequestHandler<GetMessagesRequest, IEnumerable<MessageDto>>,
     IRequestHandler<GetPagedMessagesRequest, IEnumerable<MessageDto>>,
     IRequestHandler<DeleteMessageRequest>,
-    IRequestHandler<DeleteMessagesRequest>
-{
-    
-}
+    IRequestHandler<DeleteMessagesRequest>;
 
 public class MessageRequestHandler : IMessageRequestHandler
 {

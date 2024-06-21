@@ -20,9 +20,7 @@ public interface IChatroomRequestHandler :
     IRequestHandler<GetUserChatroomsRequest, IEnumerable<ChatRoomDto>>,
     IRequestHandler<DeleteChatroomRequest>,
     IRequestHandler<InviteToChatroomRequest>,
-    IRequestHandler<LeaveChatroomRequest>
-{
-}
+    IRequestHandler<LeaveChatroomRequest>;
 
 public class ChatroomRequestHandler : IChatroomRequestHandler
 {
