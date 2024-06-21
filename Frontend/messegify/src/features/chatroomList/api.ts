@@ -6,7 +6,7 @@ import {AccountClaims} from "../../types/accountClaims";
 import {Chatroom} from "../../types/chatroom";
 import {Account} from "../../types/account";
 
-export async function listContactsRequest() {
+export async function getContactsRequest() {
     const token = Cookies.get('auth_token');
     const authorizedKy = ky.extend({
         headers: {

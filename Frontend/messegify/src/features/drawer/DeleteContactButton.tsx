@@ -4,7 +4,7 @@ import {Button, Flex, Group, Modal, Select, Space, Text} from "@mantine/core";
 import {useEffect, useState} from "react";
 import {Account} from "../../types/account";
 import {Contact} from "../../types/contact";
-import {getUserId, listContactsRequest} from "../chatroomList/api";
+import {getUserId, getContactsRequest} from "../chatroomList/api";
 import {API_URL} from "../../config";
 import ky from "ky";
 import {deleteContactRequest} from "./api";
@@ -42,7 +42,7 @@ export function DeleteContactButton() {
 
     const fetchContacts = async () => {
         try {
-            const response = await listContactsRequest();
+            const response = await getContactsRequest();
             setContacts(response);
         } catch (error) {
             console.error('Error fetching contacts:', error);
