@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from 'react';
 import {Box, Loader, MantineProvider} from '@mantine/core';
 import {Link} from 'react-router-dom';
-import {getAccountRequest, getUserId} from "./api";
+import {getAccountRequest, getUserId, listContactsRequest} from "./api";
 import {Chatroom, ChatroomType} from "../../types/chatroom";
 
 export const ChatroomItem: FC<{ chatroom: Chatroom }> = ({chatroom}) => {
@@ -29,11 +29,14 @@ export const ChatroomItem: FC<{ chatroom: Chatroom }> = ({chatroom}) => {
 
         async function getFriendsName(chatroom: Chatroom): Promise<string> {
             const userId = await getUserId();
-            const otherMembersId = chatroom.members.find((member) => member !== userId);
+            let contacts = await listContactsRequest();
+            let contact = contacts.find((contact) => contact.contactChatRoomId === chatroom.id);
 
-            if (otherMembersId === undefined) {
+            if (contact === undefined) {
                 return 'Unknown';
             }
+
+            const otherMembersId = contact.firstAccountId === userId ? contact.secondAccountId : contact.firstAccountId;
 
             const account = await getAccountRequest(otherMembersId);
             return account.name;
