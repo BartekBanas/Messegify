@@ -3,6 +3,7 @@ using System;
 using Messegify.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Messegify.Application.Migrations
 {
     [DbContext(typeof(MessegifyDbContext))]
-    partial class MessegifyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240621185203_Stop computing contact's CreationDate upon chaning")]
+    partial class StopcomputingcontactsCreationDateuponchaning
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
