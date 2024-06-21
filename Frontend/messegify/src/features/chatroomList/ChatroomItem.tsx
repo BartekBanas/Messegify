@@ -1,11 +1,7 @@
 import React, {FC, useEffect} from 'react';
 import {Box, Loader, MantineProvider} from '@mantine/core';
 import {Link} from 'react-router-dom';
-import {API_URL} from '../../config';
-import ky from 'ky';
-import Cookies from 'js-cookie';
-import {Account} from '../../types/account';
-import {getUserId} from "./api";
+import {getAccountRequest, getUserId} from "./api";
 import {Chatroom, ChatroomType} from "../../types/chatroom";
 
 export const ChatroomItem: FC<{ chatroom: Chatroom }> = ({chatroom}) => {
@@ -35,15 +31,12 @@ export const ChatroomItem: FC<{ chatroom: Chatroom }> = ({chatroom}) => {
             const userId = await getUserId();
             const otherMembersId = chatroom.members.find((member) => member !== userId);
 
-            const token = Cookies.get('auth_token');
-            const authorizedKy = ky.extend({
-                headers: {
-                    authorization: `Bearer ${token}`,
-                },
-            });
+            if (otherMembersId === undefined) {
+                return 'Unknown';
+            }
 
-            const response = await authorizedKy.get(`${API_URL}/account/${otherMembersId}`).json<Account>();
-            return response.name;
+            const account = await getAccountRequest(otherMembersId);
+            return account.name;
         }
 
         async function fetchData() {
