@@ -20,6 +20,7 @@ public interface IChatroomRequestHandler :
     IRequestHandler<GetUserChatroomsRequest, IEnumerable<ChatRoomDto>>,
     IRequestHandler<DeleteChatroomRequest>,
     IRequestHandler<InviteToChatroomRequest>,
+    IRequestHandler<AddToChatroomRequest>,
     IRequestHandler<LeaveChatroomRequest>;
 
 public class ChatroomRequestHandler : IChatroomRequestHandler
@@ -145,6 +146,21 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         var invitedAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
 
         chatRoom.Members.Add(new AccountChatroom { AccountId = invitedAccount.Id });
+
+        await _chatRoomRepository.SaveChangesAsync();
+    }
+
+    public async Task Handle(AddToChatroomRequest request, CancellationToken cancellationToken)
+    {
+        var user = _httpContextAccessor.HttpContext.User;
+        var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatroomId, 
+            nameof(Chatroom.Members));
+
+        await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
+
+        var targetAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
+
+        chatRoom.Members.Add(new AccountChatroom { AccountId = targetAccount.Id });
 
         await _chatRoomRepository.SaveChangesAsync();
     }
