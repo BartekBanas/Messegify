@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Messegify.Application.Service.Extensions;
 using Messegify.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,24 +18,31 @@ public class ContactController : Controller
 
     [Authorize]
     [HttpPost("{targetAccountGuid:guid}")]
-    public async Task<IActionResult> Friend([FromRoute] Guid targetAccountGuid)
+    public async Task<IActionResult> Friend([FromRoute] Guid targetAccountGuid, CancellationToken cancellationToken)
     {
         var senderGuid = Guid.Parse(User.Claims.First(claim => claim.Type == ClaimTypes.PrimarySid).Value);
 
-        await _accountService.CreateContactAsync(senderGuid, targetAccountGuid);
+        await _accountService.CreateContactAsync(senderGuid, targetAccountGuid, cancellationToken);
 
         return Ok();
     }
     
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> GetFriends()
+    public async Task<IActionResult> GetContacts()
     {
-        var accountGuid = User.GetId();
+        var contacts = await _accountService.GetContactsAsync();
 
-        var friendships = await _accountService.GetContactsAsync(accountGuid);
+        return Ok(contacts);
+    }
+    
+    [Authorize]
+    [HttpGet("active")]
+    public async Task<IActionResult> GetActiveContacts()
+    {
+        var activeContacts = await _accountService.GetActiveContactsAsync();
 
-        return Ok(friendships);
+        return Ok(activeContacts);
     }
 
     [Authorize]

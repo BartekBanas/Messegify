@@ -17,10 +17,7 @@ public interface IMessageRequestHandler :
     IRequestHandler<GetMessagesRequest, IEnumerable<MessageDto>>,
     IRequestHandler<GetPagedMessagesRequest, IEnumerable<MessageDto>>,
     IRequestHandler<DeleteMessageRequest>,
-    IRequestHandler<DeleteMessagesRequest>
-{
-    
-}
+    IRequestHandler<DeleteMessagesRequest>;
 
 public class MessageRequestHandler : IMessageRequestHandler
 {
@@ -113,11 +110,14 @@ public class MessageRequestHandler : IMessageRequestHandler
     
     public async Task Handle(DeleteMessageRequest request, CancellationToken cancellationToken)
     {
-        await _messageRepository.DeleteAsync(request.MessageId);
+        await _messageRepository.DeleteOneAsync(request.MessageId);
     }
 
     public async Task Handle(DeleteMessagesRequest request, CancellationToken cancellationToken)
     {
-        await _messageRepository.DeleteAsync(request.MessageIds);
+        foreach (var messageId in request.MessageIds)
+        {
+            await _messageRepository.DeleteOneAsync(messageId);
+        }
     }
 }

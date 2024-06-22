@@ -25,12 +25,12 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
         _saveChangesAsyncDelegate = async () => { await dbContext.SaveChangesAsync(); };
     }
 
-    public virtual async Task<TEntity?> GetOneAsync(params object[] guids)
+    public virtual async Task<TEntity?> GetOneAsync(params object[] keys)
     {
-        if (guids.Length == 0)
+        if (keys.Length == 0)
             throw new ArgumentException("No key provided");
 
-        var entity = await _dbSet.FindAsync(guids);
+        var entity = await _dbSet.FindAsync(keys);
 
         return entity;
     }
@@ -131,9 +131,26 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
         return await query.FirstOrDefaultAsync() ?? throw new ItemNotFoundErrorException();
     }
 
-    public virtual async Task<TEntity> GetOneRequiredAsync(params object[] guids)
+    public virtual async Task<TEntity> GetOneRequiredAsync(object key, params string[] includeProperties)
     {
-        var entity = await GetOneAsync(guids);
+        var entity = await _dbSet.FindAsync(key);
+
+        if (entity == null)
+        {
+            throw new ItemNotFoundErrorException();
+        }
+
+        foreach (var includeProperty in includeProperties)
+        {
+            await _dbContext.Entry(entity).Reference(includeProperty).LoadAsync();
+        }
+
+        return entity;
+    }
+
+    public virtual async Task<TEntity> GetOneRequiredAsync(params object[] keys)
+    {
+        var entity = await GetOneAsync(keys);
 
         if (entity == null)
              throw new ItemNotFoundErrorException(); 
@@ -141,7 +158,7 @@ public class Repository<TEntity, TDbContext> : IRepository<TEntity>
         return entity;
     }
 
-    public virtual async Task DeleteAsync(params object[] keys)
+    public virtual async Task DeleteOneAsync(params object[] keys)
     {
         var entity = await GetOneRequiredAsync(keys);
 
