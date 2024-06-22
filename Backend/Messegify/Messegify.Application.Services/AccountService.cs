@@ -215,13 +215,13 @@ public class AccountService : IAccountService
 
                 if (!contactChatroom.Members.Contains(accountAId))
                 {
-                    await _chatroomRequestHandler.Handle(new InviteToChatroomRequest(
+                    await _chatroomRequestHandler.Handle(new AddToChatroomRequest(
                         contact.ContactChatRoomId, accountAId), cancellationToken);
                 }
                 
                 if (!contactChatroom.Members.Contains(accountBId))
                 {
-                    await _chatroomRequestHandler.Handle(new InviteToChatroomRequest(
+                    await _chatroomRequestHandler.Handle(new AddToChatroomRequest(
                         contact.ContactChatRoomId, accountBId), cancellationToken);
                 }
             }
