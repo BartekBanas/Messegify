@@ -5,7 +5,7 @@ import {API_URL} from '../../config';
 import Cookies from 'js-cookie';
 import {Account} from '../../types/account';
 import {Contact} from '../../types/contact';
-import {getUserId, getContactsRequest} from "../chatroomList/api";
+import {getUserId, getActiveContactsRequest} from "../chatroomList/api";
 
 export const ContactMakerButton: FC = () => {
     const [accounts, setAccounts] = useState<Account[]>([]);
@@ -38,7 +38,7 @@ export const ContactMakerButton: FC = () => {
 
     const fetchContacts = async () => {
         try {
-            const response = await getContactsRequest();
+            const response = await getActiveContactsRequest();
             setContacts(response);
         } catch (error) {
             console.error('Error fetching contacts:', error);

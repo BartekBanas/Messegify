@@ -17,6 +17,17 @@ export async function getContactsRequest() {
     return authorizedKy.get(`${API_URL}/contact`).json<Contact[]>();
 }
 
+export async function getActiveContactsRequest() {
+    const token = Cookies.get('auth_token');
+    const authorizedKy = ky.extend({
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    });
+
+    return authorizedKy.get(`${API_URL}/contact/active`).json<Contact[]>();
+}
+
 export async function getAccountRequest(otherMembersId: string) : Promise<Account> {
     const token = Cookies.get('auth_token');
     const authorizedKy = ky.extend({
