@@ -58,7 +58,7 @@ export const ContactMakerButton: FC = () => {
 
         try {
             await authorizedKy.post(`${API_URL}/contact/${selectedAccountId}`);
-            fetchContacts();
+            await fetchContacts();
         } catch (error) {
             console.error('Error creating contact:', error);
         }
