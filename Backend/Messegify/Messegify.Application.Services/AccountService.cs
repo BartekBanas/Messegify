@@ -21,9 +21,10 @@ public interface IAccountService
     Task<AccountDto> UpdateAccountAsync(Guid accountId, UpdateAccountDto updateDto);
     Task DeleteAccountAsync(Guid accountId);
     Task<string> AuthenticateAsync(LoginDto loginDto);
-    Task CreateContactAsync(Guid accountAId, Guid accountBId);
+    Task CreateContactAsync(Guid accountAId, Guid accountBId, CancellationToken cancellationToken);
     Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken);
-    Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId);
+    Task<IEnumerable<ContactDto>> GetContactsAsync();
+    Task<IEnumerable<ContactDto>> GetActiveContactsAsync();
 }
 
 public class AccountService : IAccountService
@@ -159,7 +160,7 @@ public class AccountService : IAccountService
     
     public async Task DeleteAccountAsync(Guid accountId)
     {
-        var contacts = await GetContactsAsync(accountId);
+        var contacts = await GetContactsAsync();
 
         foreach (var contact in contacts)
         {
@@ -168,10 +169,10 @@ public class AccountService : IAccountService
 
             await _chatroomRequestHandler.Handle(deleteChatroomRequest, token);
             
-            await _contactRepository.DeleteAsync(contact.Id);
+            await _contactRepository.DeleteOneAsync(contact.Id);
         }
         
-        await _accountRepository.DeleteAsync(accountId);
+        await _accountRepository.DeleteOneAsync(accountId);
 
         await _contactRepository.SaveChangesAsync();
     }
@@ -194,43 +195,100 @@ public class AccountService : IAccountService
         return token;
     }
 
-    public async Task CreateContactAsync(Guid accountAId, Guid accountBId)
+    public async Task CreateContactAsync(Guid accountAId, Guid accountBId, CancellationToken cancellationToken)
     {
-        var newContact = new Contact()
+        var contact = await _contactRepository
+            .GetOneAsync(contact => contact.FirstAccountId == accountAId & contact.SecondAccountId == accountBId ||
+                                 contact.FirstAccountId == accountBId & contact.SecondAccountId == accountAId);
+
+        if (contact is not null)
         {
-            FirstAccountId = accountAId,
-            SecondAccountId = accountBId
-        };
+            if (contact.Active)
+            {
+                throw new RedundantContactCreationRequestError();
+            }
+            else
+            {
+                contact.Active = true;
+                var contactChatroom = await _chatroomRequestHandler.Handle(
+                    new GetChatroomRequest(contact.ContactChatRoomId), cancellationToken);
 
-        await _contactValidator.ValidateAsync(newContact);
+                if (!contactChatroom.Members.Contains(accountAId))
+                {
+                    await _chatroomRequestHandler.Handle(new AddToChatroomRequest(
+                        contact.ContactChatRoomId, accountAId), cancellationToken);
+                }
+                
+                if (!contactChatroom.Members.Contains(accountBId))
+                {
+                    await _chatroomRequestHandler.Handle(new AddToChatroomRequest(
+                        contact.ContactChatRoomId, accountBId), cancellationToken);
+                }
+            }
+        }
+        else
+        {
+            var newContact = new Contact
+            {
+                FirstAccountId = accountAId,
+                SecondAccountId = accountBId
+            };
 
-        await _contactRepository.CreateAsync(newContact);
-        
-        newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
-        
-        await _contactRepository.SaveChangesAsync();
+            await _contactValidator.ValidateAsync(newContact, cancellationToken);
+
+            await _contactRepository.CreateAsync(newContact);
+
+            newContact.AddDomainEvent(new ContactCreatedDomainEvent(newContact));
+
+            await _contactRepository.SaveChangesAsync();
+        }
     }
 
     public async Task DeleteContactAsync(Guid contactId, CancellationToken cancellationToken)
     {
-        var contact = _contactRepository.GetOneRequiredAsync(contactId);
+        var userId = _httpContextAccessor.HttpContext.User.GetId();
+        var contact = await _contactRepository.GetOneRequiredAsync(contactId);
+        var getChatroomRequest = new GetChatroomRequest(contact.ContactChatRoomId);
+        var chatroom = await _chatroomRequestHandler.Handle(getChatroomRequest, cancellationToken);
 
-        DeleteChatroomRequest request = new DeleteChatroomRequest(contact.Result.ContactChatRoomId);
+        if (contact.Active)
+        {
+            contact.Active = false;
+            await _chatroomRequestHandler.Handle(new LeaveChatroomRequest(contact.ContactChatRoomId), cancellationToken);
+        }
+        else if (chatroom.Members.Count() == 1 &&
+                 chatroom.Members.Any(memberId => memberId == userId)) 
+        {
+            var request = new DeleteChatroomRequest(contact.ContactChatRoomId);
+            await _chatroomRequestHandler.Handle(request, cancellationToken);
 
-        await _chatroomRequestHandler.Handle(request, cancellationToken);
-
-        await _contactRepository.DeleteAsync(contactId);
-
-        await _contactRepository.SaveChangesAsync();
+            await _contactRepository.DeleteOneAsync(contactId);
+            await _contactRepository.SaveChangesAsync();
+        }
+        else
+        {
+            throw new BadRequestError("You had already abandoned this contact");
+        }
     }
 
-    public async Task<IEnumerable<ContactDto>> GetContactsAsync(Guid accountId)
+    public async Task<IEnumerable<ContactDto>> GetContactsAsync()
     {
-        var account = await _accountRepository.GetOneAsync(accountId);
-        var user = _httpContextAccessor.HttpContext.User ?? throw new NullReferenceException();
+        var accountId = _httpContextAccessor.HttpContext.User.GetId();
         
         var contacts = await _contactRepository
             .GetAsync(contact => contact.FirstAccountId == accountId || contact.SecondAccountId == accountId);
+
+        var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
+        
+        return dtos;
+    }
+
+    public async Task<IEnumerable<ContactDto>> GetActiveContactsAsync()
+    {
+        var accountId = _httpContextAccessor.HttpContext.User.GetId();
+
+        var contacts = await _contactRepository.GetAsync(contact =>
+                contact.Active & (contact.FirstAccountId == accountId || contact.SecondAccountId == accountId));
 
         var dtos = _mapper.Map<IEnumerable<ContactDto>>(contacts);
         

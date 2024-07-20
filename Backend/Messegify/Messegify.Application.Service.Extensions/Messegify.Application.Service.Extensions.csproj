@@ -1,24 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="11.4.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.1" />
+        <PackageReference Include="FluentValidation" Version="11.4.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.6"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Authorization">
-        <HintPath>C:\Users\Admin\.nuget\packages\microsoft.aspnetcore.authorization\7.0.1\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.dll</HintPath>
-      </Reference>
+        <ProjectReference Include="..\Messegify.Application.Errors\Messegify.Application.Errors.csproj"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Messegify.Application.Errors\Messegify.Application.Errors.csproj" />
-    </ItemGroup>
-
 </Project>

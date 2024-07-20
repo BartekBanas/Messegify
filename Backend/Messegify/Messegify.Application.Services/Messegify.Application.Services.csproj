@@ -1,35 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Messegify.Application.Authorization\Messegify.Application.Authorization.csproj" />
-      <ProjectReference Include="..\Messegify.Application.Configuration\Messegify.Application.Configuration.csproj" />
-      <ProjectReference Include="..\Messegify.Application.Dtos\Messegify.Application.Dtos.csproj" />
-      <ProjectReference Include="..\Messegify.Application.Errors\Messegify.Application.Errors.csproj" />
-      <ProjectReference Include="..\Messegify.Application.Service.Extensions\Messegify.Application.Service.Extensions.csproj" />
-      <ProjectReference Include="..\Messegify.Domain.Abstractions\Messegify.Domain.Abstractions.csproj" />
-      <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj" />
-      <ProjectReference Include="..\Messegify.Domain.Events\Messegify.Domain.Events.csproj" />
-      <ProjectReference Include="..\Messegify.Infrastructure.Error\Messegify.Infrastructure.Error.csproj" />
+        <ProjectReference Include="..\Messegify.Application.Authorization\Messegify.Application.Authorization.csproj"/>
+        <ProjectReference Include="..\Messegify.Application.Configuration\Messegify.Application.Configuration.csproj"/>
+        <ProjectReference Include="..\Messegify.Application.Dtos\Messegify.Application.Dtos.csproj"/>
+        <ProjectReference Include="..\Messegify.Application.Errors\Messegify.Application.Errors.csproj"/>
+        <ProjectReference Include="..\Messegify.Application.Service.Extensions\Messegify.Application.Service.Extensions.csproj"/>
+        <ProjectReference Include="..\Messegify.Domain.Abstractions\Messegify.Domain.Abstractions.csproj"/>
+        <ProjectReference Include="..\Messegify.Domain.Entities\Messegify.Domain.Entities.csproj"/>
+        <ProjectReference Include="..\Messegify.Domain.Events\Messegify.Domain.Events.csproj"/>
+        <ProjectReference Include="..\Messegify.Infrastructure.Error\Messegify.Infrastructure.Error.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="12.0.0" />
-      <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
-      <PackageReference Include="FluentValidation" Version="11.4.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.34.0" />
+        <PackageReference Include="AutoMapper" Version="12.0.0"/>
+        <PackageReference Include="BCrypt.Net-Core" Version="1.6.0"/>
+        <PackageReference Include="FluentValidation" Version="11.4.0"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.34.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Authorization">
-        <HintPath>C:\Users\Admin\.nuget\packages\microsoft.aspnetcore.authorization\7.0.1\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.dll</HintPath>
-      </Reference>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
     </ItemGroup>
-
 </Project>

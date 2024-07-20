@@ -4,9 +4,9 @@ import {API_URL} from "../../config";
 import {Message} from "../../types/message";
 import {useState} from "react";
 import useWebSocket from "react-use-websocket";
-import {sendMessageErrorNotification} from "./notifications";
 import {Account} from "../../types/account";
 import {Chatroom} from "../../types/chatroom";
+import {handleRequest} from "../../common/apiUtilities";
 
 export function useGetMessages() {
     const currentUrl = window.location.href;
@@ -60,7 +60,8 @@ export async function sendMessageRequest(data: Message, roomId: string) {
         })
     });
 
-    return authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
+    const request = authorizedKy.post(`${API_URL}/chatRoom/${roomId}/message`).json<Message[]>();
+    return handleRequest(request);
 }
 
 export async function InviteToChatroomRequest(chatroomId: string, accountId: string) {
@@ -103,7 +104,8 @@ export async function getChatroomRequest(chatroomId: string): Promise<Chatroom> 
         }
     });
 
-    return authorizedKy.get(`${API_URL}/chatroom/${chatroomId}`).json<Chatroom>();
+    const request = authorizedKy.get(`${API_URL}/chatroom/${chatroomId}`).json<Chatroom>();
+    return handleRequest(request);
 }
 
 export async function createChatroomRequest(chatroomName: string) {

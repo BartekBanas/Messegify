@@ -46,9 +46,8 @@ services.AddAuthorization(options =>
 services.Configure<JwtConfiguration>(configuration.GetSection(nameof(JwtConfiguration)));
 
 services.AddControllers().AddJsonOptions(options =>
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
-).AddJsonOptions(options =>
 {
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
