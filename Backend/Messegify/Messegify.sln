@@ -51,6 +51,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 		.gitignore = .gitignore
 		..\..\.github\workflows\build.yml = ..\..\.github\workflows\build.yml
 		..\..\.github\workflows\test.yml = ..\..\.github\workflows\test.yml
+		..\..\.github\workflows\dotnet-desktop.yml = ..\..\.github\workflows\dotnet-desktop.yml
+		..\..\.github\workflows\auto-develop-merge.yaml = ..\..\.github\workflows\auto-develop-merge.yaml
 	EndProjectSection
 EndProject
 Global
