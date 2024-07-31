@@ -1,0 +1,40 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+      - Develop
+  pull_request:
+    branches:
+      - main
+      - Develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore Backend/Messegify
+
+      - name: Build
+        run: dotnet build Backend/Messegify --no-restore
+
+      - name: Run tests
+        run: dotnet test Backend/Messegify/tests --no-build --logger "trx;LogFileName=test-results.xml"
+
+      - name: Publish test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: Backend/Messegify/tests/TestResults/test-results.xml

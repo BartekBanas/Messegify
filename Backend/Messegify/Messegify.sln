@@ -49,6 +49,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{95B1820F-6364-42EE-97D5-1895153CC7FD}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		..\..\.github\workflows\build.yml = ..\..\.github\workflows\build.yml
+		..\..\.github\workflows\test.yml = ..\..\.github\workflows\test.yml
 	EndProjectSection
 EndProject
 Global
