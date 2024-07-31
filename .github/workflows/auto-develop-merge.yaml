@@ -23,6 +23,9 @@ jobs:
       - name: Fetch all branches
         run: git fetch --all
 
+      - name: List branches
+        run: git branch -a
+
       - name: Checkout develop branch
         run: git checkout development
 
