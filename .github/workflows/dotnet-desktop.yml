@@ -2,9 +2,9 @@ name: .NET Core Build and Test
 
 on:
   push:
-    branches: [ "main", "Develop" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "Develop" ]
+    branches: [ "main" ]
 
 jobs:
 
@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest
 
