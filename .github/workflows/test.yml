@@ -30,4 +30,11 @@ jobs:
         run: dotnet build Backend/Messegify --no-restore
 
       - name: Run tests
-        run: dotnet test Backend/Messegify/tests --no-build --verbosity normal
+        run: dotnet test Backend/Messegify/tests --no-build --logger "trx;LogFileName=test-results.xml"
+
+      - name: Publish test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: Backend/Messegify/tests/TestResults/test-results.xml
