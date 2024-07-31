@@ -1,0 +1,32 @@
+name: Cascading auto-merge Main to Develop
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Checkout develop branch
+        run: git checkout develop
+
+      - name: Merge main into develop (ff-only)
+        run: |
+          git fetch origin main
+          git merge --ff-only origin/main
+
+      - name: Push changes
+        run: git push origin develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
