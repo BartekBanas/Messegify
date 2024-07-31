@@ -2,17 +2,17 @@ name: .NET Core Build and Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - '*'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - '*'
 
 jobs:
-
   build:
-
     strategy:
       matrix:
-        configuration: [Release]
+        configuration: [Debug]
 
     runs-on: windows-latest
 
@@ -47,7 +47,7 @@ jobs:
       - name: Execute unit tests
         run: dotnet test ${{ env.Solution_Name }} --no-build --configuration ${{ matrix.configuration }} --logger "trx;LogFileName=test-results.trx"
 
-      # Install reportgenerator tool
+      # Install reportGenerator tool
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
