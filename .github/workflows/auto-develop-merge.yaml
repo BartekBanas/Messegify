@@ -19,7 +19,7 @@ jobs:
           git config user.email "github-actions@github.com"
 
       - name: Checkout develop branch
-        run: git checkout develop
+        run: git checkout development
 
       - name: Merge main into develop (ff-only)
         run: |
