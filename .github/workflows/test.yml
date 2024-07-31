@@ -31,7 +31,7 @@ jobs:
 
       - name: Run tests
         run: |
-          cd Backend/Messegify/tests
+          cd ./Backend/Messegify/tests
           dotnet test --no-build --logger "trx;LogFileName=test-results.xml"
 
       - name: Publish test results
