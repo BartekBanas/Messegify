@@ -26,8 +26,8 @@ jobs:
       - name: List branches
         run: git branch -a
 
-      - name: Checkout develop branch
-        run: git checkout development
+      - name: Checkout development branch
+        run: git checkout Development
 
       - name: Merge main into develop (ff-only)
         run: |
