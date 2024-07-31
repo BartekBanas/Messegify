@@ -29,12 +29,12 @@ jobs:
       - name: Checkout development branch
         run: git checkout Development
 
-      - name: Merge main into develop (ff-only)
+      - name: Merge main into Development (ff-only)
         run: |
           git fetch origin main
           git merge --ff-only origin/main
 
       - name: Push changes
-        run: git push origin develop
+        run: git push origin Development
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
