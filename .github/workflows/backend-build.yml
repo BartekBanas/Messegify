@@ -1,0 +1,34 @@
+name: backend-build.yml
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    env:
+      SolutionName: Backend/Messegify/Messegify.sln
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.SolutionName }}
+
+      - name: Build
+        run: dotnet build ${{ env.SolutionName }} --no-restore
+
+      - name: Run tests
+        run: dotnet test ${{ env.SolutionName }} --no-build
