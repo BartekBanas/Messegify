@@ -8,6 +8,8 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
+    with:
+      fetch-depth: 0  # Fetches all history for all branches
 
     steps:
       - name: Checkout code
