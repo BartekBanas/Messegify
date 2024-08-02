@@ -1,4 +1,4 @@
-name: Cascading auto-merge Main to Develop
+name: Cascading auto-merge from main to develop branch
 
 on:
   push:
