@@ -49,7 +49,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{95B1820F-6364-42EE-97D5-1895153CC7FD}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		..\..\.github\workflows\dotnet-desktop.yml = ..\..\.github\workflows\dotnet-desktop.yml
 		..\..\.github\workflows\auto-develop-merge.yaml = ..\..\.github\workflows\auto-develop-merge.yaml
 		..\..\.github\workflows\backend-build.yml = ..\..\.github\workflows\backend-build.yml
 	EndProjectSection
