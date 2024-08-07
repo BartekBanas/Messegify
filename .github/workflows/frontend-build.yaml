@@ -1,0 +1,34 @@
+name: Build frontend application
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: Frontend/messegify/
+
+      - name: Build
+        run: npm run build
+        working-directory: Frontend/messegify/
+
+      - name: Run tests
+        run: npm test
+        working-directory: Frontend/messegify/
