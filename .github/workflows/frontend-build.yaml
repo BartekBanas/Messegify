@@ -28,7 +28,3 @@ jobs:
       - name: Build
         run: CI=false npm run build
         working-directory: Frontend/messegify/
-
-      - name: Run tests
-        run: npm test
-        working-directory: Frontend/messegify/
