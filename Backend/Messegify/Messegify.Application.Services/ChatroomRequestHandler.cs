@@ -161,6 +161,11 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
 
         var targetAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
+        
+        if (chatRoom.Members.Any(accountChatroom => accountChatroom.AccountId == request.AccountId))
+        {
+            throw new BadRequestError("Selected user is already a member of this chatroom");
+        }
 
         chatRoom.Members.Add(new AccountChatroom { AccountId = targetAccount.Id });
 
