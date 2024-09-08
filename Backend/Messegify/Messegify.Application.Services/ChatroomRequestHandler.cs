@@ -138,10 +138,7 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
             throw new BadRequestError("You cannot invite anyone to a direct messaging chatroom");
         }
 
-        if (chatRoom.Members.Any(accountChatroom => accountChatroom.AccountId == request.AccountId))
-        {
-            throw new BadRequestError("Invited user is already a member of this chatroom");
-        }
+        CheckUserMembershipInChatroom(chatRoom, request.AccountId);
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
 
@@ -162,14 +159,19 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
 
         var targetAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
         
-        if (chatRoom.Members.Any(accountChatroom => accountChatroom.AccountId == request.AccountId))
-        {
-            throw new BadRequestError("Selected user is already a member of this chatroom");
-        }
+        CheckUserMembershipInChatroom(chatRoom, request.AccountId);
 
         chatRoom.Members.Add(new AccountChatroom { AccountId = targetAccount.Id });
 
         await _chatRoomRepository.SaveChangesAsync();
+    }
+
+    private static void CheckUserMembershipInChatroom(Chatroom chatRoom, Guid accountId)
+    {
+        if (chatRoom.Members.Any(accountChatroom => accountChatroom.AccountId == accountId))
+        {
+            throw new BadRequestError("Selected user is already a member of this chatroom");
+        }
     }
 
     public async Task Handle(LeaveChatroomRequest request, CancellationToken cancellationToken)
