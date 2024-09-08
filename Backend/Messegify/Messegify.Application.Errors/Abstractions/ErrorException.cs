@@ -1,14 +1,8 @@
-﻿using System.Runtime.Serialization;
-
-namespace Messegify.Application.Errors.Abstractions;
+﻿namespace Messegify.Application.Errors.Abstractions;
 
 public abstract class ErrorException : Exception
 {
     public ErrorException()
-    {
-    }
-
-    protected ErrorException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 
