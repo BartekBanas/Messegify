@@ -2,8 +2,8 @@
 
 namespace Messegify.Application.Dtos;
 
-public class SendMessageDto
+public class SendMessageDto(string textContent)
 {
     [Required]
-    public string TextContent { get; set; }
+    public string TextContent { get; } = textContent;
 }
