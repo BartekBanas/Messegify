@@ -125,6 +125,15 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         await _chatRoomRepository.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Handles the invitation of a user to a chatroom. This method checks if the user is authorized
+    /// to invite others to the chatroom and ensures the chatroom is not a direct messaging chatroom.
+    /// It throws an exception if the user is already a member or the chatroom is of type 'Direct'.
+    /// </summary>
+    /// <param name="request">The request containing the chatroom ID and the account ID of the user to invite.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="BadRequestError">Thrown if the chatroom is a direct messaging chatroom or the user is already a member.</exception>
     public async Task Handle(InviteToChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
@@ -149,6 +158,14 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         await _chatRoomRepository.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Handles the addition of a user to a chatroom. This method checks if the user is authorized
+    /// to add others to the chatroom and ensures the operation is allowed by the user’s ownership role.
+    /// </summary>
+    /// <param name="request">The request containing the chatroom ID and the account ID of the user to add.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="BadRequestError">Thrown if the user is already a member.</exception>
     public async Task Handle(AddToChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
