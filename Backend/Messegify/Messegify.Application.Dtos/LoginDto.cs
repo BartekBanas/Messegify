@@ -5,8 +5,8 @@ namespace Messegify.Application.Dtos;
 public class LoginDto
 {
     [Required]
-    public string UsernameOrEmail { get; set; } = null!;
+    public required string UsernameOrEmail { get; set; }
 
     [Required]
-    public string Password { get; set; } = null!;
+    public required string Password { get; set; }
 }

@@ -125,21 +125,29 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         await _chatRoomRepository.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Handles the invitation of a user to a chatroom. This method checks if the user is authorized
+    /// to invite others to the chatroom and ensures the chatroom is not a direct messaging chatroom.
+    /// It throws an exception if the user is already a member or the chatroom is of type 'Direct'.
+    /// </summary>
+    /// <param name="request">The request containing the chatroom ID and the account ID of the user to invite.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="BadRequestError">Thrown if the chatroom is a direct messaging chatroom or the user is already a member.</exception>
     public async Task Handle(InviteToChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
         var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatroomId,
             nameof(Chatroom.Members));
+        
+        await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
         if (chatRoom.ChatRoomType is ChatRoomType.Direct)
         {
             throw new BadRequestError("You cannot invite anyone to a direct messaging chatroom");
         }
 
-        if (chatRoom.Members.Any(accountChatroom => accountChatroom.AccountId == request.AccountId))
-        {
-            throw new BadRequestError("Invited user is already a member of this chatroom");
-        }
+        CheckUserMembershipInChatroom(chatRoom, request.AccountId);
 
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
 
@@ -150,6 +158,14 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         await _chatRoomRepository.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Handles the addition of a user to a chatroom. This method checks if the user is authorized
+    /// to add others to the chatroom and ensures the operation is allowed by the user’s ownership role.
+    /// </summary>
+    /// <param name="request">The request containing the chatroom ID and the account ID of the user to add.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="BadRequestError">Thrown if the user is already a member.</exception>
     public async Task Handle(AddToChatroomRequest request, CancellationToken cancellationToken)
     {
         var user = _httpContextAccessor.HttpContext.User;
@@ -159,10 +175,20 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsOwnerOf);
 
         var targetAccount = await _accountRepository.GetOneRequiredAsync(request.AccountId);
+        
+        CheckUserMembershipInChatroom(chatRoom, request.AccountId);
 
         chatRoom.Members.Add(new AccountChatroom { AccountId = targetAccount.Id });
 
         await _chatRoomRepository.SaveChangesAsync();
+    }
+
+    private static void CheckUserMembershipInChatroom(Chatroom chatRoom, Guid accountId)
+    {
+        if (chatRoom.Members.Any(accountChatroom => accountChatroom.AccountId == accountId))
+        {
+            throw new BadRequestError("Selected user is already a member of this chatroom");
+        }
     }
 
     public async Task Handle(LeaveChatroomRequest request, CancellationToken cancellationToken)

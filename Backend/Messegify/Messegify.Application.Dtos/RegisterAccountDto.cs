@@ -5,11 +5,11 @@ namespace Messegify.Application.Dtos;
 public class RegisterAccountDto
 {
     [Required]
-    public string Name { get; set; }
+    public required string Name { get; init; }
     
     [Required]
-    public string Password { get; set; }
+    public required string Password { get; init; }
     
     [Required]
-    public string Email { get; set; }
+    public required string Email { get; init; }
 }
