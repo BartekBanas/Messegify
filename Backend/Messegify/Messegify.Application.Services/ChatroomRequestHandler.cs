@@ -130,6 +130,8 @@ public class ChatroomRequestHandler : IChatroomRequestHandler
         var user = _httpContextAccessor.HttpContext.User;
         var chatRoom = await _chatRoomRepository.GetOneRequiredAsync(chatRoom => chatRoom.Id == request.ChatroomId,
             nameof(Chatroom.Members));
+        
+        await _authorizationService.AuthorizeRequiredAsync(user, chatRoom, AuthorizationPolicies.IsMemberOf);
 
         if (chatRoom.ChatRoomType is ChatRoomType.Direct)
         {
