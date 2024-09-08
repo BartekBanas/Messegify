@@ -2,15 +2,15 @@
 
 public abstract class ErrorException : Exception
 {
-    public ErrorException()
+    protected ErrorException()
     {
     }
 
-    public ErrorException(string? message) : base(message)
+    protected ErrorException(string? message) : base(message)
     {
     }
 
-    public ErrorException(string? message, Exception? innerException) : base(message, innerException)
+    protected ErrorException(string? message, Exception? innerException) : base(message, innerException)
     {
     }
 }
