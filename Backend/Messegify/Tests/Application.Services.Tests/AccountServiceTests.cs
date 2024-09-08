@@ -44,7 +44,7 @@ public class AccountServiceTests
         // Arrange
         var accountId = Guid.NewGuid();
         var account = new Account { Id = accountId };
-        var accountDto = new AccountDto { Id = accountId.ToString() };
+        var accountDto = new AccountDto { Id = accountId.ToString() , Name = "TestName", Email = "TestEmail"};
         _accountRepositoryMock.Setup(repo => repo.GetOneRequiredAsync(accountId)).ReturnsAsync(account);
         _mapperMock.Setup(mapper => mapper.Map<AccountDto>(account)).Returns(accountDto);
 

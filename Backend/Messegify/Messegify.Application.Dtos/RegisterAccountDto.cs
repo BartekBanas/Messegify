@@ -2,14 +2,14 @@
 
 namespace Messegify.Application.Dtos;
 
-public class RegisterAccountDto(string name, string password, string email)
+public class RegisterAccountDto
 {
     [Required]
-    public string Name { get; init; } = name;
-
+    public required string Name { get; init; }
+    
     [Required]
-    public string Password { get; init; } = password;
-
+    public required string Password { get; init; }
+    
     [Required]
-    public string Email { get; init; } = email;
+    public required string Email { get; init; }
 }
