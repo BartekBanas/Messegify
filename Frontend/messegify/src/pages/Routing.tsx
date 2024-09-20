@@ -22,10 +22,6 @@ const publicRoutes = [
                 path: '/register',
                 element: <RegisterPage/>
             },
-            // {
-            //     path: '/menu',
-            //     element: <MenuPage/>
-            // },
             {
                 path: "*",
                 AuthenticationErrorNotification,
