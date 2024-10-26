@@ -14,4 +14,8 @@
     <ItemGroup>
         <ProjectReference Include="..\Messegify.Application.Errors\Messegify.Application.Errors.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    </ItemGroup>
 </Project>

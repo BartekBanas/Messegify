@@ -36,7 +36,7 @@ public class AccountController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllAccounts([FromQuery]int? pageSize, [FromQuery]int? pageNumber)
+    public async Task<IActionResult> GetAllAccounts([FromQuery] int? pageSize, [FromQuery] int? pageNumber)
     {
         IEnumerable<AccountDto> accountDtos;
 
@@ -76,18 +76,11 @@ public class AccountController : Controller
     [HttpDelete("me")]
     public async Task<IActionResult> DeleteMyAccount()
     {
-        if (_httpContextAccessor.HttpContext != null)
-        {
-            var userId = _httpContextAccessor.HttpContext.User.GetId();
+        var userId = _httpContextAccessor.GetId();
 
-            await _accountService.DeleteAccountAsync(userId);
+        await _accountService.DeleteAccountAsync(userId);
 
-            return Ok();
-        }
-        else
-        {
-            return Unauthorized();
-        }
+        return Ok();
     }
 
     [Authorize]
@@ -96,7 +89,7 @@ public class AccountController : Controller
     {
         if (_httpContextAccessor.HttpContext != null)
         {
-            var userId = _httpContextAccessor.HttpContext.User.GetId();
+            var userId = _httpContextAccessor.GetId();
 
             var updatedAccount = await _accountService.UpdateAccountAsync(userId, dto);
 
