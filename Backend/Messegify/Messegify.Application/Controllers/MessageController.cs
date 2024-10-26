@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-using Messegify.Application.Dtos;
+﻿using Messegify.Application.Dtos;
 using Messegify.Application.Services;
 using Messegify.Application.Services.MessageRequests;
 using Microsoft.AspNetCore.Mvc;

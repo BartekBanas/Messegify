@@ -1,8 +1,5 @@
-﻿using System.Security.Claims;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
-using Messegify.Application.Errors;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Messegify.Application.Service.Extensions;
 
